@@ -122,3 +122,49 @@ settings <- function(...) {
   settings_list
 }
 
+#' Random object positions
+#'
+#' The function expects a square arena defined by `xlim` and `ylim` settings.
+#' The objects are placed randomly (uniform distribution sampling) into the arena.
+#' If `check_distance` is `TRUE`, the process is repeated
+#' until the minimum pairwise distance is met.
+#'
+#' @param n Number of objects
+#' @param settings Basic properties - namely `xlim`, `ylim`,
+#' possibly `min_distance`
+#' @param check_distance Logical.
+#' The positions are generated until
+#' minimum pairwise distance of `min_dist` is met.
+#'
+#' @return Tibble with `object`, `x` and `y` columns.
+#' @export
+#'
+#' @seealso
+#' \code{\link{default_settings}} for setting definitions,
+#' \code{\link{settings}} for adjusting default settings,
+#' \code{\link{is_distance_at_least}} for checking distances
+#'
+#' @examples
+#' pos <- generate_positions_random(8, default_settings())
+generate_positions_random <- function(
+  n, settings, check_distance = T) {
+  xlim <- settings$xlim
+  ylim <- settings$ylim
+  stopifnot(!is.null(xlim))
+  stopifnot(!is.null(ylim))
+  while (T) {
+    p <- tibble::tibble(
+      object = 1:n,
+      x = runif(n, xlim[1], xlim[2]),
+      y = runif(n, ylim[1], ylim[2])
+    )
+    if (check_distance) {
+      if (is_distance_at_least(p, min_distance = settings$min_distance)) {
+        return(p)
+      }
+    } else {
+      return(p)
+    }
+  }
+}
+
