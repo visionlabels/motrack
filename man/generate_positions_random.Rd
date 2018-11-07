@@ -4,7 +4,8 @@
 \alias{generate_positions_random}
 \title{Random object positions}
 \usage{
-generate_positions_random(n, settings, check_distance = T)
+generate_positions_random(n, settings, check_distance = T,
+  border_distance = 0)
 }
 \arguments{
 \item{n}{Number of objects}
@@ -15,6 +16,8 @@ possibly `min_distance`}
 \item{check_distance}{Logical.
 The positions are generated until
 minimum pairwise distance of `min_dist` is met.}
+
+\item{border_distance}{Distance from arena borders.}
 }
 \value{
 Tibble with `object`, `x` and `y` columns.
@@ -24,9 +27,15 @@ The function expects a square arena defined by `xlim` and `ylim` settings.
 The objects are placed randomly (uniform distribution sampling) into the arena.
 If `check_distance` is `TRUE`, the process is repeated
 until the minimum pairwise distance is met.
+`border_distance` specifies, whether objects should keep some initial distance
+from arena borders. This distance is not meant to be the bouncing distance,
+it helps to put objects more together in the beginning.
 }
 \examples{
+# sample positions with no other requirements
 pos <- generate_positions_random(8, default_settings())
+# when starting positions should be further from borders
+pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 }
 \seealso{
 \code{\link{default_settings}} for setting definitions,

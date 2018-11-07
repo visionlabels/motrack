@@ -128,6 +128,9 @@ settings <- function(...) {
 #' The objects are placed randomly (uniform distribution sampling) into the arena.
 #' If `check_distance` is `TRUE`, the process is repeated
 #' until the minimum pairwise distance is met.
+#' `border_distance` specifies, whether objects should keep some initial distance
+#' from arena borders. This distance is not meant to be the bouncing distance,
+#' it helps to put objects more together in the beginning.
 #'
 #' @param n Number of objects
 #' @param settings Basic properties - namely `xlim`, `ylim`,
@@ -135,6 +138,7 @@ settings <- function(...) {
 #' @param check_distance Logical.
 #' The positions are generated until
 #' minimum pairwise distance of `min_dist` is met.
+#' @param border_distance Distance from arena borders.
 #'
 #' @return Tibble with `object`, `x` and `y` columns.
 #' @export
@@ -145,9 +149,12 @@ settings <- function(...) {
 #' \code{\link{is_distance_at_least}} for checking distances
 #'
 #' @examples
+#' # sample positions with no other requirements
 #' pos <- generate_positions_random(8, default_settings())
+#' # when starting positions should be further from borders
+#' pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 generate_positions_random <- function(
-  n, settings, check_distance = T) {
+  n, settings, check_distance = T, border_distance = 0) {
   xlim <- settings$xlim
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
@@ -155,8 +162,8 @@ generate_positions_random <- function(
   while (T) {
     p <- tibble::tibble(
       object = 1:n,
-      x = runif(n, xlim[1], xlim[2]),
-      y = runif(n, ylim[1], ylim[2])
+      x = runif(n, xlim[1] + border_distance, xlim[2] - border_distance),
+      y = runif(n, ylim[1] + border_distance, ylim[2] - border_distance)
     )
     if (check_distance) {
       if (is_distance_at_least(p, min_distance = settings$min_distance)) {
