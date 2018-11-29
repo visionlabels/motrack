@@ -33,3 +33,6 @@ Currently used properties include:
   \item{border_target}{Character. Colour code of target border.}
 }
 }
+\examples{
+default_settings()
+}

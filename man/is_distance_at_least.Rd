@@ -7,6 +7,8 @@
 is_distance_at_least(position, min_distance)
 }
 \arguments{
+\item{position}{tibble}
+
 \item{min_distance}{Minimum distance to be present between each pair}
 }
 \value{

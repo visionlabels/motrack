@@ -39,7 +39,7 @@ is_valid_position <- function(position) {
 #' The function calculated all pairwise distances and checks
 #' if the are larger or equal.
 #'
-#' @param position
+#' @param position tibble
 #' @param min_distance Minimum distance to be present between each pair
 #'
 #' @return TRUE if all distances are larger than `min_distance`
@@ -87,6 +87,7 @@ is_distance_at_least <- function(position, min_distance) {
 #' @export
 #'
 #' @examples
+#' default_settings()
 default_settings <- function() {
   list(
     xlim = c(-10, 10),
@@ -106,7 +107,7 @@ default_settings <- function() {
 #'
 #' @param ... named list of properties to override default settings.
 #'
-#' @return
+#' @return Updated list of settings
 #' @export
 #'
 #' @seealso \code{\link{default_settings}}
@@ -175,3 +176,75 @@ generate_positions_random <- function(
   }
 }
 
+#' Plot object positions
+#'
+#' The function plots position tibble based on x, y values and potentially
+#' extra values from settings. Position is expected to be position tibble,
+#' but it may contain extra columns for graphics:
+#' target (Logical vector indicating whether object is target or distractor),
+#' fill (Character vector with colour names of object interiors.),
+#' border (Character vector with colour names of object borders.).
+#'
+#' @param position tibble
+#' @param settings list with basic properties
+#' @param targets Which objects should be treated as targets
+#'
+#' @return ggplot2 figure
+#' @export
+#'
+#' @examples
+#' # sample positions with no other requirements
+#' pos <- generate_positions_random(8, default_settings())
+#' plot_position(pos, default_settings())
+#' # first foulr objects are targets
+#' plot_position(pos, default_settings(), 1:4)
+#' pos$fill <- rainbow(8)
+#' plot_position(pos, default_settings())
+plot_position <- function(position, settings = NULL, targets = NULL) {
+  # check extra parameters
+  if (!is.null(targets)) {
+    # passed in call
+    position$target <- F
+    position$target[targets] <- T
+  } else {
+    if (!"target" %in% names(position)) {
+      position$target <- F
+      # otherwise we have it in dataset
+    }
+  }
+  if (!"fill" %in% names(position)) {
+    position$fill <- settings$fill_object
+    position$fill[position$target] <- settings$fill_target
+  }
+  if (!"border" %in% names(position)) {
+    position$border <- settings$border_object
+    position$border[position$target] <- settings$border_target
+  }
+  fig <-
+    ggplot2::ggplot(
+      position,
+      ggplot2::aes(x0 = x, y0 = y, fill = I(fill), colour = I(border))
+    ) +
+    ggforce::geom_circle(ggplot2::aes(r = settings$r)) +
+    #geom_label(aes(label = object)) +
+    #theme_void() +
+    ggplot2::theme(panel.background = ggplot2::element_blank()) +
+    ggplot2::coord_fixed(xlim = settings$xlim, ylim = settings$ylim, expand = F) +
+    NULL
+  if (settings$arena_border) {
+    fig <- fig +
+      ggplot2::annotate("segment",
+               x = settings$xlim[1], y = settings$ylim[1],
+               xend = settings$xlim[1], yend = settings$ylim[2]) +
+      ggplot2::annotate("segment",
+               x = settings$xlim[1], y = settings$ylim[1],
+               xend = settings$xlim[2], yend = settings$ylim[1]) +
+      ggplot2::annotate("segment",
+               x = settings$xlim[1], y = settings$ylim[2],
+               xend = settings$xlim[2], yend = settings$ylim[2]) +
+      ggplot2::annotate("segment",
+               x = settings$xlim[2], y = settings$ylim[1],
+               xend = settings$xlim[2], yend = settings$ylim[2])
+  }
+  fig
+}

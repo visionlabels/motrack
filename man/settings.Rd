@@ -9,6 +9,9 @@ settings(...)
 \arguments{
 \item{...}{named list of properties to override default settings.}
 }
+\value{
+Updated list of settings
+}
 \description{
 Creates a custom copy of settings
 }
