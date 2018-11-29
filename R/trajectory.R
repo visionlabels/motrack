@@ -36,6 +36,56 @@ is_valid_trajectory <- function(trajectory) {
 
 add_random_direction <- function(position) {
   position %>%
-    dplyr::mutate(dir = stats::runif(dplyr::n(), 0, 2 * pi))
+    dplyr::mutate(direction = stats::runif(dplyr::n(), 0, 2 * pi))
 }
 
+make_random_trajectory <- function(start, timescale, settings, step_function) {
+  # take start position
+  # are direction present? - add if not
+  # make step
+  stopifnot(length(timescale) > 1)
+  if ("direction" %in% names(start)) {
+    moment <- start
+  } else {
+    moment <- start %>% add_random_direction()
+  }
+  return
+  if (!"speed" %in% names(moment)) {
+    moment <- moment %>% dplyr::mutate(speed = settings$speed)
+  }
+  moment <- moment %>% dplyr::mutate(time = timescale[1])
+  print(moment)
+  moment_list <- list()
+  moment_list[timescale[1]] <- moment
+  for (t in timescale[-1]) {
+    moment_next <- step_function(moment, t, settings)
+    moment_list[t] <- moment_next
+    moment <- moment_next
+  }
+  print(moment_list)
+  dplyr::bind_rows(moment_list)
+}
+make_random_trajectory(mom, 0:5, new_settings(speed = 1), step_direct)
+
+
+step_square_arena <- function(moment, time_next, settings) {
+  # moment is position + direction + speed
+
+}
+
+step_direct <- function(moment, time_next, settings) {
+  # silly function
+  time_now <- moment$time[1]
+  timestep <- time_next - time_now
+  moment_next <- moment %>%
+    dplyr::mutate(
+      x = x + cos(direction) * speed * timestep,
+      y = y + sin(direction) * speed * timestep,
+      time = time_next)
+  moment_next
+}
+
+# pos <- generate_positions_random(8, default_settings(), border_distance = 3)
+# traj <- make_random_trajectory(mom, 0:5, new_settings(speed = 1), step_direct)
+# mom <- add_random_direction(pos) %>% mutate(speed = 1, time = 0)
+# step_direct(mom, 1, default_settings())

@@ -113,8 +113,8 @@ default_settings <- function() {
 #' @seealso \code{\link{default_settings}}
 #'
 #' @examples
-#' settings(xlim = c(0, 10), ylim = c(0, 10))
-settings <- function(...) {
+#' new_settings(xlim = c(0, 10), ylim = c(0, 10))
+new_settings <- function(...) {
   settings_list <- default_settings()
   dots <- list(...)
   for (key in names(dots)) {
