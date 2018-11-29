@@ -30,8 +30,8 @@ is_valid_position <- function(position) {
   all(tmp$n == 1) &&
     all(!is.na(position$x)) &&
     all(!is.na(position$y)) &&
-    all(is.numeric(position$x)) &&
-    all(is.numeric(position$y))
+    is.numeric(position$x) &&
+    is.numeric(position$y)
 }
 
 #' Tests inter-object distances
