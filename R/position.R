@@ -26,7 +26,7 @@ is_valid_position <- function(position) {
   # 2) no missing x, y
   tmp <- position %>%
     dplyr::group_by(object) %>%
-    dplyr::summarise(n = n())
+    dplyr::summarise(n = dplyr::n())
   all(tmp$n == 1) &&
     all(!is.na(position$x)) &&
     all(!is.na(position$y)) &&
@@ -55,7 +55,7 @@ is_distance_at_least <- function(position, min_distance) {
     position %>%
     dplyr::select(x, y) %>%
     as.matrix() %>%
-    dist()
+    stats::dist()
   all(dist_triangle >= min_distance)
 }
 
@@ -163,8 +163,8 @@ generate_positions_random <- function(
   while (T) {
     p <- tibble::tibble(
       object = 1:n,
-      x = runif(n, xlim[1] + border_distance, xlim[2] - border_distance),
-      y = runif(n, ylim[1] + border_distance, ylim[2] - border_distance)
+      x = stats::runif(n, xlim[1] + border_distance, xlim[2] - border_distance),
+      y = stats::runif(n, ylim[1] + border_distance, ylim[2] - border_distance)
     )
     if (check_distance) {
       if (is_distance_at_least(p, min_distance = settings$min_distance)) {

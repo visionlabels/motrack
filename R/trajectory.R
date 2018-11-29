@@ -25,7 +25,7 @@ is_valid_trajectory <- function(trajectory) {
   # 2) no missing x, y
   tmp <- trajectory %>%
     dplyr::group_by(object, time) %>%
-    dplyr::summarise(n = n())
+    dplyr::summarise(n = dplyr::n())
   all(tmp$n == 1) &&
     all(!is.na(trajectory$x)) &&
     all(!is.na(trajectory$y)) &&
@@ -34,5 +34,8 @@ is_valid_trajectory <- function(trajectory) {
     is.numeric(trajectory$time)
 }
 
-
+add_random_direction <- function(position) {
+  position %>%
+    dplyr::mutate(dir = stats::runif(dplyr::n(), 0, 2 * pi))
+}
 
