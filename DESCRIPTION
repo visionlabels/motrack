@@ -16,4 +16,5 @@ Imports:
     ggforce,
     ggplot2,
     magrittr,
-    tibble
+    tibble,
+    tidyr

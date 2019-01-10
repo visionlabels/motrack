@@ -28,7 +28,7 @@ border (Character vector with colour names of object borders.).
 # sample positions with no other requirements
 pos <- generate_positions_random(8, default_settings())
 plot_position(pos, default_settings())
-# first foulr objects are targets
+# first four objects are targets
 plot_position(pos, default_settings(), 1:4)
 pos$fill <- rainbow(8)
 plot_position(pos, default_settings())
