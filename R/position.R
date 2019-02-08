@@ -102,7 +102,8 @@ default_settings <- function() {
     border_object = "black",
     border_target = "black",
     show_labels = F,
-    bounce_off_square = F
+    bounce_off_square = F,
+    bounce_off_others = T
   )
 }
 

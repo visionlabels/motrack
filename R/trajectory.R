@@ -96,12 +96,45 @@ step_direct <- function(moment, time_next, settings) {
   if (settings$bounce_off_square) {
     moment <- bounce_off_square(moment, timestep, settings)
   }
+  if (settings$bounce_off_others) {
+    moment <- bounce_off_others(moment, timestep, settings)
+  }
   moment_next <- moment %>%
     dplyr::mutate(
       x = x + cos(direction) * speed * timestep,
       y = y + sin(direction) * speed * timestep,
       time = time_next)
   moment_next
+}
+
+bounce_off_others <- function(moment, timestep, settings) {
+  # extrapolate future
+  moment <- moment %>% arrange(object)
+  moment_next <- moment %>%
+    dplyr::mutate(
+      x = x + cos(direction) * speed * timestep,
+      y = y + sin(direction) * speed * timestep,
+      time = NA)
+  # check distances
+  dist_next <- moment_next %>%
+    dplyr::select(x, y) %>%
+    as.matrix() %>%
+    stats::dist()
+  groups <- stats::cutree(stats::hclust(dist_next, "single"),
+                          h = settings$min_dist)
+  for (i in unique(groups)) {
+    involved <- groups == i
+    n_involved <- sum(involved)
+    if (n_involved == 2) {
+      # swap directions
+      moment$direction[involved] <- rev(moment$direction[involved])
+    }
+    if (n_involved > 2) {
+      # reverse directions
+      moment$direction[involved] <- (moment$direction[involved] + pi) %% (2 * pi)
+    }
+  }
+  moment
 }
 
 bounce_off_square <- function(moment, timestep, settings) {
@@ -199,9 +232,9 @@ moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
 traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
 plot_trajectory(traj, new_settings(show_labels = T))
 
-mom1 <- moment %>% filter(object == 2)
-traj1 <- make_random_trajectory(mom1, seq(0, 5, by = 0.1), sett, step_direct)
-plot_trajectory(traj1, new_settings(show_labels = T))
-qplot(time, direction,data = traj1)
+pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
+mom2 <- pos2 %>% mutate(direction = c(1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
+traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
+plot_trajectory(traj2, new_settings(show_labels = T))
 
 }
