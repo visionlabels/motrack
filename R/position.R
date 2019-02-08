@@ -81,6 +81,8 @@ is_distance_at_least <- function(position, min_distance) {
 #'   \item{fill_target}{Character. Colour code of target fill colour.}
 #'   \item{border_object}{Character. Colour code of default border.}
 #'   \item{border_target}{Character. Colour code of target border.}
+#'   \item{show_labels}{Logical. Should we show object numbers in plots?}
+#'   \item{bounce_off_square}{Logical. Should objects bounce off square arena?}
 #' }
 #'
 #' @return list of parameters
@@ -98,7 +100,9 @@ default_settings <- function() {
     fill_object = "gray",
     fill_target = "green",
     border_object = "black",
-    border_target = "black"
+    border_target = "black",
+    show_labels = F,
+    bounce_off_square = F
   )
 }
 
@@ -201,7 +205,9 @@ generate_positions_random <- function(
 #' plot_position(pos, default_settings(), 1:4)
 #' pos$fill <- rainbow(8)
 #' plot_position(pos, default_settings())
-plot_position <- function(position, settings = NULL, targets = NULL) {
+plot_position <- function(position,
+                          settings = default_settings(),
+                          targets = NULL) {
   # check extra parameters
   if (!is.null(targets)) {
     # passed in call
@@ -224,14 +230,21 @@ plot_position <- function(position, settings = NULL, targets = NULL) {
   fig <-
     ggplot2::ggplot(
       position,
-      ggplot2::aes(x0 = x, y0 = y, fill = I(fill), colour = I(border))
+      ggplot2::aes(x0 = x, y0 = y,
+                   fill = I(fill), colour = I(border))
     ) +
     ggforce::geom_circle(ggplot2::aes(r = settings$r)) +
-    #geom_label(aes(label = object)) +
     #theme_void() +
     ggplot2::theme(panel.background = ggplot2::element_blank()) +
     ggplot2::coord_fixed(xlim = settings$xlim, ylim = settings$ylim, expand = F) +
     NULL
+  if (settings$show_labels) {
+    fig <-
+      fig +
+      ggplot2::geom_text(
+        ggplot2::aes(x = x, y = y, label = object),
+        colour = I("red"))
+  }
   if (settings$arena_border) {
     fig <- fig +
       ggplot2::annotate("segment",

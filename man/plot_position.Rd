@@ -4,7 +4,7 @@
 \alias{plot_position}
 \title{Plot object positions}
 \usage{
-plot_position(position, settings = NULL, targets = NULL)
+plot_position(position, settings = default_settings(), targets = NULL)
 }
 \arguments{
 \item{position}{tibble}
@@ -26,6 +26,7 @@ border (Character vector with colour names of object borders.).
 }
 \examples{
 # sample positions with no other requirements
+set.seed(100)
 pos <- generate_positions_random(8, default_settings())
 plot_position(pos, default_settings())
 # first four objects are targets

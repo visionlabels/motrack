@@ -38,6 +38,8 @@ is_valid_trajectory <- function(trajectory) {
 #'
 #' Simple fuction to assign random direction to each object in position object.
 #' Random means uniformly distributed value from 0 to 2 * pi (0 to 360 deg).
+#' The orientation guide using clock analogy:
+#' 0 = 3 o'clock, pi/2 = 12 o'clock, pi = 9 o'clock, 3*pi/2 = 6 o'clock
 #'
 #' @param position tibble
 #'
@@ -87,15 +89,46 @@ step_square_arena <- function(moment, time_next, settings) {
 }
 
 step_direct <- function(moment, time_next, settings) {
-  # silly function
+  # moment is position + direction + speed
+  # just goint in the same direction, possibly bouncing
   time_now <- moment$time[1]
   timestep <- time_next - time_now
+  if (settings$bounce_off_square) {
+    moment <- bounce_off_square(moment, timestep, settings)
+  }
   moment_next <- moment %>%
     dplyr::mutate(
       x = x + cos(direction) * speed * timestep,
       y = y + sin(direction) * speed * timestep,
       time = time_next)
   moment_next
+}
+
+bounce_off_square <- function(moment, timestep, settings) {
+  # extrapolate future
+  moment_next <- moment %>%
+    dplyr::mutate(
+      x = x + cos(direction) * speed * timestep,
+      y = y + sin(direction) * speed * timestep,
+      time = NA)
+  # check sides
+  beyond_left   <- moment_next$x < min(settings$xlim)
+  beyond_right  <- moment_next$x > max(settings$xlim)
+  beyond_top    <- moment_next$y > max(settings$ylim)
+  beyond_bottom <- moment_next$y < min(settings$ylim)
+  # if more than one, then just reverse
+  beyond_more   <- (beyond_left + beyond_right + beyond_top + beyond_bottom) > 1
+  moment$direction[beyond_more] <-
+    (moment$direction[beyond_more] + pi) %% (2 * pi)
+  # bounce from left/right
+  which_lr <- (beyond_left | beyond_right) & !beyond_more
+  moment$direction[which_lr] <-
+    (pi - moment$direction[which_lr]) %% (2 * pi)
+  # bounce from top/bottom
+  which_ud <- (beyond_top | beyond_bottom) & !beyond_more
+  moment$direction[which_ud] <-
+    (2 * pi - moment$direction[which_ud]) %% (2 * pi)
+  moment
 }
 
 #' #' Plot object trajectories
@@ -124,26 +157,51 @@ step_direct <- function(moment, time_next, settings) {
 #' pos <- generate_positions_random(8, sett_generate)
 #' plot_position(pos, sett)
 #' moment <- add_random_direction(pos) %>% mutate(speed = 1, time = 0)
-#' traj <- make_random_trajectory(
-#'   moment, 0:5, sett, step_direct)
+#' traj <- make_random_trajectory(moment, 0:5, sett, step_direct)
 #' plot_trajectory(traj, new_settings())
 #'
 #' # first four objects are targets
 #' plot_trajectory(traj, sett, 1:4)
-plot_trajectory <- function(trajectory, settings = NULL, targets = NULL) {
+plot_trajectory <- function(trajectory,
+                            settings = default_settings(),
+                            targets = NULL) {
   start_time <- min(trajectory$time)
   fig <- plot_position(trajectory %>% filter(time == start_time),
                        settings = settings,
                        targets = targets)
   fig <- fig +
-    ggplot2::geom_line(
+    ggplot2::geom_path(
       ggplot2::aes(x = x, y = y, group = object,
           fill = NULL, colour = NULL),
       data = trajectory %>% dplyr::arrange(time),
       colour = "blue") +
     ggforce::geom_circle(ggplot2::aes(r = settings$r)) +
     NULL
+  if (settings$show_labels) {
+    fig <-
+      fig +
+      ggplot2::geom_text(
+        ggplot2::aes(x = x, y = y, label = object),
+        colour = I("red"))
+  }
   fig
 }
 
 
+# # ---
+if (F) {
+library(tidyverse)
+sett_generate <- new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
+sett <- new_settings(speed = 1, bounce_off_square = T)
+pos <- generate_positions_random(8, sett_generate)
+plot_position(pos, sett)
+moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
+traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
+plot_trajectory(traj, new_settings(show_labels = T))
+
+mom1 <- moment %>% filter(object == 2)
+traj1 <- make_random_trajectory(mom1, seq(0, 5, by = 0.1), sett, step_direct)
+plot_trajectory(traj1, new_settings(show_labels = T))
+qplot(time, direction,data = traj1)
+
+}

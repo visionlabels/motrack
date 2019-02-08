@@ -31,6 +31,8 @@ Currently used properties include:
   \item{fill_target}{Character. Colour code of target fill colour.}
   \item{border_object}{Character. Colour code of default border.}
   \item{border_target}{Character. Colour code of target border.}
+  \item{show_labels}{Logical. Should we show object numbers in plots?}
+  \item{bounce_off_square}{Logical. Should objects bounce off square arena?}
 }
 }
 \examples{

@@ -4,7 +4,8 @@
 \alias{plot_trajectory}
 \title{#' Plot object trajectories}
 \usage{
-plot_trajectory(trajectory, settings = NULL, targets = NULL)
+plot_trajectory(trajectory, settings = default_settings(),
+  targets = NULL)
 }
 \arguments{
 \item{trajectory}{tibble}
@@ -34,8 +35,7 @@ sett <- new_settings(speed = 1)
 pos <- generate_positions_random(8, sett_generate)
 plot_position(pos, sett)
 moment <- add_random_direction(pos) \%>\% mutate(speed = 1, time = 0)
-traj <- make_random_trajectory(
-  moment, 0:5, sett, step_direct)
+traj <- make_random_trajectory(moment, 0:5, sett, step_direct)
 plot_trajectory(traj, new_settings())
 
 # first four objects are targets
