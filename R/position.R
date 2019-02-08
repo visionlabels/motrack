@@ -194,6 +194,7 @@ generate_positions_random <- function(
 #'
 #' @examples
 #' # sample positions with no other requirements
+#' set.seed(100)
 #' pos <- generate_positions_random(8, default_settings())
 #' plot_position(pos, default_settings())
 #' # first four objects are targets
