@@ -24,6 +24,7 @@ is_valid_position <- function(position) {
   # requirements:
   # 1) each object only once
   # 2) no missing x, y
+  object <- x <- y <- NULL # pipe check hack
   tmp <- position %>%
     dplyr::group_by(object) %>%
     dplyr::summarise(n = dplyr::n())
@@ -51,6 +52,7 @@ is_valid_position <- function(position) {
 #' is_distance_at_least(example_pos, 1)
 #' is_distance_at_least(example_pos, 2)
 is_distance_at_least <- function(position, min_distance) {
+  x <- y <- NULL # pipe check hack
   dist_triangle <-
     position %>%
     dplyr::select(x, y) %>%
@@ -151,7 +153,7 @@ new_settings <- function(...) {
 #'
 #' @seealso
 #' \code{\link{default_settings}} for setting definitions,
-#' \code{\link{settings}} for adjusting default settings,
+#' \code{\link{new_settings}} for adjusting default settings,
 #' \code{\link{is_distance_at_least}} for checking distances
 #'
 #' @examples
@@ -209,6 +211,7 @@ generate_positions_random <- function(
 plot_position <- function(position,
                           settings = default_settings(),
                           targets = NULL) {
+  object <- x <- y <- fill <- border <- NULL # pipe check hack
   # check extra parameters
   if (!is.null(targets)) {
     # passed in call

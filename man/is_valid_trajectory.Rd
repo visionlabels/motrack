@@ -7,7 +7,7 @@
 is_valid_trajectory(trajectory)
 }
 \arguments{
-\item{position}{tibble}
+\item{trajectory}{tibble}
 }
 \value{
 TRUE if conditions above are met, FALSE otherwise

@@ -10,7 +10,7 @@
 #'
 #' No restriction about data type of `object` is placed.
 #'
-#' @param position tibble
+#' @param trajectory tibble
 #'
 #' @return TRUE if conditions above are met, FALSE otherwise
 #' @export
@@ -20,6 +20,7 @@
 #'   tibble::tibble(object = 1:8, x = 1:8, y = 4 - (1:8))
 #' is_valid_position(example_pos)
 is_valid_trajectory <- function(trajectory) {
+  object <- time <- NULL # pipe check hack
   # requirements:
   # 1) each object*time only once
   # 2) no missing x, y
@@ -73,7 +74,7 @@ make_random_trajectory <- function(start, timescale, settings, step_function) {
   #   - time (from timescale)
   #   - position (embedded moment tibble for each time)
   # Later we expand tibbles into trajectory tibble
-  moment_tbl <- tibble(time = timescale, position = list(tibble))
+  moment_tbl <- tibble::tibble(time = timescale, position = list(tibble::tibble))
   moment_tbl$position[[1]] <- moment
   for (i in 2:length(timescale)) {
     moment_next <- step_function(moment, timescale[i], settings)
@@ -91,6 +92,7 @@ step_square_arena <- function(moment, time_next, settings) {
 step_direct <- function(moment, time_next, settings) {
   # moment is position + direction + speed
   # just goint in the same direction, possibly bouncing
+  x <- y <- speed <- direction <- NULL # pipe check hack
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   if (settings$bounce_off_square) {
@@ -108,8 +110,9 @@ step_direct <- function(moment, time_next, settings) {
 }
 
 bounce_off_others <- function(moment, timestep, settings) {
+  object <- x <- y <- speed <- direction <- NULL # pipe check hack
   # extrapolate future
-  moment <- moment %>% arrange(object)
+  moment <- moment %>% dplyr::arrange(object)
   moment_next <- moment %>%
     dplyr::mutate(
       x = x + cos(direction) * speed * timestep,
@@ -138,6 +141,7 @@ bounce_off_others <- function(moment, timestep, settings) {
 }
 
 bounce_off_square <- function(moment, timestep, settings) {
+  x <- y <- speed <- direction <- NULL # pipe check hack
   # extrapolate future
   moment_next <- moment %>%
     dplyr::mutate(
@@ -198,8 +202,9 @@ bounce_off_square <- function(moment, timestep, settings) {
 plot_trajectory <- function(trajectory,
                             settings = default_settings(),
                             targets = NULL) {
+  object <- x <- y <- time <- NULL # pipe check hack
   start_time <- min(trajectory$time)
-  fig <- plot_position(trajectory %>% filter(time == start_time),
+  fig <- plot_position(trajectory %>% dplyr::filter(time == start_time),
                        settings = settings,
                        targets = targets)
   fig <- fig +
@@ -222,19 +227,19 @@ plot_trajectory <- function(trajectory,
 
 
 # # ---
-if (F) {
-library(tidyverse)
-sett_generate <- new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
-sett <- new_settings(speed = 1, bounce_off_square = T)
-pos <- generate_positions_random(8, sett_generate)
-plot_position(pos, sett)
-moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
-traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
-plot_trajectory(traj, new_settings(show_labels = T))
-
-pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
-mom2 <- pos2 %>% mutate(direction = c(1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
-traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
-plot_trajectory(traj2, new_settings(show_labels = T))
-
-}
+# if (F) {
+# library(tidyverse)
+# sett_generate <- new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
+# sett <- new_settings(speed = 1, bounce_off_square = T)
+# pos <- generate_positions_random(8, sett_generate)
+# plot_position(pos, sett)
+# moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
+# traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
+# plot_trajectory(traj, new_settings(show_labels = T))
+#
+# pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
+# mom2 <- pos2 %>% mutate(direction = c(1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
+# traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
+# plot_trajectory(traj2, new_settings(show_labels = T))
+#
+# }

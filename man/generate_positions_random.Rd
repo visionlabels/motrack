@@ -39,6 +39,6 @@ pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 }
 \seealso{
 \code{\link{default_settings}} for setting definitions,
-\code{\link{settings}} for adjusting default settings,
+\code{\link{new_settings}} for adjusting default settings,
 \code{\link{is_distance_at_least}} for checking distances
 }
