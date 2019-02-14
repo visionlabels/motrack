@@ -98,6 +98,9 @@ step_direct <- function(moment, time_next, settings) {
   if (settings$bounce_off_square) {
     moment <- bounce_off_square(moment, timestep, settings)
   }
+  if (settings$bounce_off_circle) {
+    moment <- bounce_off_circle(moment, timestep, settings)
+  }
   if (settings$bounce_off_others) {
     moment <- bounce_off_others(moment, timestep, settings)
   }
@@ -168,7 +171,38 @@ bounce_off_square <- function(moment, timestep, settings) {
   moment
 }
 
-#' #' Plot object trajectories
+bounce_off_circle <- function(moment, timestep, settings) {
+  x <- y <- speed <- direction <- NULL # pipe check hack
+  # extrapolate future
+  moment_next <- moment %>%
+    dplyr::mutate(
+      x = x + cos(direction) * speed * timestep,
+      y = y + sin(direction) * speed * timestep,
+      time = NA)
+  # arena radius
+  dims <- sort(abs(c(settings$xlim, settings$ylim)))
+  if (length(unique(dims)) > 1) {
+    stop("Multiple radius options for arena.")
+  }
+  arena_radius <- unique(dims)[1]
+  midpoint_x   <- 0
+  midpoint_y   <- 0
+  # check sides
+  beyond_border <- sqrt(
+    (moment_next$x - midpoint_x) ^ 2 +
+    (moment_next$y - midpoint_y) ^ 2
+  ) > arena_radius
+  vector_to_midpoint <-
+    (atan2(moment$y - midpoint_y, moment$x - midpoint_x) + pi) %% (2 * pi)
+  jitter <- runif(nrow(moment),
+                  min = -settings$circle_bounce_jitter,
+                  max =  settings$circle_bounce_jitter)
+  moment$direction[beyond_border] <-
+    (vector_to_midpoint[beyond_border] + jitter[beyond_border]) %% (2 * pi)
+  moment
+}
+
+#' Plot object trajectories
 #'
 #' The function plots trajectory tibble based on x, y, time values and potentially
 #' extra values from settings.
@@ -226,20 +260,23 @@ plot_trajectory <- function(trajectory,
 }
 
 
-# # ---
-# if (F) {
-# library(tidyverse)
-# sett_generate <- new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
-# sett <- new_settings(speed = 1, bounce_off_square = T)
-# pos <- generate_positions_random(8, sett_generate)
-# plot_position(pos, sett)
-# moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
-# traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
-# plot_trajectory(traj, new_settings(show_labels = T))
-#
-# pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
-# mom2 <- pos2 %>% mutate(direction = c(1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
-# traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
-# plot_trajectory(traj2, new_settings(show_labels = T))
-#
-# }
+# # --- testing code
+if (F) {
+library(tidyverse)
+sett_generate <-
+  new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
+sett <-
+  new_settings(speed = 1, bounce_off_square = F,
+               bounce_off_circle = T, circle_bounce_jitter = pi / 6)
+pos <- generate_positions_random(8, sett_generate)
+plot_position(pos, sett)
+moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
+traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
+plot_trajectory(traj, new_settings(show_labels = T))
+
+pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
+mom2 <- pos2 %>% mutate(direction = c(2.1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
+traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
+plot_trajectory(traj2, new_settings(show_labels = T))
+
+}

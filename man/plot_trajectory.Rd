@@ -2,7 +2,7 @@
 % Please edit documentation in R/trajectory.R
 \name{plot_trajectory}
 \alias{plot_trajectory}
-\title{#' Plot object trajectories}
+\title{Plot object trajectories}
 \usage{
 plot_trajectory(trajectory, settings = default_settings(),
   targets = NULL)
