@@ -264,7 +264,8 @@ plot_trajectory <- function(trajectory,
 if (F) {
 library(tidyverse)
 sett_generate <-
-  new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
+  new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2,
+               arena_shape = "circle")
 sett <-
   new_settings(speed = 1, bounce_off_square = F,
                bounce_off_circle = T, circle_bounce_jitter = pi / 6)

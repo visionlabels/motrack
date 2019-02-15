@@ -27,6 +27,7 @@ Currently used properties include:
   \item{min_dist}{Minimum pairwise distance between centres of objects.}
   \item{r}{Radius of the object. Object is considered to be a circle.}
   \item{arena_border}{Logical. Whether arena border should be drawn.}
+  \item{arena_shape}{Character. "square" or "circle"}
   \item{fill_object}{Character. Colour code of default fill colour.}
   \item{fill_target}{Character. Colour code of target fill colour.}
   \item{border_object}{Character. Colour code of default border.}
