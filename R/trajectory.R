@@ -57,6 +57,7 @@ make_random_trajectory <- function(start, timescale, settings, step_function) {
   # take start position
   # are direction/speed present? - add if not
   # make step
+  object <- time <- time1 <- NULL # pipe check hack
   stopifnot(length(timescale) > 1)
   if ("direction" %in% names(start)) {
     moment <- start
@@ -81,7 +82,7 @@ make_random_trajectory <- function(start, timescale, settings, step_function) {
     moment_tbl$position[[i]] <- moment_next
     moment <- moment_next
   }
-  moment_tbl %>% tidyr::unnest()
+  moment_tbl %>% tidyr::unnest() %>% dplyr::select(-time1)
 }
 
 step_square_arena <- function(moment, time_next, settings) {
@@ -194,9 +195,10 @@ bounce_off_circle <- function(moment, timestep, settings) {
   ) > arena_radius
   vector_to_midpoint <-
     (atan2(moment$y - midpoint_y, moment$x - midpoint_x) + pi) %% (2 * pi)
-  jitter <- runif(nrow(moment),
-                  min = -settings$circle_bounce_jitter,
-                  max =  settings$circle_bounce_jitter)
+  jitter <- stats::runif(
+    nrow(moment),
+    min = -settings$circle_bounce_jitter,
+    max =  settings$circle_bounce_jitter)
   moment$direction[beyond_border] <-
     (vector_to_midpoint[beyond_border] + jitter[beyond_border]) %% (2 * pi)
   moment
@@ -204,7 +206,8 @@ bounce_off_circle <- function(moment, timestep, settings) {
 
 #' Plot object trajectories
 #'
-#' The function plots trajectory tibble based on x, y, time values and potentially
+#' The function plots trajectory tibble based on x, y,
+#' time values and potentially
 #' extra values from settings.
 #' trajectory is expected to be trajectory tibble,
 #' but it may contain extra columns for graphics (same as plot_position):
@@ -259,25 +262,90 @@ plot_trajectory <- function(trajectory,
   fig
 }
 
-
-# # --- testing code
-if (F) {
-library(tidyverse)
-sett_generate <-
-  new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2,
-               arena_shape = "circle")
-sett <-
-  new_settings(speed = 1, bounce_off_square = F,
-               bounce_off_circle = T, circle_bounce_jitter = pi / 6)
-pos <- generate_positions_random(8, sett_generate)
-plot_position(pos, sett)
-moment <- add_random_direction(pos) %>% mutate(speed = 3, time = 0)
-traj <- make_random_trajectory(moment, seq(0, 5, by = 0.1), sett, step_direct)
-plot_trajectory(traj, new_settings(show_labels = T))
-
-pos2 <- tibble(object = 1:2, x = c(-5, 5), y = c(-5, -5))
-mom2 <- pos2 %>% mutate(direction = c(2.1, 3) / 4 * pi) %>% mutate(speed = 3, time = 0)
-traj2 <- make_random_trajectory(mom2, seq(0, 5, by = 0.1), sett, step_direct)
-plot_trajectory(traj2, new_settings(show_labels = T))
-
+estimate_position_for_time <- function(trajectory, timepoint) {
+  object <- time <- NULL # pipe check hack
+  stopifnot(timepoint <= max(trajectory$time))
+  stopifnot(timepoint >= min(trajectory$time))
+  # find one before and one after
+  time_all    <- sort(unique(trajectory$time))
+  time_before <- max(time_all[time_all <= timepoint])
+  time_after  <- min(time_all[time_all >= timepoint])
+  points_before <- trajectory %>%
+    dplyr::filter(time == time_before) %>% dplyr::arrange(object)
+  points_after <- trajectory %>%
+    dplyr::filter(time == time_after) %>% dplyr::arrange(object)
+  stopifnot(all(points_before$object == points_after$object))
+  if (time_after > time_before) {
+    # interpolate - contribution of "after"
+    timestep <- (timepoint - time_before) / (time_after - time_before)
+    res <- points_before
+    res$x <- res$x + timestep * (points_after$x - points_before$x)
+    res$y <- res$y + timestep * (points_after$y - points_before$y)
+    res
+  } else {
+    # "before" and "after" are the same, so return one of them
+    points_before
+  }
 }
+
+#' Render video from trajectory
+#'
+#' The function repeatedly calls plot_position function to generate preview
+#' of the trajectory motion.
+#' Extra time is added before and after the motion sequence (2 seconds each).
+#'
+#' @param filename the file name of output video (e.g. "trajectory.mp4")
+#' @param trajectory tibble with trajectory data
+#' @param settings list with basic properties
+#' @param targets Which objects should be treated as targets
+#' @param outdir output directory where the video is saved
+#'
+#' @return No return value
+#' @export
+#'
+#' @examples
+#' # set ffmpeg in necessary
+#'
+#' # ani.options(ffmpeg = "/PATH/TO/ffmpeg/ffmpeg")
+#' render_trajectory_video("trajectory.mp4", trajectory8c,
+#'   new_settings(show_labels = T), targets = 1:4)
+render_trajectory_video <- function(filename,
+                                   trajectory,
+                                   settings = default_settings(),
+                                   targets = NULL,
+                                   outdir = getwd()) {
+  # animation parameters
+  fps <- 25
+  video_width  <- 600
+  video_height <- 600
+  preview_seconds <- 2
+  respond_seconds <- 2
+
+  tmin <- min(trajectory$time)
+  tmax <- max(trajectory$time)
+  tlen <- tmax - tmin
+  oopt <- animation::ani.options(
+    interval = 1 / fps, nmax = fps * tlen * 2,
+    outdir = outdir, ani.width = video_width, ani.height = video_height
+  )
+  animation::saveVideo({
+    # preview
+    for (i in 1:(preview_seconds * fps)) {
+      p <- estimate_position_for_time(trajectory, tmin)
+      fig <- plot_position(p, settings = settings, targets = targets)
+      print(fig)
+    }
+    for (tim in seq(tmin, tmax, 1 / fps)) {
+      p <- estimate_position_for_time(trajectory, tim)
+      fig <- plot_position(p, settings = settings, targets = targets)
+      print(fig)
+    }
+    for (i in 1:(respond_seconds * fps)) {
+      p <- estimate_position_for_time(trajectory, tmax)
+      fig <- plot_position(p, settings = settings, targets = targets)
+      print(fig)
+    }
+  }, video.name = filename, other.opts = "-pix_fmt yuv420p -b 600k", clean = T)
+  animation::ani.options(oopt)
+}
+

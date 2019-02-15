@@ -18,7 +18,8 @@ plot_trajectory(trajectory, settings = default_settings(),
 ggplot2 figure
 }
 \description{
-The function plots trajectory tibble based on x, y, time values and potentially
+The function plots trajectory tibble based on x, y,
+time values and potentially
 extra values from settings.
 trajectory is expected to be trajectory tibble,
 but it may contain extra columns for graphics (same as plot_position):

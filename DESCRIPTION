@@ -17,4 +17,5 @@ Imports:
     ggplot2,
     magrittr,
     tibble,
-    tidyr
+    tidyr,
+    animation

@@ -169,6 +169,7 @@ new_settings <- function(...) {
 #' pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 generate_positions_random <- function(
   n, settings, check_distance = T, border_distance = 0) {
+  object <- NULL # pipe check hack
   xlim <- settings$xlim
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
@@ -189,7 +190,7 @@ generate_positions_random <- function(
       circle = random_coords_in_circle(
         n,
         mean(xlim), mean(ylim),
-        sum(c(diff(xlim), diff(ylim)) / 2)
+        sum(c(diff(xlim), diff(ylim)) / 4)
       )
     )
     p <- p %>%
@@ -220,8 +221,6 @@ random_coords_in_circle <- function(n, xmid, ymid, radius) {
     xx <- stats::runif(1, -radius, radius)
     yy <- stats::runif(1, -radius, radius)
     d  <- sqrt((xx ^ 2) + (yy ^ 2))
-    cat(sprintf("\n%d:  %.1f x %.1f, r = %.1f, d = %.1f",
-        i, xx, yy, radius, d))
     if (d < radius) {
       res$x[i] <- xmid + xx
       res$y[i] <- ymid + yy
