@@ -349,3 +349,26 @@ render_trajectory_video <- function(filename,
   animation::ani.options(oopt)
 }
 
+save_trajectory <- function(trajectory, filename, delim = ",") {
+  # we aim for format: time, x1, y1, x2, y2 ...
+  # sort them by names and check if same
+  xpart <- trajectory %>%
+    dplyr::select(time, object, x) %>% spread(key = object, value = x) %>%
+    select(sort(names(.))) %>% select(time, everything())
+  ypart <- trajectory %>%
+    dplyr::select(time, object, y) %>% spread(key = object, value = y) %>%
+    select(sort(names(.))) %>% select(time, everything())
+  n <- ncol(xpart) - 1
+  stopifnot(all(names(xpart) == names(ypart)))
+  stopifnot(all(xpart$time == ypart$time))
+  names(xpart)[-1] <- str_c("x", names(xpart)[-1])
+  names(ypart)[-1] <- str_c("y", names(ypart)[-1])
+  merged <- bind_cols(
+    xpart,
+    ypart %>% select(- time)
+  )
+  column_index <- c(1:n, 0.5 + (1:n))
+  merged <- merged[, c(1, order(column_index) + 1)]
+  merged %>% readr::write_delim(filename, delim = delim, col_names = F)
+}
+
