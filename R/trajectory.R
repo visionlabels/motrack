@@ -353,22 +353,50 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   # we aim for format: time, x1, y1, x2, y2 ...
   # sort them by names and check if same
   xpart <- trajectory %>%
-    dplyr::select(time, object, x) %>% spread(key = object, value = x) %>%
-    select(sort(names(.))) %>% select(time, everything())
+    dplyr::select(time, object, x) %>%
+    tidyr::spread(key = object, value = x) %>%
+    dplyr::select(sort(names(.))) %>%
+    dplyr::select(time, everything())
   ypart <- trajectory %>%
-    dplyr::select(time, object, y) %>% spread(key = object, value = y) %>%
-    select(sort(names(.))) %>% select(time, everything())
+    dplyr::select(time, object, y) %>%
+    tidyr::spread(key = object, value = y) %>%
+    dplyr::select(sort(names(.))) %>%
+    dplyr::select(time, everything())
   n <- ncol(xpart) - 1
   stopifnot(all(names(xpart) == names(ypart)))
   stopifnot(all(xpart$time == ypart$time))
   names(xpart)[-1] <- str_c("x", names(xpart)[-1])
   names(ypart)[-1] <- str_c("y", names(ypart)[-1])
-  merged <- bind_cols(
+  merged <- dplyr::bind_cols(
     xpart,
-    ypart %>% select(- time)
+    ypart %>% dplyr::select(- time)
   )
   column_index <- c(1:n, 0.5 + (1:n))
   merged <- merged[, c(1, order(column_index) + 1)]
-  merged %>% readr::write_delim(filename, delim = delim, col_names = F)
+  merged %>%
+    readr::write_delim(filename, delim = delim, col_names = F)
+  invisible(merged)
+}
+
+load_trajectory <- function(filename, delim = ",", ...) {
+  input <- readr::read_delim(
+    filename,
+    delim = delim, col_names = F,
+    col_types = readr::cols(.default = readr::col_double()),
+    ...)
+  ncol_all <- ncol(input)
+  n <- (ncol_all - 1) %/% 2
+  stopifnot(ncol_all == n + n + 1)
+  xcols <- (1:n) * 2
+  ycols <- xcols + 1
+  xx <- as.numeric(as.matrix(input[, xcols]))
+  yy <- as.numeric(as.matrix(input[, ycols]))
+  trajectory <- tibble::tibble(
+    time = rep(input %>% select(1) %>% pull, n),
+    object = rep(1:n, each = nrow(input)),
+    x = xx,
+    y = yy
+  ) %>% dplyr::arrange(time)
+  trajectory
 }
 
