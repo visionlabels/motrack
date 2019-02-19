@@ -13,6 +13,9 @@ load_trajectory(filename, delim = ",", ...)
 
 \item{...}{Parameters passed to `readr::read_delim`}
 }
+\value{
+Tibble trajectory object with loaded data
+}
 \description{
 Load trajectory from file
 }

@@ -13,6 +13,9 @@ save_trajectory(trajectory, filename, delim = ",")
 
 \item{delim}{Single character used to separate fields within a record. Default `","`}
 }
+\value{
+Invisibly returns data in wide format (as saved to file)
+}
 \description{
 Save trajectory to file
 }

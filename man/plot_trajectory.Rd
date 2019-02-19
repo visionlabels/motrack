@@ -28,17 +28,8 @@ fill (Character vector with colour names of object interiors.),
 border (Character vector with colour names of object borders.).
 }
 \examples{
-# sample positions with no other requirements
-library(dplyr) # for pipe and mutate
-sett_generate <-
-  new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
-sett <- new_settings(speed = 1)
-pos <- generate_positions_random(8, sett_generate)
-plot_position(pos, sett)
-moment <- add_random_direction(pos) \%>\% mutate(speed = 1, time = 0)
-traj <- make_random_trajectory(moment, 0:5, sett, step_direct)
-plot_trajectory(traj, new_settings())
+plot_trajectory(trajectory8c, default_settings())
 
 # first four objects are targets
-plot_trajectory(traj, sett, 1:4)
+plot_trajectory(trajectory8c, default_settings(), 1:4)
 }

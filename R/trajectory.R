@@ -47,6 +47,7 @@ is_valid_trajectory <- function(trajectory) {
 #' @export
 #'
 #' @examples
+#' position8c %>% add_random_direction()
 add_random_direction <- function(position) {
   position %>%
     dplyr::mutate(direction = stats::runif(dplyr::n(), 0, 2 * pi))
@@ -60,10 +61,18 @@ add_random_direction <- function(position) {
 #' @param step_function function which is called in every time step
 #' to calculate next position in sequence
 #'
-#' @return
+#' @return Tibble trajectory object
 #' @export
 #'
 #' @examples
+#' sett_move <-
+#'   new_settings(speed = 5, xlim = c(-9, 9), ylim = c(-9, 9),
+#'                bounce_off_square = FALSE,
+#'                bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6)
+#' moment <- position8c %>% add_random_direction()
+#' tt <- make_random_trajectory(
+#'   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+#' )
 make_random_trajectory <- function(start, timescale, settings, step_function) {
   # take start position
   # are direction/speed present? - add if not
@@ -233,19 +242,10 @@ bounce_off_circle <- function(moment, timestep, settings) {
 #' @export
 #'
 #' @examples
-#' # sample positions with no other requirements
-#' library(dplyr) # for pipe and mutate
-#' sett_generate <-
-#'   new_settings(xlim = c(-5, 5), ylim = c(-5, 5), min_distance = 2)
-#' sett <- new_settings(speed = 1)
-#' pos <- generate_positions_random(8, sett_generate)
-#' plot_position(pos, sett)
-#' moment <- add_random_direction(pos) %>% mutate(speed = 1, time = 0)
-#' traj <- make_random_trajectory(moment, 0:5, sett, step_direct)
-#' plot_trajectory(traj, new_settings())
+#' plot_trajectory(trajectory8c, default_settings())
 #'
 #' # first four objects are targets
-#' plot_trajectory(traj, sett, 1:4)
+#' plot_trajectory(trajectory8c, default_settings(), 1:4)
 plot_trajectory <- function(trajectory,
                             settings = default_settings(),
                             targets = NULL) {
@@ -365,7 +365,7 @@ render_trajectory_video <- function(filename,
 #' @param filename Name of output file (e.g., .csv)
 #' @param delim Single character used to separate fields within a record. Default `","`
 #'
-#' @return
+#' @return Invisibly returns data in wide format (as saved to file)
 #' @export
 #'
 #' @examples
@@ -407,7 +407,7 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
 #' @param delim Single character used to separate fields within a record. Default `","`
 #' @param ... Parameters passed to `readr::read_delim`
 #'
-#' @return
+#' @return Tibble trajectory object with loaded data
 #' @export
 #'
 #' @examples

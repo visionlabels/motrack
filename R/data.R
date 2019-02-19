@@ -15,6 +15,19 @@
 #' @source Generated with script
 "trajectory8c"
 
+#' Example position
+#'
+#' Eight objects in circular arena (radius = 10).
+#'
+#' @format A tibble with 8 rows and 3 variables:
+#' \describe{
+#'   \item{object}{Identifier of each object, 1 to 8}
+#'   \item{x}{x-coordinate, in deg}
+#'   \item{y}{y-coordinate, in deg}
+#' }
+#' @source Generated with script
+"position8c"
+
 # set.seed(123)
 # sett_generate <-
 #   new_settings(xlim = c(-7, 7), ylim = c(-7, 7), min_distance = 2,
@@ -25,10 +38,10 @@
 #                bounce_off_circle = T, circle_bounce_jitter = pi / 6)
 # sett_show <-
 #   new_settings(show_labels = T)
-# pos <- generate_positions_random(8, sett_generate)
-# plot_position(pos, sett_move)
-# trajectory8c <- make_random_trajectory(pos, seq(0, 8, by = 0.1),
+# position8c <- generate_positions_random(8, sett_generate)
+# plot_position(position8c, sett_move)
+# trajectory8c <- make_random_trajectory(position8c, seq(0, 8, by = 0.1),
 #                                        sett_move, step_direct)
 #
 # plot_trajectory(trajectory8c, sett_show)
-# usethis::use_data(trajectory8c, overwrite = T, compress = "gzip")
+# usethis::use_data(trajectory8c, position8c, overwrite = T, compress = "gzip")
