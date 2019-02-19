@@ -4,7 +4,7 @@
 \alias{make_random_trajectory}
 \title{Create random trajectory}
 \usage{
-make_random_trajectory(start, timescale, settings, step_function)
+make_random_trajectory(start, timescale, settings, step_function, ...)
 }
 \arguments{
 \item{start}{Position tibble with starting configuration}
@@ -15,6 +15,8 @@ make_random_trajectory(start, timescale, settings, step_function)
 
 \item{step_function}{function which is called in every time step
 to calculate next position in sequence}
+
+\item{...}{Extra parameters passed to `step_function`}
 }
 \value{
 Tibble trajectory object
