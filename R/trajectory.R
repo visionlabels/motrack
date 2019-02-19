@@ -20,12 +20,11 @@
 #'   tibble::tibble(object = 1:8, x = 1:8, y = 4 - (1:8))
 #' is_valid_position(example_pos)
 is_valid_trajectory <- function(trajectory) {
-  object <- time <- NULL # pipe check hack
   # requirements:
   # 1) each object*time only once
   # 2) no missing x, y
   tmp <- trajectory %>%
-    dplyr::group_by(object, time) %>%
+    dplyr::group_by(.data$object, .data$time) %>%
     dplyr::summarise(n = dplyr::n())
   all(tmp$n == 1) &&
     all(!is.na(trajectory$x)) &&
@@ -69,7 +68,6 @@ make_random_trajectory <- function(start, timescale, settings, step_function) {
   # take start position
   # are direction/speed present? - add if not
   # make step
-  object <- time <- time1 <- NULL # pipe check hack
   stopifnot(length(timescale) > 1)
   if ("direction" %in% names(start)) {
     moment <- start
@@ -94,12 +92,7 @@ make_random_trajectory <- function(start, timescale, settings, step_function) {
     moment_tbl$position[[i]] <- moment_next
     moment <- moment_next
   }
-  moment_tbl %>% tidyr::unnest() %>% dplyr::select(-time1)
-}
-
-step_square_arena <- function(moment, time_next, settings) {
-  # moment is position + direction + speed
-
+  moment_tbl %>% tidyr::unnest() %>% dplyr::select(-.data$time1)
 }
 
 #' Simple trajectory step function
@@ -114,7 +107,6 @@ step_square_arena <- function(moment, time_next, settings) {
 step_direct <- function(moment, time_next, settings) {
   # moment is position + direction + speed
   # just goint in the same direction, possibly bouncing
-  x <- y <- speed <- direction <- NULL # pipe check hack
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   if (settings$bounce_off_square) {
@@ -128,24 +120,23 @@ step_direct <- function(moment, time_next, settings) {
   }
   moment_next <- moment %>%
     dplyr::mutate(
-      x = x + cos(direction) * speed * timestep,
-      y = y + sin(direction) * speed * timestep,
+      x = .data$x + cos(.data$direction) * .data$speed * timestep,
+      y = .data$y + sin(.data$direction) * .data$speed * timestep,
       time = time_next)
   moment_next
 }
 
 bounce_off_others <- function(moment, timestep, settings) {
-  object <- x <- y <- speed <- direction <- NULL # pipe check hack
   # extrapolate future
-  moment <- moment %>% dplyr::arrange(object)
+  moment <- moment %>% dplyr::arrange(.data$object)
   moment_next <- moment %>%
     dplyr::mutate(
-      x = x + cos(direction) * speed * timestep,
-      y = y + sin(direction) * speed * timestep,
+      x = .data$x + cos(.data$direction) * .data$speed * timestep,
+      y = .data$y + sin(.data$direction) * .data$speed * timestep,
       time = NA)
   # check distances
   dist_next <- moment_next %>%
-    dplyr::select(x, y) %>%
+    dplyr::select(.data$x, .data$y) %>%
     as.matrix() %>%
     stats::dist()
   groups <- stats::cutree(stats::hclust(dist_next, "single"),
@@ -166,12 +157,11 @@ bounce_off_others <- function(moment, timestep, settings) {
 }
 
 bounce_off_square <- function(moment, timestep, settings) {
-  x <- y <- speed <- direction <- NULL # pipe check hack
   # extrapolate future
   moment_next <- moment %>%
     dplyr::mutate(
-      x = x + cos(direction) * speed * timestep,
-      y = y + sin(direction) * speed * timestep,
+      x = .data$x + cos(.data$direction) * .data$speed * timestep,
+      y = .data$y + sin(.data$direction) * .data$speed * timestep,
       time = NA)
   # check sides
   beyond_left   <- moment_next$x < min(settings$xlim)
@@ -194,12 +184,11 @@ bounce_off_square <- function(moment, timestep, settings) {
 }
 
 bounce_off_circle <- function(moment, timestep, settings) {
-  x <- y <- speed <- direction <- NULL # pipe check hack
   # extrapolate future
   moment_next <- moment %>%
     dplyr::mutate(
-      x = x + cos(direction) * speed * timestep,
-      y = y + sin(direction) * speed * timestep,
+      x = .data$x + cos(.data$direction) * .data$speed * timestep,
+      y = .data$y + sin(.data$direction) * .data$speed * timestep,
       time = NA)
   # arena radius
   dims <- sort(abs(c(settings$xlim, settings$ylim)))
@@ -260,31 +249,29 @@ bounce_off_circle <- function(moment, timestep, settings) {
 plot_trajectory <- function(trajectory,
                             settings = default_settings(),
                             targets = NULL) {
-  object <- x <- y <- time <- NULL # pipe check hack
   start_time <- min(trajectory$time)
-  fig <- plot_position(trajectory %>% dplyr::filter(time == start_time),
+  fig <- plot_position(trajectory %>% dplyr::filter(.data$time == start_time),
                        settings = settings,
                        targets = targets)
   fig <- fig +
     ggplot2::geom_path(
-      ggplot2::aes(x = x, y = y, group = object,
+      ggplot2::aes_string(x = "x", y = "y", group = "object",
           fill = NULL, colour = NULL),
-      data = trajectory %>% dplyr::arrange(time),
+      data = trajectory %>% dplyr::arrange(.data$time),
       colour = "blue") +
-    ggforce::geom_circle(ggplot2::aes(r = settings$r)) +
+    ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
     NULL
   if (settings$show_labels) {
     fig <-
       fig +
       ggplot2::geom_text(
-        ggplot2::aes(x = x, y = y, label = object),
+        ggplot2::aes_string(x = "x", y = "y", label = "object"),
         colour = I("red"))
   }
   fig
 }
 
 estimate_position_for_time <- function(trajectory, timepoint) {
-  object <- time <- NULL # pipe check hack
   stopifnot(timepoint <= max(trajectory$time))
   stopifnot(timepoint >= min(trajectory$time))
   # find one before and one after
@@ -292,9 +279,11 @@ estimate_position_for_time <- function(trajectory, timepoint) {
   time_before <- max(time_all[time_all <= timepoint])
   time_after  <- min(time_all[time_all >= timepoint])
   points_before <- trajectory %>%
-    dplyr::filter(time == time_before) %>% dplyr::arrange(object)
+    dplyr::filter(.data$time == time_before) %>%
+    dplyr::arrange(.data$object)
   points_after <- trajectory %>%
-    dplyr::filter(time == time_after) %>% dplyr::arrange(object)
+    dplyr::filter(.data$time == time_after) %>%
+    dplyr::arrange(.data$object)
   stopifnot(all(points_before$object == points_after$object))
   if (time_after > time_before) {
     # interpolate - contribution of "after"
@@ -380,20 +369,22 @@ render_trajectory_video <- function(filename,
 #' @export
 #'
 #' @examples
+#' filename <- "test-csv"
+#' save_trajectory(trajectory8c, filename)
+#' unlink(filename)
 save_trajectory <- function(trajectory, filename, delim = ",") {
-  x <- y <- object <- time <- NULL # pipe check hack
   # we aim for format: time, x1, y1, x2, y2 ...
   # sort them by names and check if same
   xpart <- trajectory %>%
-    dplyr::select(time, object, x) %>%
-    tidyr::spread(key = object, value = x) %>%
-    dplyr::select(sort(names(.))) %>%
-    dplyr::select(time, dplyr::everything())
+    dplyr::select(.data$time, .data$object, .data$x) %>%
+    tidyr::spread(key = .data$object, value = .data$x) %>%
+    dplyr::select(noquote(order(colnames(.)))) %>%
+    dplyr::select(.data$time, dplyr::everything())
   ypart <- trajectory %>%
-    dplyr::select(time, object, y) %>%
-    tidyr::spread(key = object, value = y) %>%
+    dplyr::select(.data$time, .data$object, .data$y) %>%
+    tidyr::spread(key = .data$object, value = .data$y) %>%
     dplyr::select(sort(names(.))) %>%
-    dplyr::select(time, dplyr::everything())
+    dplyr::select(.data$time, dplyr::everything())
   n <- ncol(xpart) - 1
   stopifnot(all(names(xpart) == names(ypart)))
   stopifnot(all(xpart$time == ypart$time))
@@ -401,7 +392,7 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   names(ypart)[-1] <- stringr::str_c("y", names(ypart)[-1])
   merged <- dplyr::bind_cols(
     xpart,
-    ypart %>% dplyr::select(-time)
+    ypart %>% dplyr::select(-.data$time)
   )
   column_index <- c(1:n, 0.5 + (1:n))
   merged <- merged[, c(1, order(column_index) + 1)]
@@ -421,7 +412,6 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
 #'
 #' @examples
 load_trajectory <- function(filename, delim = ",", ...) {
-  time <- NULL # pipe check hack
   input <- readr::read_delim(
     filename,
     delim = delim, col_names = F,
@@ -439,7 +429,7 @@ load_trajectory <- function(filename, delim = ",", ...) {
     object = rep(1:n, each = nrow(input)),
     x = xx,
     y = yy
-  ) %>% dplyr::arrange(time)
+  ) %>% dplyr::arrange(.data$time)
   trajectory
 }
 
@@ -479,14 +469,14 @@ validate_trajectory <- function(trajectory, change_angle = 30,
   # are two changes too soon after each other
   for (o in unique(trajectory$object)) {
     ok <- validate_object_direction_change(
-      trajectory %>% dplyr::filter(object == o),
+      trajectory %>% dplyr::filter(.data$object == o),
       change_angle, min_interval
     )
     if (!ok) return(F)
   }
   for (tt in unique(trajectory$time)) {
     ok <- is_distance_at_least(
-      trajectory %>% dplyr::filter(time == tt),
+      trajectory %>% dplyr::filter(.data$time == tt),
       min_distance
     )
     if (!ok) return(F)
@@ -505,9 +495,6 @@ validate_trajectory <- function(trajectory, change_angle = 30,
 #' @return Logical. `TRUE` if each pair of consecutive bounces
 #' is separated by at least `min_interval` seconds.
 #' @export
-#'
-#' @examples
-#' validate_object_direction_change(trajectory8c %>% filter(object == 1))
 validate_object_direction_change <- function(trajectory1,
                                              change_angle = 30,
                                              min_interval = 0.2) {

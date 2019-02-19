@@ -16,3 +16,8 @@ save_trajectory(trajectory, filename, delim = ",")
 \description{
 Save trajectory to file
 }
+\examples{
+filename <- "test-csv"
+save_trajectory(trajectory8c, filename)
+unlink(filename)
+}

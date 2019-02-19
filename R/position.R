@@ -24,9 +24,8 @@ is_valid_position <- function(position) {
   # requirements:
   # 1) each object only once
   # 2) no missing x, y
-  object <- x <- y <- NULL # pipe check hack
   tmp <- position %>%
-    dplyr::group_by(object) %>%
+    dplyr::group_by(.data$object) %>%
     dplyr::summarise(n = dplyr::n())
   all(tmp$n == 1) &&
     all(!is.na(position$x)) &&
@@ -52,10 +51,9 @@ is_valid_position <- function(position) {
 #' is_distance_at_least(example_pos, 1)
 #' is_distance_at_least(example_pos, 2)
 is_distance_at_least <- function(position, min_distance) {
-  x <- y <- NULL # pipe check hack
   dist_triangle <-
     position %>%
-    dplyr::select(x, y) %>%
+    dplyr::select(.data$x, .data$y) %>%
     as.matrix() %>%
     stats::dist()
   all(dist_triangle >= min_distance)
@@ -169,7 +167,6 @@ new_settings <- function(...) {
 #' pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 generate_positions_random <- function(
   n, settings, check_distance = T, border_distance = 0) {
-  object <- NULL # pipe check hack
   xlim <- settings$xlim
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
@@ -195,7 +192,7 @@ generate_positions_random <- function(
     )
     p <- p %>%
       dplyr::mutate(object = 1:n) %>%
-      dplyr::select(object, dplyr::everything())
+      dplyr::select(.data$object, dplyr::everything())
     if (check_distance) {
       if (is_distance_at_least(p, min_distance = settings$min_distance)) {
         return(p)
@@ -258,7 +255,6 @@ random_coords_in_circle <- function(n, xmid, ymid, radius) {
 plot_position <- function(position,
                           settings = default_settings(),
                           targets = NULL) {
-  object <- x <- y <- fill <- border <- NULL # pipe check hack
   # check extra parameters
   if (!is.null(targets)) {
     # passed in call
@@ -281,11 +277,10 @@ plot_position <- function(position,
   fig <-
     ggplot2::ggplot(
       position,
-      ggplot2::aes(x0 = x, y0 = y,
-                   fill = I(fill), colour = I(border))
+      ggplot2::aes_string(x0 = "x", y0 = "y",
+                   fill = "I(fill)", colour = "I(border)")
     ) +
-    ggforce::geom_circle(ggplot2::aes(r = settings$r)) +
-    #theme_void() +
+    ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
     ggplot2::theme(panel.background = ggplot2::element_blank()) +
     ggplot2::coord_fixed(xlim = settings$xlim, ylim = settings$ylim, expand = F) +
     NULL
@@ -293,7 +288,7 @@ plot_position <- function(position,
     fig <-
       fig +
       ggplot2::geom_text(
-        ggplot2::aes(x = x, y = y, label = object),
+        ggplot2::aes_string(x = "x", y = "y", label = "object"),
         colour = I("red"))
   }
   if (settings$arena_border) {

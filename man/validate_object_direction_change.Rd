@@ -23,6 +23,3 @@ is separated by at least `min_interval` seconds.
 \description{
 Check direction changes for single object trajectory
 }
-\examples{
-validate_object_direction_change(trajectory8c \%>\% filter(object == 1))
-}
