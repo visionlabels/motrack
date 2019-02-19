@@ -4,7 +4,7 @@ Title: Tools for Multiple Object Tracking experiments
 Version: 0.1.0
 Authors@R: c(
   person("Jiri", "Lukavsky", , "lukavsky@praha.psu.cas.cz", c("aut", "cre"), 
-    comment = c(ORCID = "0000-0002-1082-229X")
+    comment = c(ORCID = "0000-0002-1082-229X"))
   )
 Description: For MOT experiments, you need to prepare trajectories, which objects
     later follow. This set of tools helps with random generation, visualizing 
@@ -23,6 +23,8 @@ Imports:
     tidyr,
     animation,
     readr,
-    stringr
+    stringr,
+    rlang (>= 0.1.2)
 Suggests: 
-    testthat
+    testthat,
+    roxygen2

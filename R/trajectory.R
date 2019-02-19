@@ -443,6 +443,92 @@ load_trajectory <- function(filename, delim = ",", ...) {
   trajectory
 }
 
-validate_trajectory <- function(trajectory) {
-
+#' Sanity check for trajectory
+#'
+#' Sometimes, we want have extra requirements for trajectories. The idea is to
+#' have automated check about possible errors or artifacts which could appear
+#' in trajectory data.
+#'
+#' We test for following conditions:
+#' \itemize{
+#'   \item *Sudden motion changes* - Sometimes objects bounce too frequently,
+#'   which may attract attention. For each object, we test what is the minimal
+#'   time interval between two consecutive large direction changes.
+#'   \item *Minimum interobject distance* - The minimum distance is checked
+#'   when generating positions and also in each step of generating trajectories.
+#'   Here, we make final check if the minimum distance is complied.
+#' }
+#'
+#' @param trajectory Tibble object with trajectory
+#' @param change_angle Angle value in degrees.
+#' Direction changes beyond this value are considered large.
+#' @param min_interval Time in seconds, which should pass between
+#' too large direction changes.
+#' @param min_distance Minimum inter-object spacing, which should be
+#' complied in every frame.
+#'
+#' @return Logical. `TRUE` if all conditions are passed.
+#' @export
+#'
+#' @examples
+#' validate_trajectory(trajectory8c)
+validate_trajectory <- function(trajectory, change_angle = 30,
+                                min_interval = 0.2,
+                                min_distance = 1) {
+  # for each object we will check the direction changes and report if there
+  # are two changes too soon after each other
+  for (o in unique(trajectory$object)) {
+    ok <- validate_object_direction_change(
+      trajectory %>% dplyr::filter(object == o),
+      change_angle, min_interval
+    )
+    if (!ok) return(F)
+  }
+  for (tt in unique(trajectory$time)) {
+    ok <- is_distance_at_least(
+      trajectory %>% dplyr::filter(time == tt),
+      min_distance
+    )
+    if (!ok) return(F)
+  }
+  return(T)
 }
+
+#' Check direction changes for single object trajectory
+#'
+#' @param trajectory1 Trajectory featuring only one object
+#' @param change_angle Angle value in degrees.
+#' Direction changes beyond this value are considered large.
+#' @param min_interval Time in seconds, which should pass between
+#' too large direction changes.
+#'
+#' @return Logical. `TRUE` if each pair of consecutive bounces
+#' is separated by at least `min_interval` seconds.
+#' @export
+#'
+#' @examples
+#' validate_object_direction_change(trajectory8c %>% filter(object == 1))
+validate_object_direction_change <- function(trajectory1,
+                                             change_angle = 30,
+                                             min_interval = 0.2) {
+  # check direction changes in single object
+  trajectory1 <- trajectory1 %>% dplyr::arrange(.data$time)
+  change_min <- change_angle / 360 * 2 * pi
+  # calculate direction
+  tr <- trajectory1 %>%
+    dplyr::mutate(
+      dx = dplyr::lead(.data$x) - .data$x,
+      dy = dplyr::lead(.data$y) - .data$y,
+      direction = atan2(.data$dy, .data$dx) %% (2 * pi))
+  tr <- tr %>%
+    dplyr::mutate(
+      dirchange = .data$direction - dplyr::lag(.data$direction),
+      dirchange_large =
+        (.data$dirchange > change_min) &
+        (.data$dirchange < 2 * pi - change_min))
+  changed <- tr %>%
+    dplyr::filter(.data$dirchange_large) %>%
+    dplyr::arrange(.data$time)
+  all(diff(changed$time) >= min_interval)
+}
+
