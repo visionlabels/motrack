@@ -7,8 +7,8 @@ Authors@R: c(
     comment = c(ORCID = "0000-0002-1082-229X"))
   )
 Description: For MOT experiments, you need to prepare trajectories, which objects
-    later follow. This set of tools helps with random generation, visualizing 
-    for inspection and adding simple physics like bouncing. 
+    later follow. This set of tools helps with random generation of trajectories, 
+    visualizing for inspection and adding simple physics like bouncing. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
