@@ -18,4 +18,8 @@ Imports:
     magrittr,
     tibble,
     tidyr,
-    animation
+    animation,
+    readr,
+    stringr
+Suggests: 
+    testthat

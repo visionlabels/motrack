@@ -356,20 +356,20 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
     dplyr::select(time, object, x) %>%
     tidyr::spread(key = object, value = x) %>%
     dplyr::select(sort(names(.))) %>%
-    dplyr::select(time, everything())
+    dplyr::select(time, dplyr::everything())
   ypart <- trajectory %>%
     dplyr::select(time, object, y) %>%
     tidyr::spread(key = object, value = y) %>%
     dplyr::select(sort(names(.))) %>%
-    dplyr::select(time, everything())
+    dplyr::select(time, dplyr::everything())
   n <- ncol(xpart) - 1
   stopifnot(all(names(xpart) == names(ypart)))
   stopifnot(all(xpart$time == ypart$time))
-  names(xpart)[-1] <- str_c("x", names(xpart)[-1])
-  names(ypart)[-1] <- str_c("y", names(ypart)[-1])
+  names(xpart)[-1] <- stringr::str_c("x", names(xpart)[-1])
+  names(ypart)[-1] <- stringr::str_c("y", names(ypart)[-1])
   merged <- dplyr::bind_cols(
     xpart,
-    ypart %>% dplyr::select(- time)
+    ypart %>% dplyr::select(-time)
   )
   column_index <- c(1:n, 0.5 + (1:n))
   merged <- merged[, c(1, order(column_index) + 1)]
@@ -392,7 +392,7 @@ load_trajectory <- function(filename, delim = ",", ...) {
   xx <- as.numeric(as.matrix(input[, xcols]))
   yy <- as.numeric(as.matrix(input[, ycols]))
   trajectory <- tibble::tibble(
-    time = rep(input %>% select(1) %>% pull, n),
+    time = rep(input %>% dplyr::select(1) %>% dplyr::pull(), n),
     object = rep(1:n, each = nrow(input)),
     x = xx,
     y = yy
