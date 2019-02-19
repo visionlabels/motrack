@@ -53,6 +53,18 @@ add_random_direction <- function(position) {
     dplyr::mutate(direction = stats::runif(dplyr::n(), 0, 2 * pi))
 }
 
+#' Create random trajectory
+#'
+#' @param start Position tibble with starting configuration
+#' @param timescale Numeric vector with time points for the trajectory
+#' @param settings list with basic properties
+#' @param step_function function which is called in every time step
+#' to calculate next position in sequence
+#'
+#' @return
+#' @export
+#'
+#' @examples
 make_random_trajectory <- function(start, timescale, settings, step_function) {
   # take start position
   # are direction/speed present? - add if not
@@ -90,6 +102,15 @@ step_square_arena <- function(moment, time_next, settings) {
 
 }
 
+#' Simple trajectory step function
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param time_next Next time step to predict
+#' @param settings list with basic properties
+#'
+#' @return Another moment - position tibble with
+#' extra columns `direction` and `speed` corresponding to time_next
+#' @export
 step_direct <- function(moment, time_next, settings) {
   # moment is position + direction + speed
   # just goint in the same direction, possibly bouncing
@@ -349,7 +370,18 @@ render_trajectory_video <- function(filename,
   animation::ani.options(oopt)
 }
 
+#' Save trajectory to file
+#'
+#' @param trajectory Trajectory object to be exported to file
+#' @param filename Name of output file (e.g., .csv)
+#' @param delim Single character used to separate fields within a record. Default `","`
+#'
+#' @return
+#' @export
+#'
+#' @examples
 save_trajectory <- function(trajectory, filename, delim = ",") {
+  x <- y <- object <- time <- NULL # pipe check hack
   # we aim for format: time, x1, y1, x2, y2 ...
   # sort them by names and check if same
   xpart <- trajectory %>%
@@ -378,7 +410,18 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   invisible(merged)
 }
 
+#' Load trajectory from file
+#'
+#' @param filename Name of input file (e.g., .csv)
+#' @param delim Single character used to separate fields within a record. Default `","`
+#' @param ... Parameters passed to `readr::read_delim`
+#'
+#' @return
+#' @export
+#'
+#' @examples
 load_trajectory <- function(filename, delim = ",", ...) {
+  time <- NULL # pipe check hack
   input <- readr::read_delim(
     filename,
     delim = delim, col_names = F,
@@ -400,3 +443,6 @@ load_trajectory <- function(filename, delim = ",", ...) {
   trajectory
 }
 
+validate_trajectory <- function(trajectory) {
+
+}

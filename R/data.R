@@ -15,7 +15,7 @@
 #' @source Generated with script
 "trajectory8c"
 
-# setseed(123)
+# set.seed(123)
 # sett_generate <-
 #   new_settings(xlim = c(-7, 7), ylim = c(-7, 7), min_distance = 2,
 #                arena_shape = "circle")
@@ -31,4 +31,4 @@
 #                                        sett_move, step_direct)
 #
 # plot_trajectory(trajectory8c, sett_show)
-# usethis::use_data(trajectory8c, overwrite = T)
+# usethis::use_data(trajectory8c, overwrite = T, compress = "gzip")
