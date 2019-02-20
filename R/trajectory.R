@@ -98,7 +98,17 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
   moment_tbl <- tibble::tibble(time = timescale, position = list(tibble::tibble))
   moment_tbl$position[[1]] <- moment
   for (i in 2:length(timescale)) {
+    if (settings$bounce_off_square) {
+      moment <- bounce_off_square(moment, timescale[i], settings)
+    }
+    if (settings$bounce_off_circle) {
+      moment <- bounce_off_circle(moment, timescale[i], settings)
+    }
+    if (settings$bounce_off_others) {
+      moment <- bounce_off_others(moment, timescale[i], settings)
+    }
     moment_next <- step_function(moment, timescale[i], settings, ...)
+
     moment_tbl$position[[i]] <- moment_next
     moment <- moment_next
   }
@@ -119,15 +129,7 @@ step_direct <- function(moment, time_next, settings) {
   # just goint in the same direction, possibly bouncing
   time_now <- moment$time[1]
   timestep <- time_next - time_now
-  if (settings$bounce_off_square) {
-    moment <- bounce_off_square(moment, timestep, settings)
-  }
-  if (settings$bounce_off_circle) {
-    moment <- bounce_off_circle(moment, timestep, settings)
-  }
-  if (settings$bounce_off_others) {
-    moment <- bounce_off_others(moment, timestep, settings)
-  }
+
   moment_next <- moment %>%
     dplyr::mutate(
       x = .data$x + cos(.data$direction) * .data$speed * timestep,
@@ -179,7 +181,18 @@ step_zigzag <- function(moment, time_next, settings,
 }
 
 
-bounce_off_others <- function(moment, timestep, settings) {
+#' Check for inter-object bouncing and recalculate directions
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param time_next Next timepoint
+#' @param settings list with basic properties
+#'
+#' @return Like `moment`, but some directions are adjusted (reversed, swapped),
+#' if there were a collision in next time point (`timestep`)
+#' @export
+bounce_off_others <- function(moment, time_next, settings) {
+  time_now <- moment$time[1]
+  timestep <- time_next - time_now
   # extrapolate future
   moment <- moment %>% dplyr::arrange(.data$object)
   moment_next <- moment %>%
@@ -209,7 +222,18 @@ bounce_off_others <- function(moment, timestep, settings) {
   moment
 }
 
-bounce_off_square <- function(moment, timestep, settings) {
+#' Check for square-arena bouncing and recalculate directions
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param time_next Next timepoint
+#' @param settings list with basic properties
+#'
+#' @return Like `moment`, but some directions are adjusted (reversed, swapped),
+#' if there were a collision with arena border in next time point (`timestep`)
+#' @export
+bounce_off_square <- function(moment, time_next, settings) {
+  time_now <- moment$time[1]
+  timestep <- time_next - time_now
   # extrapolate future
   moment_next <- moment %>%
     dplyr::mutate(
@@ -236,7 +260,18 @@ bounce_off_square <- function(moment, timestep, settings) {
   moment
 }
 
-bounce_off_circle <- function(moment, timestep, settings) {
+#' Check for circular arena bouncing and recalculate directions
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param time_next Next timepoint
+#' @param settings list with basic properties
+#'
+#' @return Like `moment`, but some directions are adjusted (reversed, swapped),
+#' if there were a collision with arena border in next time point (`timestep`)
+#' @export
+bounce_off_circle <- function(moment, time_next, settings) {
+  time_now <- moment$time[1]
+  timestep <- time_next - time_now
   # extrapolate future
   moment_next <- moment %>%
     dplyr::mutate(
@@ -453,8 +488,6 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
 #'
 #' @return Tibble trajectory object with loaded data
 #' @export
-#'
-#' @examples
 load_trajectory <- function(filename, delim = ",", ...) {
   input <- readr::read_delim(
     filename,
