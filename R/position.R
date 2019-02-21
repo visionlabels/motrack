@@ -166,13 +166,13 @@ new_settings <- function(...) {
 #' # when starting positions should be further from borders
 #' pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 generate_positions_random <- function(
-  n, settings, check_distance = T, border_distance = 0) {
+                                      n, settings, check_distance = T, border_distance = 0) {
   xlim <- settings$xlim
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
   stopifnot(!is.null(ylim))
   shapes <- c("square", "circle")
-  shape  <- pmatch(settings$arena_shape, shapes)
+  shape <- pmatch(settings$arena_shape, shapes)
   if (is.na(shape)) {
     stop("Arena shape unknown")
   }
@@ -183,7 +183,7 @@ generate_positions_random <- function(
         n,
         xlim[1] + border_distance, xlim[2] - border_distance,
         ylim[1] + border_distance, ylim[2] - border_distance
-        ),
+      ),
       circle = random_coords_in_circle(
         n,
         mean(xlim), mean(ylim),
@@ -217,7 +217,7 @@ random_coords_in_circle <- function(n, xmid, ymid, radius) {
   while (i <= n) {
     xx <- stats::runif(1, -radius, radius)
     yy <- stats::runif(1, -radius, radius)
-    d  <- sqrt((xx ^ 2) + (yy ^ 2))
+    d <- sqrt((xx^2) + (yy^2))
     if (d < radius) {
       res$x[i] <- xmid + xx
       res$y[i] <- ymid + yy
@@ -277,8 +277,10 @@ plot_position <- function(position,
   fig <-
     ggplot2::ggplot(
       position,
-      ggplot2::aes_string(x0 = "x", y0 = "y",
-                   fill = "I(fill)", colour = "I(border)")
+      ggplot2::aes_string(
+        x0 = "x", y0 = "y",
+        fill = "I(fill)", colour = "I(border)"
+      )
     ) +
     ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
     ggplot2::theme(panel.background = ggplot2::element_blank()) +
@@ -289,22 +291,27 @@ plot_position <- function(position,
       fig +
       ggplot2::geom_text(
         ggplot2::aes_string(x = "x", y = "y", label = "object"),
-        colour = I("red"))
+        colour = I("red")
+      )
   }
   if (settings$arena_border) {
     fig <- fig +
       ggplot2::annotate("segment",
-               x = settings$xlim[1], y = settings$ylim[1],
-               xend = settings$xlim[1], yend = settings$ylim[2]) +
+        x = settings$xlim[1], y = settings$ylim[1],
+        xend = settings$xlim[1], yend = settings$ylim[2]
+      ) +
       ggplot2::annotate("segment",
-               x = settings$xlim[1], y = settings$ylim[1],
-               xend = settings$xlim[2], yend = settings$ylim[1]) +
+        x = settings$xlim[1], y = settings$ylim[1],
+        xend = settings$xlim[2], yend = settings$ylim[1]
+      ) +
       ggplot2::annotate("segment",
-               x = settings$xlim[1], y = settings$ylim[2],
-               xend = settings$xlim[2], yend = settings$ylim[2]) +
+        x = settings$xlim[1], y = settings$ylim[2],
+        xend = settings$xlim[2], yend = settings$ylim[2]
+      ) +
       ggplot2::annotate("segment",
-               x = settings$xlim[2], y = settings$ylim[1],
-               xend = settings$xlim[2], yend = settings$ylim[2])
+        x = settings$xlim[2], y = settings$ylim[1],
+        xend = settings$xlim[2], yend = settings$ylim[2]
+      )
   }
   fig
 }

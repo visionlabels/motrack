@@ -31,5 +31,7 @@ Extra time is added before and after the motion sequence (2 seconds each).
 
 # ani.options(ffmpeg = "/PATH/TO/ffmpeg/ffmpeg")
 render_trajectory_video("trajectory.mp4", trajectory8c,
-  new_settings(show_labels = T), targets = 1:4)
+  new_settings(show_labels = T),
+  targets = 1:4
+)
 }
