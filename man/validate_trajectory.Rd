@@ -5,7 +5,7 @@
 \title{Sanity check for trajectory}
 \usage{
 validate_trajectory(trajectory, change_angle = 30, min_interval = 0.2,
-  min_distance = 1)
+  min_distance = 1, verbose = F)
 }
 \arguments{
 \item{trajectory}{Tibble object with trajectory}
@@ -18,6 +18,9 @@ too large direction changes.}
 
 \item{min_distance}{Minimum inter-object spacing, which should be
 complied in every frame.}
+
+\item{verbose}{If `TRUE`, results for each subtest are printed on console.
+Default `FALSE`.}
 }
 \value{
 Logical. `TRUE` if all conditions are passed.

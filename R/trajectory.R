@@ -581,6 +581,8 @@ load_trajectory <- function(filename, delim = ",", ...) {
 #' too large direction changes.
 #' @param min_distance Minimum inter-object spacing, which should be
 #' complied in every frame.
+#' @param verbose If `TRUE`, results for each subtest are printed on console.
+#' Default `FALSE`.
 #'
 #' @return Logical. `TRUE` if all conditions are passed.
 #' @export
@@ -589,24 +591,31 @@ load_trajectory <- function(filename, delim = ",", ...) {
 #' validate_trajectory(trajectory8c)
 validate_trajectory <- function(trajectory, change_angle = 30,
                                 min_interval = 0.2,
-                                min_distance = 1) {
+                                min_distance = 1,
+                                verbose = F) {
   # for each object we will check the direction changes and report if there
   # are two changes too soon after each other
+  crit1 <- T
   for (o in unique(trajectory$object)) {
     ok <- validate_object_direction_change(
       trajectory %>% dplyr::filter(.data$object == o),
       change_angle, min_interval
     )
-    if (!ok) return(F)
+    if (!ok) crit1 <- F
   }
+  crit2 <- T
   for (tt in unique(trajectory$time)) {
     ok <- is_distance_at_least(
       trajectory %>% dplyr::filter(.data$time == tt),
       min_distance
     )
-    if (!ok) return(F)
+    if (!ok) crit2 <- F
   }
-  return(T)
+  if (verbose) {
+    message(ifelse(crit1, "PASS", "FAIL"), " Sudden motion changes")
+    message(ifelse(crit2, "PASS", "FAIL"), " Minimum interobject distance")
+  }
+  return(crit1 & crit2)
 }
 
 #' Check direction changes for single object trajectory
