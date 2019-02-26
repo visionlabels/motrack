@@ -74,7 +74,7 @@ is_distance_at_least <- function(position, min_distance) {
 #'   Represents x-limit of the arena square, objects are limited to this area.}
 #'   \item{ylim}{A vector of form `c(ymin, ymax)`.
 #'   Represents y-limit of the arena square, objects are limited to this area.}
-#'   \item{min_dist}{Minimum pairwise distance between centres of objects.}
+#'   \item{min_distance}{Minimum pairwise distance between centres of objects.}
 #'   \item{r}{Radius of the object. Object is considered to be a circle.}
 #'   \item{arena_border}{Logical. Whether arena border should be drawn.}
 #'   \item{arena_shape}{Character. "square" or "circle"}
@@ -97,7 +97,7 @@ default_settings <- function() {
   list(
     xlim = c(-10, 10),
     ylim = c(-10, 10),
-    min_dist = 1,
+    min_distance = 1,
     r = 0.5,
     arena_border = T,
     arena_shape = "square",
@@ -149,7 +149,7 @@ new_settings <- function(...) {
 #' possibly `min_distance`
 #' @param check_distance Logical.
 #' The positions are generated until
-#' minimum pairwise distance of `min_dist` is met.
+#' minimum pairwise distance of `min_distance` is met.
 #' @param border_distance Distance from arena borders.
 #'
 #' @return Tibble with `object`, `x` and `y` columns.

@@ -24,7 +24,7 @@ Currently used properties include:
   Represents x-limit of the arena square, objects are limited to this area.}
   \item{ylim}{A vector of form `c(ymin, ymax)`.
   Represents y-limit of the arena square, objects are limited to this area.}
-  \item{min_dist}{Minimum pairwise distance between centres of objects.}
+  \item{min_distance}{Minimum pairwise distance between centres of objects.}
   \item{r}{Radius of the object. Object is considered to be a circle.}
   \item{arena_border}{Logical. Whether arena border should be drawn.}
   \item{arena_shape}{Character. "square" or "circle"}

@@ -242,7 +242,7 @@ bounce_off_others <- function(moment, time_next, settings) {
     as.matrix() %>%
     stats::dist()
   groups <- stats::cutree(stats::hclust(dist_next, "single"),
-    h = settings$min_dist
+    h = settings$min_distance
   )
   for (i in unique(groups)) {
     involved <- groups == i

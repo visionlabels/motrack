@@ -15,7 +15,7 @@ possibly `min_distance`}
 
 \item{check_distance}{Logical.
 The positions are generated until
-minimum pairwise distance of `min_dist` is met.}
+minimum pairwise distance of `min_distance` is met.}
 
 \item{border_distance}{Distance from arena borders.}
 }
