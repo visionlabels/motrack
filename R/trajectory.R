@@ -285,7 +285,19 @@ bounce_off_others <- function(moment, time_next, settings) {
     n_involved <- sum(involved)
     if (n_involved == 2) {
       # swap directions
-      moment$direction[involved] <- rev(moment$direction[involved])
+      if (settings$simplified_bouncing) {
+        moment$direction[involved] <- rev(moment$direction[involved])
+      } else {
+        v1 <- c(cos(moment$direction[involved][1]),
+                sin(moment$direction[involved][1]))
+        v2 <- c(cos(moment$direction[involved][2]),
+                sin(moment$direction[involved][2]))
+        x1 <- c(moment$x[involved][1], moment$y[involved][1])
+        x2 <- c(moment$x[involved][2], moment$y[involved][2])
+        after <- bounce_pair(v1, v2, x1, x2)
+        moment$direction[involved][1] <- atan2(after[[1]][2], after[[1]][1])
+        moment$direction[involved][2] <- atan2(after[[2]][2], after[[2]][1])
+      }
     }
     if (n_involved > 2) {
       # reverse directions

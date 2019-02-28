@@ -84,6 +84,10 @@ is_distance_at_least <- function(position, min_distance) {
 #'   \item{border_target}{Character. Colour code of target border.}
 #'   \item{show_labels}{Logical. Should we show object numbers in plots?}
 #'   \item{bounce_off_square}{Logical. Should objects bounce off square arena?}
+#'   \item{bounce_off_others}{Logical. Should objects bounce off each other?}
+#'   \item{simplified_bouncing}{Logical.
+#'     Should pairwise collisions respect contact angle or
+#'     just swap velocity vectors (simplified bouncing)? }
 #'   \item{bounce_off_circle}{Logical. Should objects bounce off circular arena?}
 #'   \item{circle_bounce_jitter}{Real. Amount of uniform angular jitter after bouncing, in radians.}
 #' }
@@ -108,6 +112,7 @@ default_settings <- function() {
     show_labels = F,
     bounce_off_square = F,
     bounce_off_others = T,
+    simplified_bouncing = F,
     bounce_off_circle = F,
     circle_bounce_jitter = 0
   )
