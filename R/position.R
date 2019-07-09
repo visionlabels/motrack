@@ -89,6 +89,7 @@ is_distance_at_least <- function(position, min_distance) {
 #'     Should pairwise collisions respect contact angle or
 #'     just swap velocity vectors (simplified bouncing)? }
 #'   \item{bounce_off_circle}{Logical. Should objects bounce off circular arena?}
+#'   \item{bounce_off_inside}{Logical. Should objects bounce off inside of circular arena (for donut shapes)?}
 #'   \item{circle_bounce_jitter}{Real. Amount of uniform angular jitter after bouncing, in radians.}
 #' }
 #'
@@ -112,6 +113,7 @@ default_settings <- function() {
     show_labels = F,
     bounce_off_square = F,
     bounce_off_others = T,
+    bounce_off_inside = F,
     simplified_bouncing = F,
     bounce_off_circle = F,
     circle_bounce_jitter = 0
@@ -121,6 +123,7 @@ default_settings <- function() {
 
 #' Creates a custom copy of settings
 #'
+#' @param .from optional parent from which defaults are inherited
 #' @param ... named list of properties to override default settings.
 #'
 #' @return Updated list of settings
@@ -129,19 +132,28 @@ default_settings <- function() {
 #' @seealso \code{\link{default_settings}}
 #'
 #' @examples
-#' new_settings(xlim = c(0, 10), ylim = c(0, 10))
-new_settings <- function(...) {
-  settings_list <- default_settings()
+#' s1 <- new_settings(xlim = c(0, 10), ylim = c(0, 10))
+#' s2 <- new_settings(.from = s1, show_labels = TRUE)
+new_settings <- function(.from = NULL, ...) {
+  # what names are valid?
+  default_settings_list <- default_settings()
   optional_parameters <- c("speed", "arena_inside_radius")
-  valid_parameter_names <- union(names(settings_list), optional_parameters)
+  valid_parameter_names <- union(names(default_settings_list), optional_parameters)
+  # is parent provided?
+  if (is.null(.from)) {
+    parent <- default_settings()
+  } else {
+    parent <- .from
+    stopifnot(all(names(parent) %in% valid_parameter_names))
+  }
   dots <- list(...)
   for (key in names(dots)) {
     if (!key %in% valid_parameter_names) {
       stop("Unknown parameter: ", key)
     }
-    settings_list[[key]] <- dots[[key]]
+    parent[[key]] <- dots[[key]]
   }
-  settings_list
+  parent
 }
 
 #' Random object positions

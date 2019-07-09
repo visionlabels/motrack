@@ -39,6 +39,7 @@ Currently used properties include:
     Should pairwise collisions respect contact angle or
     just swap velocity vectors (simplified bouncing)? }
   \item{bounce_off_circle}{Logical. Should objects bounce off circular arena?}
+  \item{bounce_off_inside}{Logical. Should objects bounce off inside of circular arena (for donut shapes)?}
   \item{circle_bounce_jitter}{Real. Amount of uniform angular jitter after bouncing, in radians.}
 }
 }
