@@ -486,13 +486,15 @@ estimate_position_for_time <- function(trajectory, timepoint) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # this example can take 30 seconds to run
 #' # set ffmpeg in necessary
-#'
 #' # ani.options(ffmpeg = "/PATH/TO/ffmpeg/ffmpeg")
 #' render_trajectory_video("trajectory.mp4", trajectory8c,
-#'   new_settings(show_labels = T),
+#'   new_settings(show_labels = TRUE),
 #'   targets = 1:4
 #' )
+#' }
 render_trajectory_video <- function(filename,
                                     trajectory,
                                     settings = default_settings(),

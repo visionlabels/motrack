@@ -75,7 +75,7 @@ plot_trajectory(trajectory_v, sett_show)
 If you have `ffmpeg` installed, you can use `animation` package to render videos.
 
 ``` r
-animation::ani.options(ffmpeg = "/PATH/TO/ffmpeg/ffmpeg")
+animation::ani.options(ffmpeg = "/usr/bin/ffmpeg")   # update to your path
 render_trajectory_video("trajectory_d.mp4", trajectory_d, 
   new_settings(show_labels = T), targets = 1:4
 )

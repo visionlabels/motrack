@@ -1,5 +1,9 @@
+# R and RStudio files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+.Rprofile
+
+# Temporary files
 *.mp4
