@@ -28,34 +28,42 @@ pd1$d <- sqrt(pd1$x ^ 2 + pd1$y ^ 2)
 pd2$d <- sqrt(pd2$x ^ 2 + pd2$y ^ 2)
 
 
-test_that("Nothing exceeds outer limits", {
+test_that("Nothing exceeds outer limits: square", {
   expect_true(all(ps1$x < max(xlims)))
   expect_true(all(ps1$x > min(xlims)))
   expect_true(all(ps1$y < max(ylims)))
   expect_true(all(ps1$y > min(ylims)))
+})
 
+test_that("Nothing exceeds outer limits: circle", {
   expect_true(all(pc1$d < radius_out))
+})
 
+test_that("Nothing exceeds outer limits: donut", {
   expect_true(all(pd1$d < radius_out))
 })
 
-test_that("Nothing exceeds outer limits with gap", {
+test_that("Nothing exceeds outer limits with gap: square", {
   expect_true(all(ps2$x < (max(xlims) - border_gap)))
   expect_true(all(ps2$x > (min(xlims) + border_gap)))
   expect_true(all(ps2$y < (max(ylims) - border_gap)))
   expect_true(all(ps2$y > (min(ylims) + border_gap)))
+})
 
+test_that("Nothing exceeds outer limits with gap: circle", {
   expect_true(all(pc2$d < (radius_out - border_gap)))
+})
 
+test_that("Nothing exceeds outer limits with gap: donut", {
   expect_true(all(pd2$d < (radius_out - border_gap)))
 })
 
-test_that("Nothing exceeds inner limits", {
+test_that("Nothing exceeds inner limits: donut", {
   expect_true(all(pd1$d > radius_in))
 })
 
-test_that("Nothing exceeds inner limits with gap", {
-  expect_true(all(pd1$d > (radius_in + border_gap)))
+test_that("Nothing exceeds inner limits with gap: donut", {
+  expect_true(all(pd2$d > (radius_in + border_gap)))
 })
 
 test_that("Minimum distances are met", {
