@@ -132,7 +132,7 @@ default_settings <- function() {
 #' new_settings(xlim = c(0, 10), ylim = c(0, 10))
 new_settings <- function(...) {
   settings_list <- default_settings()
-  optional_parameters <- c("speed")
+  optional_parameters <- c("speed", "arena_inside_radius")
   valid_parameter_names <- union(names(settings_list), optional_parameters)
   dots <- list(...)
   for (key in names(dots)) {
@@ -181,7 +181,7 @@ generate_positions_random <- function(
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
   stopifnot(!is.null(ylim))
-  shapes <- c("square", "circle")
+  shapes <- c("square", "circle", "donut")
   shape <- pmatch(settings$arena_shape, shapes)
   if (is.na(shape)) {
     stop("Arena shape unknown")
@@ -197,7 +197,13 @@ generate_positions_random <- function(
       circle = random_coords_in_circle(
         n,
         mean(xlim), mean(ylim),
-        sum(c(diff(xlim), diff(ylim)) / 4)
+        sum(c(diff(xlim), diff(ylim)) / 4) - border_distance
+      ),
+      donut = random_coords_in_donut(
+        n,
+        mean(xlim), mean(ylim),
+        sum(c(diff(xlim), diff(ylim)) / 4) - border_distance,
+        settings$arena_inside_radius + border_distance
       )
     )
     p <- p %>%
@@ -229,6 +235,25 @@ random_coords_in_circle <- function(n, xmid, ymid, radius) {
     yy <- stats::runif(1, -radius, radius)
     d <- sqrt((xx^2) + (yy^2))
     if (d < radius) {
+      res$x[i] <- xmid + xx
+      res$y[i] <- ymid + yy
+      i <- i + 1
+    }
+  }
+  res
+}
+
+random_coords_in_donut <- function(n, xmid, ymid, radius_out, radius_in) {
+  stopifnot(radius_out > 0)
+  stopifnot(radius_in > 0)
+  stopifnot(radius_out > radius_in)
+  res <- tibble::tibble(x = rep(NA_real_, n), y = rep(NA_real_, n))
+  i <- 1
+  while (i <= n) {
+    xx <- stats::runif(1, -radius_out, radius_out)
+    yy <- stats::runif(1, -radius_in, radius_in)
+    d <- sqrt((xx^2) + (yy^2))
+    if (d < radius_out && d > radius_in) {
       res$x[i] <- xmid + xx
       res$y[i] <- ymid + yy
       i <- i + 1
