@@ -132,8 +132,13 @@ default_settings <- function() {
 #' new_settings(xlim = c(0, 10), ylim = c(0, 10))
 new_settings <- function(...) {
   settings_list <- default_settings()
+  optional_parameters <- c("speed")
+  valid_parameter_names <- union(names(settings_list), optional_parameters)
   dots <- list(...)
   for (key in names(dots)) {
+    if (!key %in% valid_parameter_names) {
+      stop("Unknown parameter: ", key)
+    }
     settings_list[[key]] <- dots[[key]]
   }
   settings_list
