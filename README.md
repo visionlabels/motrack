@@ -1,5 +1,9 @@
 # motrack - tools for Multiple Object Tracking
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/jirilukavsky/motrack.svg?branch=master)](https://travis-ci.org/jirilukavsky/motrack)
+<!-- badges: end -->
+
 [Multiple Object Tracking](http://www.scholarpedia.org/article/Multiple_object_tracking) 
 is a popular experimental paradigm used in visual attention research.
 Your goal is to remember several objects and 
