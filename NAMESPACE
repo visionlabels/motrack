@@ -3,6 +3,7 @@
 export("%>%")
 export(.data)
 export(add_random_direction)
+export(annotate_image)
 export(bounce_off_circle)
 export(bounce_off_others)
 export(bounce_off_square)

@@ -4,7 +4,8 @@
 \alias{plot_position}
 \title{Plot object positions}
 \usage{
-plot_position(position, settings = default_settings(), targets = NULL)
+plot_position(position, settings = default_settings(), targets = NULL,
+  background_annotation = NULL, foreground_annotation = NULL)
 }
 \arguments{
 \item{position}{tibble}
@@ -12,6 +13,10 @@ plot_position(position, settings = default_settings(), targets = NULL)
 \item{settings}{list with basic properties}
 
 \item{targets}{Which objects should be treated as targets}
+
+\item{background_annotation}{Annotation rendered behind the objects (texture)}
+
+\item{foreground_annotation}{Annotation rendered over the objects (aperture)}
 }
 \value{
 ggplot2 figure

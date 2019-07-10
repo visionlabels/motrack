@@ -24,7 +24,9 @@ Imports:
     animation,
     readr,
     stringr,
-    rlang (>= 0.1.2)
+    rlang (>= 0.1.2),
+    png,
+    grid
 Suggests: 
     testthat,
     roxygen2

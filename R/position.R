@@ -286,6 +286,8 @@ random_coords_in_donut <- function(n, xmid, ymid, radius_out, radius_in) {
 #' @param position tibble
 #' @param settings list with basic properties
 #' @param targets Which objects should be treated as targets
+#' @param background_annotation Annotation rendered behind the objects (texture)
+#' @param foreground_annotation Annotation rendered over the objects (aperture)
 #'
 #' @return ggplot2 figure
 #' @export
@@ -301,7 +303,9 @@ random_coords_in_donut <- function(n, xmid, ymid, radius_out, radius_in) {
 #' plot_position(pos, default_settings())
 plot_position <- function(position,
                           settings = default_settings(),
-                          targets = NULL) {
+                          targets = NULL,
+                          background_annotation = NULL,
+                          foreground_annotation = NULL) {
   # check extra parameters
   if (!is.null(targets)) {
     # passed in call
@@ -329,7 +333,9 @@ plot_position <- function(position,
         fill = "I(fill)", colour = "I(border)"
       )
     ) +
+    background_annotation +
     ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
+    foreground_annotation +
     ggplot2::theme(panel.background = ggplot2::element_blank()) +
     ggplot2::coord_fixed(xlim = settings$xlim, ylim = settings$ylim, expand = F) +
     NULL
@@ -388,3 +394,33 @@ plot_position <- function(position,
   }
   fig
 }
+
+#' Draw bitmap image as ggplot2 annotation
+#'
+#' @param image rasterGrob object or filename (png)
+#' @param xlim x-coordinates
+#' @param ylim y-coordinates
+#' @param settings list with named parameters, from which default values for xlim and ylim are taken
+#'
+#' @return ggplot2 layer (as in `ggplot2::annotation_custom`)
+#' @export
+#'
+#' @examples
+#' image <- system.file("img", "Rlogo.png", package="png")
+#' s <- new_settings()
+#' plot_position(position8c, s,
+#'   background_annotation = annotate_image(image, settings = s))
+annotate_image <- function(image, xlim = NULL, ylim = NULL, settings = NULL) {
+  if (is.null(xlim)) {
+    xlim <- settings$xlim
+  }
+  if (is.null(ylim)) {
+    ylim <- settings$ylim
+  }
+  if (is.character(image)) {
+    pic <- png::readPNG(image)
+    image <- grid::rasterGrob(pic, interpolate=TRUE)
+  }
+  ggplot2::annotation_custom(image, xmin = xlim[1], ymin = ylim[1], xmax = xlim[2], ymax = ylim[2])
+}
+
