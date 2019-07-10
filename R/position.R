@@ -367,7 +367,8 @@ plot_position <- function(position,
       rr <- sum(c(diff(settings$xlim), diff(settings$ylim)) / 4)
       fig <- fig +
         ggforce::geom_circle(
-          aes(x0 = xx, y0 = yy, r = rr, fill = NULL, border = NULL, colour = "black"),
+          ggplot2::aes_string(
+            x0 = "xx", y0 = "yy", r = "rr", fill = "NULL", border = "NULL", colour = "I(\"black\")"),
           data = tibble::tibble(xx = xm, yy = ym, rr = rr)
         )
     }
@@ -377,7 +378,8 @@ plot_position <- function(position,
       rr <- sum(c(diff(settings$xlim), diff(settings$ylim)) / 4)
       fig <- fig +
         ggforce::geom_circle(
-          aes(x0 = xx, y0 = yy, r = rr, fill = NULL, border = NULL, colour = "black"),
+          ggplot2::aes_string(
+            x0 = "xx", y0 = "yy", r = "rr", fill = "NULL", border = "NULL", colour = "I(\"black\")"),
           data = tibble::tibble(
             xx = c(xm, xm), yy = c(ym, ym), rr = c(rr, settings$arena_inside_radius)
           )
