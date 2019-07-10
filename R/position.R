@@ -342,23 +342,47 @@ plot_position <- function(position,
       )
   }
   if (settings$arena_border) {
-    fig <- fig +
-      ggplot2::annotate("segment",
-        x = settings$xlim[1], y = settings$ylim[1],
-        xend = settings$xlim[1], yend = settings$ylim[2]
-      ) +
-      ggplot2::annotate("segment",
-        x = settings$xlim[1], y = settings$ylim[1],
-        xend = settings$xlim[2], yend = settings$ylim[1]
-      ) +
-      ggplot2::annotate("segment",
-        x = settings$xlim[1], y = settings$ylim[2],
-        xend = settings$xlim[2], yend = settings$ylim[2]
-      ) +
-      ggplot2::annotate("segment",
-        x = settings$xlim[2], y = settings$ylim[1],
-        xend = settings$xlim[2], yend = settings$ylim[2]
-      )
+    if (settings$arena_shape == "square") {
+      fig <- fig +
+        ggplot2::annotate("segment",
+          x = settings$xlim[1], y = settings$ylim[1],
+          xend = settings$xlim[1], yend = settings$ylim[2]
+        ) +
+        ggplot2::annotate("segment",
+          x = settings$xlim[1], y = settings$ylim[1],
+          xend = settings$xlim[2], yend = settings$ylim[1]
+        ) +
+        ggplot2::annotate("segment",
+          x = settings$xlim[1], y = settings$ylim[2],
+          xend = settings$xlim[2], yend = settings$ylim[2]
+        ) +
+        ggplot2::annotate("segment",
+          x = settings$xlim[2], y = settings$ylim[1],
+          xend = settings$xlim[2], yend = settings$ylim[2]
+        )
+    }
+    if (settings$arena_shape == "circle") {
+      xm <- mean(settings$xlim)
+      ym <- mean(settings$ylim)
+      rr <- sum(c(diff(settings$xlim), diff(settings$ylim)) / 4)
+      fig <- fig +
+        ggforce::geom_circle(
+          aes(x0 = xx, y0 = yy, r = rr, fill = NULL, border = NULL, colour = "black"),
+          data = tibble::tibble(xx = xm, yy = ym, rr = rr)
+        )
+    }
+    if (settings$arena_shape == "donut") {
+      xm <- mean(settings$xlim)
+      ym <- mean(settings$ylim)
+      rr <- sum(c(diff(settings$xlim), diff(settings$ylim)) / 4)
+      fig <- fig +
+        ggforce::geom_circle(
+          aes(x0 = xx, y0 = yy, r = rr, fill = NULL, border = NULL, colour = "black"),
+          data = tibble::tibble(
+            xx = c(xm, xm), yy = c(ym, ym), rr = c(rr, settings$arena_inside_radius)
+          )
+        )
+    }
   }
   fig
 }
