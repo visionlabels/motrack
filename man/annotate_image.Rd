@@ -21,3 +21,9 @@ ggplot2 layer (as in `ggplot2::annotation_custom`)
 \description{
 Draw bitmap image as ggplot2 annotation
 }
+\examples{
+image <- system.file("img", "Rlogo.png", package="png")
+s <- new_settings()
+plot_position(position8c, s,
+  background_annotation = annotate_image(image, settings = s))
+}

@@ -5,7 +5,8 @@
 \title{Render video from trajectory}
 \usage{
 render_trajectory_video(filename, trajectory,
-  settings = default_settings(), targets = NULL, outdir = getwd())
+  settings = default_settings(), targets = NULL, outdir = getwd(),
+  ...)
 }
 \arguments{
 \item{filename}{the file name of output video (e.g. "trajectory.mp4")}
@@ -17,6 +18,8 @@ render_trajectory_video(filename, trajectory,
 \item{targets}{Which objects should be treated as targets}
 
 \item{outdir}{output directory where the video is saved}
+
+\item{...}{Parameters passed to `plot_position`}
 }
 \value{
 No return value

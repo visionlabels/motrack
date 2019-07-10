@@ -528,6 +528,7 @@ estimate_position_for_time <- function(trajectory, timepoint) {
 #' @param settings list with basic properties
 #' @param targets Which objects should be treated as targets
 #' @param outdir output directory where the video is saved
+#' @param ... Parameters passed to `plot_position`
 #'
 #' @return No return value
 #' @export
@@ -546,7 +547,7 @@ render_trajectory_video <- function(filename,
                                     trajectory,
                                     settings = default_settings(),
                                     targets = NULL,
-                                    outdir = getwd()) {
+                                    outdir = getwd(), ...) {
   # animation parameters
   fps <- 25
   video_width <- 600
@@ -565,17 +566,17 @@ render_trajectory_video <- function(filename,
     # preview
     for (i in 1:(preview_seconds * fps)) {
       p <- estimate_position_for_time(trajectory, tmin)
-      fig <- plot_position(p, settings = settings, targets = targets)
+      fig <- plot_position(p, settings = settings, targets = targets, ...)
       print(fig)
     }
     for (tim in seq(tmin, tmax, 1 / fps)) {
       p <- estimate_position_for_time(trajectory, tim)
-      fig <- plot_position(p, settings = settings, targets = targets)
+      fig <- plot_position(p, settings = settings, targets = targets, ...)
       print(fig)
     }
     for (i in 1:(respond_seconds * fps)) {
       p <- estimate_position_for_time(trajectory, tmax)
-      fig <- plot_position(p, settings = settings, targets = targets)
+      fig <- plot_position(p, settings = settings, targets = targets, ...)
       print(fig)
     }
   }, video.name = filename, other.opts = "-pix_fmt yuv420p -b 600k", clean = T)
