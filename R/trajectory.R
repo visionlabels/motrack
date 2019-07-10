@@ -117,7 +117,9 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
     moment_tbl$position[[i]] <- moment_next
     moment <- moment_next
   }
-  moment_tbl %>% tidyr::unnest() %>% dplyr::select(-.data$time1)
+  moment_tbl %>%
+    tidyr::unnest() %>%
+    dplyr::select(-.data$time1)
 }
 
 #' Simple trajectory step function
@@ -207,10 +209,12 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
     dplyr::mutate(
       direction =
         (.data$direction +
-           as.numeric(
-             circular::rvonmises(n,
-                                 circular::circular(0),
-                                 kappa = kappa))) %%
+          as.numeric(
+            circular::rvonmises(n,
+              circular::circular(0),
+              kappa = kappa
+            )
+          )) %%
           (2 * pi),
       x = .data$x + cos(.data$direction) * .data$speed * timestep,
       y = .data$y + sin(.data$direction) * .data$speed * timestep,
@@ -248,10 +252,10 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
 bounce_pair <- function(v1, v2, x1, x2) {
   v1n <- v1 -
     sum((v1 - v2) * (x1 - x2)) /
-    sum((x1 - x2) ^ 2) * (x1 - x2)
+      sum((x1 - x2)^2) * (x1 - x2)
   v2n <- v2 -
     sum((v2 - v1) * (x2 - x1)) /
-    sum((x2 - x1) ^ 2) * (x2 - x1)
+      sum((x2 - x1)^2) * (x2 - x1)
   list(v1n, v2n)
 }
 
@@ -291,10 +295,14 @@ bounce_off_others <- function(moment, time_next, settings) {
       if (settings$simplified_bouncing) {
         moment$direction[involved] <- rev(moment$direction[involved])
       } else {
-        v1 <- c(cos(moment$direction[involved][1]),
-                sin(moment$direction[involved][1]))
-        v2 <- c(cos(moment$direction[involved][2]),
-                sin(moment$direction[involved][2]))
+        v1 <- c(
+          cos(moment$direction[involved][1]),
+          sin(moment$direction[involved][1])
+        )
+        v2 <- c(
+          cos(moment$direction[involved][2]),
+          sin(moment$direction[involved][2])
+        )
         x1 <- c(moment$x[involved][1], moment$y[involved][1])
         x2 <- c(moment$x[involved][2], moment$y[involved][2])
         after <- bounce_pair(v1, v2, x1, x2)
