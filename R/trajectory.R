@@ -742,7 +742,7 @@ validate_object_direction_change <- function(trajectory1,
     )
   tr <- tr %>%
     dplyr::mutate(
-      dirchange = .data$direction - dplyr::lag(.data$direction),
+      dirchange = (.data$direction - dplyr::lag(.data$direction)) %% (2 * pi),
       dirchange_large =
         (.data$dirchange > change_min) &
           (.data$dirchange < 2 * pi - change_min)
