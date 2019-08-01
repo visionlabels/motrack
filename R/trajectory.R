@@ -451,6 +451,7 @@ bounce_off_inside <- function(moment, time_next, settings) {
 #' @param trajectory tibble
 #' @param settings list with basic properties
 #' @param targets Which objects should be treated as targets
+#' @param ... Parameters passed to `plot_position`
 #'
 #' @return ggplot2 figure
 #' @export
@@ -462,11 +463,13 @@ bounce_off_inside <- function(moment, time_next, settings) {
 #' plot_trajectory(trajectory8c, default_settings(), 1:4)
 plot_trajectory <- function(trajectory,
                             settings = default_settings(),
-                            targets = NULL) {
+                            targets = NULL,
+                            ...) {
   start_time <- min(trajectory$time)
   fig <- plot_position(trajectory %>% dplyr::filter(.data$time == start_time),
     settings = settings,
-    targets = targets
+    targets = targets,
+    ...
   )
   fig <- fig +
     ggplot2::geom_path(

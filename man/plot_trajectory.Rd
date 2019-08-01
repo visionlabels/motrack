@@ -5,7 +5,7 @@
 \title{Plot object trajectories}
 \usage{
 plot_trajectory(trajectory, settings = default_settings(),
-  targets = NULL)
+  targets = NULL, ...)
 }
 \arguments{
 \item{trajectory}{tibble}
@@ -13,6 +13,8 @@ plot_trajectory(trajectory, settings = default_settings(),
 \item{settings}{list with basic properties}
 
 \item{targets}{Which objects should be treated as targets}
+
+\item{...}{Parameters passed to `plot_position`}
 }
 \value{
 ggplot2 figure
