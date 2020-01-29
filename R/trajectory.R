@@ -86,7 +86,7 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
   } else {
     moment <- start %>% add_random_direction()
   }
-  return
+
   if (!"speed" %in% names(moment)) {
     moment <- moment %>% dplyr::mutate(speed = settings$speed)
   }
