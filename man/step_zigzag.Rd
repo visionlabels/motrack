@@ -4,8 +4,7 @@
 \alias{step_zigzag}
 \title{Zigzag trajectory step function}
 \usage{
-step_zigzag(moment, time_next, settings, ttt = c(0.5, 1.5),
-  syncstart = F)
+step_zigzag(moment, time_next, settings, ttt = c(0.5, 1.5), syncstart = F)
 }
 \arguments{
 \item{moment}{Position tibble with extra columns `direction` and `speed`}
@@ -26,3 +25,10 @@ extra columns `direction`, `speed` and `ttt` corresponding to time_next
 \description{
 Zigzag trajectory step function
 }
+\seealso{
+Other step_functions: 
+\code{\link{step_direct}()},
+\code{\link{step_vonmises}()},
+\code{\link{step_waitandmove}()}
+}
+\concept{step_functions}

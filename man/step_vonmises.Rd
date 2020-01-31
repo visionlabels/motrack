@@ -22,3 +22,10 @@ extra columns `direction` and `speed` corresponding to time_next
 \description{
 Von Mises trajectory step function
 }
+\seealso{
+Other step_functions: 
+\code{\link{step_direct}()},
+\code{\link{step_waitandmove}()},
+\code{\link{step_zigzag}()}
+}
+\concept{step_functions}

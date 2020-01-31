@@ -1,7 +1,7 @@
 Package: motrack
 Type: Package
 Title: Tools for Multiple Object Tracking experiments
-Version: 0.1.0.9000
+Version: 0.1.0.9100
 Authors@R: c(
   person("Jiri", "Lukavsky", , "lukavsky@praha.psu.cas.cz", c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-1082-229X"))
@@ -12,7 +12,7 @@ Description: For MOT experiments, you need to prepare trajectories, which object
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports: 
     circular,
     dplyr,
