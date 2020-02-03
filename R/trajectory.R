@@ -596,7 +596,7 @@ render_trajectory_video <- function(filename,
 #' @export
 #'
 #' @examples
-#' filename <- "test-csv"
+#' filename <- "test.csv"
 #' save_trajectory(trajectory8c, filename)
 #' unlink(filename)
 save_trajectory <- function(trajectory, filename, delim = ",") {
@@ -605,7 +605,7 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   xpart <- trajectory %>%
     dplyr::select(.data$time, .data$object, .data$x) %>%
     tidyr::spread(key = .data$object, value = .data$x) %>%
-    dplyr::select(noquote(order(colnames(.)))) %>%
+    dplyr::select(sort(names(.))) %>%
     dplyr::select(.data$time, dplyr::everything())
   ypart <- trajectory %>%
     dplyr::select(.data$time, .data$object, .data$y) %>%
@@ -622,7 +622,7 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
     ypart %>% dplyr::select(-.data$time)
   )
   column_index <- c(1:n, 0.5 + (1:n))
-  merged <- merged[, c(1, order(column_index) + 1)]
+  merged <- merged %>% dplyr::select(c(1, order(column_index) + 1))
   merged %>%
     readr::write_delim(filename, delim = delim, col_names = F)
   invisible(merged)
