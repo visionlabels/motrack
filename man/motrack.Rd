@@ -3,7 +3,6 @@
 \docType{package}
 \name{motrack}
 \alias{motrack}
-\alias{motrack-package}
 \title{\code{motrack} package}
 \description{
 Multiple Object Tracking utilities

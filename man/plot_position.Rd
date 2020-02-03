@@ -4,8 +4,13 @@
 \alias{plot_position}
 \title{Plot object positions}
 \usage{
-plot_position(position, settings = default_settings(), targets = NULL,
-  background_annotation = NULL, foreground_annotation = NULL)
+plot_position(
+  position,
+  settings = default_settings(),
+  targets = NULL,
+  background_annotation = NULL,
+  foreground_annotation = NULL
+)
 }
 \arguments{
 \item{position}{tibble}

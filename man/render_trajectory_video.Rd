@@ -4,9 +4,14 @@
 \alias{render_trajectory_video}
 \title{Render video from trajectory}
 \usage{
-render_trajectory_video(filename, trajectory,
-  settings = default_settings(), targets = NULL, outdir = getwd(),
-  ...)
+render_trajectory_video(
+  filename,
+  trajectory,
+  settings = default_settings(),
+  targets = NULL,
+  outdir = getwd(),
+  ...
+)
 }
 \arguments{
 \item{filename}{the file name of output video (e.g. "trajectory.mp4")}

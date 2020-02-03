@@ -12,7 +12,7 @@ Description: For MOT experiments, you need to prepare trajectories, which object
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports: 
     circular,
     dplyr,

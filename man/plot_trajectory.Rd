@@ -4,8 +4,7 @@
 \alias{plot_trajectory}
 \title{Plot object trajectories}
 \usage{
-plot_trajectory(trajectory, settings = default_settings(),
-  targets = NULL, ...)
+plot_trajectory(trajectory, settings = default_settings(), targets = NULL, ...)
 }
 \arguments{
 \item{trajectory}{tibble}
