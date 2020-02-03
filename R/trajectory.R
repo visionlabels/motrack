@@ -118,8 +118,8 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
     moment <- moment_next
   }
   moment_tbl %>%
-    dplyr::select(-time) %>%
-    tidyr::unnest(cols = c(position))
+    dplyr::select(-.data$time) %>%
+    tidyr::unnest(cols = c("position"))
 }
 
 #' Simple trajectory step function
