@@ -1,7 +1,7 @@
 # motrack - tools for Multiple Object Tracking
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/jirilukavsky/motrack.svg?branch=master)](https://travis-ci.org/jirilukavsky/motrack)
+[![Travis build status](https://travis-ci.com/jirilukavsky/motrack.svg?branch=master)](https://travis-ci.com/jirilukavsky/motrack)
 <!-- badges: end -->
 
 [Multiple Object Tracking](http://www.scholarpedia.org/article/Multiple_object_tracking) 
