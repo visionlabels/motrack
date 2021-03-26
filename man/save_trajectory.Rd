@@ -20,7 +20,7 @@ Invisibly returns data in wide format (as saved to file)
 Save trajectory to file
 }
 \examples{
-filename <- "test-csv"
+filename <- "test.csv"
 save_trajectory(trajectory8c, filename)
 unlink(filename)
 }

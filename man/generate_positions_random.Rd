@@ -4,8 +4,7 @@
 \alias{generate_positions_random}
 \title{Random object positions}
 \usage{
-generate_positions_random(n, settings, check_distance = T,
-  border_distance = 0)
+generate_positions_random(n, settings, check_distance = T, border_distance = 0)
 }
 \arguments{
 \item{n}{Number of objects}

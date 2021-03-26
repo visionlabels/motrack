@@ -4,8 +4,16 @@
 \alias{annotate_aperture}
 \title{Draw bitmap image as ggplot2 annotation and cover rest with filled colour}
 \usage{
-annotate_aperture(image, xlim_in, ylim_in, colour, alpha = 1,
-  xlim_out = NULL, ylim_out = NULL, settings = NULL)
+annotate_aperture(
+  image,
+  xlim_in,
+  ylim_in,
+  colour,
+  alpha = 1,
+  xlim_out = NULL,
+  ylim_out = NULL,
+  settings = NULL
+)
 }
 \arguments{
 \item{image}{rasterGrob object or filename (png)}

@@ -4,8 +4,11 @@
 \alias{validate_object_direction_change}
 \title{Check direction changes for single object trajectory}
 \usage{
-validate_object_direction_change(trajectory1, change_angle = 30,
-  min_interval = 0.2)
+validate_object_direction_change(
+  trajectory1,
+  change_angle = 30,
+  min_interval = 0.2
+)
 }
 \arguments{
 \item{trajectory1}{Trajectory featuring only one object}
