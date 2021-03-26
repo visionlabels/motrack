@@ -1,7 +1,7 @@
 Package: motrack
 Type: Package
 Title: Tools for Multiple Object Tracking experiments
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
   person("Jiri", "Lukavsky", , "lukavsky@praha.psu.cas.cz", c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-1082-229X"))

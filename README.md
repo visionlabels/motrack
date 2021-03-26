@@ -66,6 +66,13 @@ trajectory_z <-
   make_random_trajectory(position, timescale, sett_move, 
     step_zigzag, ttt = c(.5, 1.5), syncstart = F)
 
+# Object move for 0.5-1.5 seconds or wait for 0.2-0.5 seconds. After movement/waiting, it waits with probability 0.1, otherwise it changes direction randomly
+trajectory_wm <- 
+  make_random_trajectory(position, timescale, sett_move, 
+                         step_waitandmove, move_time = c(.5, 1.5), 
+                         wait_time = c(.2,.5), wait_prob = 0.1, syncstart = F)
+
+
 # Object change direction smoothly
 trajectory_v <- 
   make_random_trajectory(position, timescale, sett_move, 

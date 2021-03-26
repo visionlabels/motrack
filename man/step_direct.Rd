@@ -20,3 +20,10 @@ extra columns `direction` and `speed` corresponding to time_next
 \description{
 Simple trajectory step function
 }
+\seealso{
+Other step_functions: 
+\code{\link{step_vonmises}()},
+\code{\link{step_waitandmove}()},
+\code{\link{step_zigzag}()}
+}
+\concept{step_functions}

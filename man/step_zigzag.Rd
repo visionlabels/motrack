@@ -25,3 +25,10 @@ extra columns `direction`, `speed` and `ttt` corresponding to time_next
 \description{
 Zigzag trajectory step function
 }
+\seealso{
+Other step_functions: 
+\code{\link{step_direct}()},
+\code{\link{step_vonmises}()},
+\code{\link{step_waitandmove}()}
+}
+\concept{step_functions}
