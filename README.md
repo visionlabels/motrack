@@ -66,13 +66,6 @@ trajectory_z <-
   make_random_trajectory(position, timescale, sett_move, 
     step_zigzag, ttt = c(.5, 1.5), syncstart = F)
 
-# Object move for 0.5-1.5 seconds or wait for 0.2-0.5 seconds. After movement/waiting, it waits with probability 0.1, otherwise it changes direction randomly
-trajectory_wm <- 
-  make_random_trajectory(position, timescale, sett_move, 
-                         step_waitandmove, move_time = c(.5, 1.5), 
-                         wait_time = c(.2,.5), wait_prob = 0.1, syncstart = F)
-
-
 # Object change direction smoothly
 trajectory_v <- 
   make_random_trajectory(position, timescale, sett_move, 
@@ -81,12 +74,33 @@ trajectory_v <-
 plot_trajectory(trajectory_d, sett_show)
 plot_trajectory(trajectory_z, sett_show)
 plot_trajectory(trajectory_v, sett_show)
+
+# It is possible to implement complex motion patterns:
+# Object move for 0.5-1.5 seconds or wait for 0.2-0.5 seconds. 
+# After movement/waiting, it waits with probability 0.1, 
+# otherwise it changes direction randomly
+trajectory_wm <- 
+  make_random_trajectory(
+    position, timescale, sett_move, 
+    step_waitandmove, move_time = c(.5, 1.5), 
+    wait_time = c(.2,.5), wait_prob = 0.1, syncstart = F)
+
+# It is possible to vary speed during the trial based on the custom function
+f1 <- function(time, moment) {
+  5 + cos(time + moment$object) # different offset for each object
+}
+sett_move$speed <- c(f1)
+
+trajectory_s <- 
+  make_random_trajectory(
+    position, timescale, sett_move, step_direct)
 ```
 
 If you have `ffmpeg` installed, you can use `animation` package to render videos.
 
 ``` r
 animation::ani.options(ffmpeg = "/usr/bin/ffmpeg")   # update to your path
+
 render_trajectory_video("trajectory_d.mp4", trajectory_d, 
   new_settings(show_labels = T), targets = 1:4
 )
@@ -94,6 +108,11 @@ render_trajectory_video("trajectory_z.mp4", trajectory_z,
   new_settings(show_labels = T), targets = 1:4
 )
 render_trajectory_video("trajectory_v.mp4", trajectory_v, 
+  new_settings(show_labels = T), targets = 1:4
+)
+
+# variable speed example
+render_trajectory_video("trajectory_s.mp4", trajectory_s, 
   new_settings(show_labels = T), targets = 1:4
 )
 ```
