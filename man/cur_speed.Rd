@@ -49,6 +49,7 @@ sett_move <-
     bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
   )
 moment <- position8c \%>\% add_random_direction()
-#tt <- make_random_trajectory(
-#   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+tt <- make_random_trajectory(
+   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+)
 }

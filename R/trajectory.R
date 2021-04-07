@@ -95,8 +95,9 @@ add_random_direction <- function(position) {
 #'     bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 #'   )
 #' moment <- position8c %>% add_random_direction()
-#' #tt <- make_random_trajectory(
-#' #   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+#' tt <- make_random_trajectory(
+#'    moment, seq(0, 8, by = 0.1), sett_move, step_direct
+#' )
 cur_speed <- function(moment, cur_time = NULL) {
   if (is.numeric(moment$speed)) {
     s <- moment$speed
@@ -272,12 +273,8 @@ step_zigzag <- function(moment, time_next, settings,
       moment$ttt[which_turn] +
       stats::runif(sum(which_turn), min = ttt[1], max = ttt[2])
   }
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = time_next
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, time_next)
   moment_next
 }
 
@@ -373,12 +370,8 @@ step_waitandmove <- function(moment, time_next, settings,
 
   }
   # compute new positions, scaling factors sets, whether objects are moving or not
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * .data$speed_scale * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * .data$speed_scale * timestep,
-      time = time_next
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, time_next)
   moment_next
 }
 
@@ -409,11 +402,9 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
               kappa = kappa
             )
           )) %%
-          (2 * pi),
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = time_next
-    )
+          (2 * pi))
+  moment_next <-
+    extrapolate_moment(moment_next, timestep, time_now, time_next)
   moment_next
 }
 
@@ -467,12 +458,10 @@ bounce_off_others <- function(moment, time_next, settings) {
   timestep <- time_next - time_now
   # extrapolate future
   moment <- moment %>% dplyr::arrange(.data$object)
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = NA
-    )
+
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, NA)
+
   # check distances
   dist_next <- moment_next %>%
     dplyr::select(.data$x, .data$y) %>%
@@ -525,12 +514,8 @@ bounce_off_square <- function(moment, time_next, settings) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # extrapolate future
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = NA
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, NA)
   # check sides
   beyond_left <- moment_next$x < min(settings$xlim)
   beyond_right <- moment_next$x > max(settings$xlim)
@@ -564,12 +549,8 @@ bounce_off_circle <- function(moment, time_next, settings) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # extrapolate future
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = NA
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, NA)
   # arena radius
   dims <- sort(c(abs(diff(settings$xlim)), abs(diff(settings$ylim))))
   if (length(unique(dims)) > 1) {
@@ -599,12 +580,8 @@ bounce_off_inside <- function(moment, time_next, settings) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # extrapolate future
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = NA
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, NA)
   # arena radius
   dims <- sort(c(abs(diff(settings$xlim)), abs(diff(settings$ylim))))
   if (length(unique(dims)) > 1) {
