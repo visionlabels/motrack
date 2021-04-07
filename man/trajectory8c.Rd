@@ -4,7 +4,8 @@
 \name{trajectory8c}
 \alias{trajectory8c}
 \title{Example trajectory}
-\format{A tibble with 648 rows and 7 variables:
+\format{
+A tibble with 648 rows and 7 variables:
 \describe{
   \item{time}{Time for each position, from 0 to 8 with 0.1 steps}
   \item{object}{Identifier of each object, 1 to 8}
@@ -13,7 +14,8 @@
   \item{direction}{Current direction, in rad}
   \item{speed}{Object speed, in deg/s}
   \item{time1}{?}
-}}
+}
+}
 \source{
 Generated with script
 }

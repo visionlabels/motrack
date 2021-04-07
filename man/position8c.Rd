@@ -4,12 +4,14 @@
 \name{position8c}
 \alias{position8c}
 \title{Example position}
-\format{A tibble with 8 rows and 3 variables:
+\format{
+A tibble with 8 rows and 3 variables:
 \describe{
   \item{object}{Identifier of each object, 1 to 8}
   \item{x}{x-coordinate, in deg}
   \item{y}{y-coordinate, in deg}
-}}
+}
+}
 \source{
 Generated with script
 }

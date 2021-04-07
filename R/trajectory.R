@@ -53,6 +53,99 @@ add_random_direction <- function(position) {
     dplyr::mutate(direction = stats::runif(dplyr::n(), 0, 2 * pi))
 }
 
+#' Get current speed
+#'
+#' If speeds are constant, returns `speed` column of the `moment`.
+#' If speeds are functions, evaluates the speed functions and returns their results.
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param cur_time Current time
+#'
+#' Speeds can be defined as functions and
+#' thus it is possible to make trajectories with speeds sensitive
+#' to time (harmonic movements or accelerations)
+#' or location (slower speeds in the center).
+#'
+#' If there is only single speed function, all speeds are evaluated
+#' in one call. If there is more than one speed function,
+#' speeds are evaluated individually, one object at time.
+#'
+#' Speed functions follow the template
+#' `function(time, moment)` and return a vector of speeds.
+#' They should be written to handle both vector calculations
+#' (moment is a tibble with multiple rows) and individual values
+#' (moment is a one-row-tibble).
+#'
+#' Speed functions could be introduced via `settings$speed` or
+#' added directly into the `speed` column of the initial position tibble.
+#' When passing functions they should be encapsulated in a list
+#' (`settings$speed <- c(my_fun)`).
+#'
+#' @return numerical vector of speed
+#' @export
+#'
+#' @examples
+#' f2 <- function(time, moment) {
+#'   5 + cos(time) + (moment$object %% 2) * 2
+#' }
+#' sett_move <-
+#'   new_settings(
+#'     speed = c(f2), xlim = c(-9, 9), ylim = c(-9, 9),
+#'     bounce_off_square = FALSE,
+#'     bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
+#'   )
+#' moment <- position8c %>% add_random_direction()
+#' #tt <- make_random_trajectory(
+#' #   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+cur_speed <- function(moment, cur_time = NULL) {
+  if (is.numeric(moment$speed)) {
+    s <- moment$speed
+  }
+  if (is.list(moment$speed)) {
+    # single speed function?
+    if (length(unique(moment$speed)) ==  1) {
+      f <- moment$speed[[1]]
+      s <- f(cur_time, moment)
+    }
+    # multiple speed functions?
+    s <- numeric(nrow(moment))
+    for (i in 1:length(s)) {
+      f <- moment$speed[[i]]
+      s[i] <- f(cur_time, moment[i, ])
+    }
+  }
+  s
+}
+
+#' Extrapolates object positions based on current state and time
+#'
+#' Intended for the use in custom step functions.
+#'
+#' @param moment Position tibble with extra columns `direction` and `speed`
+#' @param timestep How far into future should the objects move (linearly)
+#' @param cur_time Current time, for time-sensitive speed functions (e.g., accelerations)
+#' @param new_time New time value for the returned object. If omitted, it is calculated automatically as `cur_time + timestep`
+#'
+#' @return Another moment - position tibble with
+#' extra columns `direction` and `speed` corresponding to time_next
+#' @export
+#'
+#' @examples
+#' moment <- position8c %>% add_random_direction() %>%
+#'   dplyr::mutate(speed = 3)
+#' extrapolate_moment(moment, 0.1, 0)
+extrapolate_moment <- function(moment, timestep, cur_time, new_time = NULL) {
+  s <- cur_speed(moment, cur_time)
+  if (is.null(new_time)) new_time <- cur_time + timestep
+  moment_next <- moment %>%
+    dplyr::mutate(
+      x = .data$x + cos(.data$direction) * s * timestep,
+      y = .data$y + sin(.data$direction) * s * timestep,
+      time = new_time
+    )
+  moment_next
+}
+
 #' Create random trajectory
 #'
 #' @param start Position tibble with starting configuration
@@ -135,16 +228,12 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
 #' @family step_functions
 step_direct <- function(moment, time_next, settings) {
   # moment is position + direction + speed
-  # just goint in the same direction, possibly bouncing
+  # just going in the same direction, possibly bouncing
   time_now <- moment$time[1]
   timestep <- time_next - time_now
 
-  moment_next <- moment %>%
-    dplyr::mutate(
-      x = .data$x + cos(.data$direction) * .data$speed * timestep,
-      y = .data$y + sin(.data$direction) * .data$speed * timestep,
-      time = time_next
-    )
+  moment_next <-
+    extrapolate_moment(moment, timestep, time_now, time_next)
   moment_next
 }
 
