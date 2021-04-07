@@ -283,7 +283,7 @@ step_zigzag <- function(moment, time_next, settings,
 #' Step function for wait-and-move movement pattern
 #'
 #' Using this step function, objects changes between two states - moving and waiting.
-#' After each state, new state is sampled with given proabability.
+#' After each state, new state is sampled with given probability.
 #'
 #' When probability of waiting is set to zero, objects move in a same way as in  \link{step_zigzag} step function
 #'
@@ -409,7 +409,7 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
 }
 
 
-#' Calculate collsion vectors for two objects
+#' Calculate collision vectors for two objects
 #'
 #' @param v1 Velocity vector of object 1. Two-dimensional numeric vector.
 #' @param v2 Velocity vector of object 2. Two-dimensional numeric vector.
