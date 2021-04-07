@@ -1,3 +1,5 @@
+# motrack 0.3.0
+
 # motrack 0.2.0
 
 * Added trajectory simplification. You can generate trajectory with 100 frames per second and later remove datapoints, which can be interpolated.
