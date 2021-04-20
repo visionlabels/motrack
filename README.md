@@ -31,6 +31,8 @@ devtools::install_github("jirilukavsky/motrack")
 Let us create a trajectory or two:
 
 ``` r
+library(motrack) #load the package
+
 # we want objects starting 
 # more further from the arena border and further from each other
 sett_generate <-
