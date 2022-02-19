@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 735 852"
+   version="1.1"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview156"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="658.5"
+     inkscape:cy="344"
+     inkscape:window-width="2288"
+     inkscape:window-height="1240"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs11">
+    <style
+       id="style9">.cls-1{fill:#f2f2f2;}.cls-2{fill:#fff;}.cls-3{fill:#e6b35a;}.cls-4{fill:#424242;}.cls-5{fill:#51a7f9;}.cls-6{fill:#a8d6ff;}.cls-7{fill:#0365c0;}.cls-8{fill:#164f86;}.cls-9{fill:#002452;}.cls-10{fill:#000643;}</style>
+  </defs>
+  <title
+     id="title13">ggplot2</title>
+  <path
+     class="cls-2"
+     d="M207.78,313.21a38.82,38.82,0,0,1,3.15,4.16l.35-.23V207q75.68.07,151.57.08h2.81v89.85l3.5,5.05v-94.9q77,0,154-.09v45.44a38.13,38.13,0,0,1,3.5-2.2V207q52.13,0,104.14-.15c0-.5,0-1,0-1.5,0-.67,0-1.34.08-2q-52,.09-104.18.16V127.72l-3.5-2v77.78q-76.95.09-154,.09V36.78l-1.67-1h0l-1.83,1.06V203.57q-77.27,0-154.38-.08V126l-3.5,2v75.45q-65.31-.06-130.34-.2l-6,3.49q68,.14,136.38.21Z"
+     id="path79" />
+  <path
+     class="cls-3"
+     d="M367,633.9c.29-.29.61-.59.94-.89h-.26C367.49,633.31,367.26,633.61,367,633.9Z"
+     id="path85" />
+  <path
+     class="cls-4"
+     d="m 146.34,355.89 -3.55,2.34 -73.94,48.69 a 38.24,38.24 0 0 1 6.39,10.16 l 79.32,-52.22 a 38.77,38.77 0 0 1 -8.22,-8.97 z"
+     id="path87" />
+  <path
+     class="cls-4"
+     d="m 445.14,385.82 71.45,45.55 a 38.55,38.55 0 0 0 -6.53,10.07 l -71.38,-45.51 a 38.61,38.61 0 0 0 6.46,-10.11 z"
+     id="path89" />
+  <path
+     class="cls-4"
+     d="m 215.93,175.28 80.74,53.16 a 38.83,38.83 0 0 0 -6.6,10 l -78.79,-51.89 -0.35,-0.23 a 38.51,38.51 0 0 0 5,-11.04 z"
+     id="path95" />
+  <path
+     class="cls-5"
+     d="M215.93,328.44a38.67,38.67,0,1,0-70.33,30.29c.24.39.49.78.74,1.16a38.67,38.67,0,0,0,69.59-31.45Z"
+     id="path97"
+     style="fill:#000000;fill-opacity:1" />
+  <path
+     class="cls-7"
+     d="M364,249.26a38.81,38.81,0,1,0-12,27.95A38.67,38.67,0,0,0,364,249.26Z"
+     id="path101"
+     style="fill:#000000;fill-opacity:1" />
+  <path
+     class="cls-8"
+     d="M438.68,345.33A38.67,38.67,0,0,0,373,358.71c-.38,1.14-.71,2.31-1,3.5a38.68,38.68,0,1,0,75.35,0c-.28-1.19-.6-2.35-1-3.5s-.79-2.2-1.26-3.27A38.61,38.61,0,0,0,438.68,345.33Z"
+     id="path103"
+     style="fill:#000000;fill-opacity:1" />
+  <path
+     class="cls-4"
+     d="M705.61,196.21,427.81,35.82,367.5,1,307.19,35.82,29.37,196.22.09,213.13V637.38l29.28,16.91L310.65,816.68l56.85,32.83,56.85-32.83L705.61,654.3l29.3-16.92V213.13ZM682.22,635l-3.5,2-64.37,37.16-6.06,3.5-81.62,47.12-3.5,2-154,88.92-1.67,1-1.83-1L211.28,726.49l-3.5-2L126.7,677.66l-6.07-3.5L54.69,636.08l-3.5-2L29.37,621.47V231l21.82-12.6,3.5-2,16.71-9.65,6-3.49L207.78,128l3.5-2L365.66,36.88l1.83-1.06h0l1.67,1,154,88.92,3.5,2,107.4,62,66.57,38.43,5,2.88V621.47Z"
+     id="path109" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:128px;line-height:1.25;font-family:sans-serif;fill:#424242;fill-opacity:1;stroke:none"
+     x="115.5079"
+     y="591.56427"
+     id="text8168"><tspan
+       sodipodi:role="line"
+       id="tspan8166"
+       x="115.5079"
+       y="591.56427"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:128px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#424242;fill-opacity:1">motrack</tspan></text>
+  <path
+     style="fill:none;stroke:#424242;stroke-width:11;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 560.72852,292.05155 76.61169,44.4055 -75.87973,49.04123 v 0"
+     id="path15658"
+     sodipodi:nodetypes="cccc" />
+  <path
+     class="cls-9"
+     d="M584,284.07a38.67,38.67,0,0,0-57.37-33.85,38.13,38.13,0,0,0-3.5,2.2,38.64,38.64,0,0,0,0,63.3,38,38,0,0,0,3.5,2.19A38.66,38.66,0,0,0,584,284.07Z"
+     id="path105"
+     style="fill:#000000;fill-opacity:1" />
+</svg>
