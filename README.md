@@ -11,7 +11,7 @@ keep track of the them while they move ([demo](https://youtu.be/lAQM4QJRYV8)).
 
 This package allows researcher to generate object trajectories, 
 visualize them and export them for experiments.
-The trajectory and position data are in `tibble` format for easy further manipulation.
+The trajectory and position data are in `tibble` format for easy further manipulation. 
 
 ## Installation
 
