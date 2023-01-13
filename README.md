@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/jirilukavsky/motrack.svg?branch=master)](https://travis-ci.com/jirilukavsky/motrack)
+[![R-CMD-check](https://github.com/jirilukavsky/motrack/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jirilukavsky/motrack/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 [Multiple Object Tracking](http://www.scholarpedia.org/article/Multiple_object_tracking) 
