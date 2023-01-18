@@ -1,7 +1,7 @@
 # motrack - tools for Multiple Object Tracking
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/jirilukavsky/motrack/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jirilukavsky/motrack/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/visionlabels/motrack/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/visionlabels/motrack/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 [Multiple Object Tracking](http://www.scholarpedia.org/article/Multiple_object_tracking) 
@@ -23,7 +23,7 @@ You can install the current version from GitHub with following code:
 if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
 
 # Install the stable verion from GitHub
-devtools::install_github("jirilukavsky/motrack")
+devtools::install_github("visionlabels/motrack")
 ```
 
 ## Example
