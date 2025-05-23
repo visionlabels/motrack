@@ -1,120 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://visionlabels.github.io/motrack/404.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/index.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/add_random_direction.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/annotate_aperture.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/annotate_image.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/bounce_off_circle.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/bounce_off_others.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/bounce_off_square.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/bounce_pair.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/cur_speed.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/default_settings.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/extrapolate_moment.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/generate_positions_random.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/is_distance_at_least.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/is_valid_position.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/is_valid_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/load_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/make_random_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/motrack.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/new_settings.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/plot_position.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/plot_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/position8c.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/render_trajectory_video.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/save_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/simplify_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/step_direct.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/step_vonmises.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/step_waitandmove.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/step_zigzag.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/tidyeval.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/trajectory8c.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/validate_object_direction_change.html</loc>
-  </url>
-  <url>
-    <loc>https://visionlabels.github.io/motrack/reference/validate_trajectory.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://visionlabels.github.io/motrack/404.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/LICENSE.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/authors.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/index.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/news/index.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/add_random_direction.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/annotate_aperture.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/annotate_image.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_circle.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_others.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_square.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/bounce_pair.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/cur_speed.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/default_settings.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/extrapolate_moment.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/generate_positions_random.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/index.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/is_distance_at_least.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/is_valid_position.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/is_valid_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/load_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/make_random_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/motrack.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/new_settings.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/pipe.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/plot_position.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/plot_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/position8c.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/render_trajectory_video.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/save_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/simplify_trajectory.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/step_direct.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/step_vonmises.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/step_waitandmove.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/step_zigzag.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/tidyeval.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/trajectory8c.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/validate_object_direction_change.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/validate_trajectory.html</loc></url>
 </urlset>
+
