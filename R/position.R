@@ -1,4 +1,3 @@
-
 #' Is the object a valid position
 #'
 #' The function tests an object (tibble) for several requirements:
@@ -138,7 +137,10 @@ new_settings <- function(.from = NULL, ...) {
   # what names are valid?
   default_settings_list <- default_settings()
   optional_parameters <- c("speed", "arena_inside_radius")
-  valid_parameter_names <- union(names(default_settings_list), optional_parameters)
+  valid_parameter_names <- union(
+    names(default_settings_list),
+    optional_parameters
+  )
   # is parent provided?
   if (is.null(.from)) {
     parent <- default_settings()
@@ -188,7 +190,11 @@ new_settings <- function(.from = NULL, ...) {
 #' # when starting positions should be further from borders
 #' pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 generate_positions_random <- function(
-                                      n, settings, check_distance = T, border_distance = 0) {
+  n,
+  settings,
+  check_distance = T,
+  border_distance = 0
+) {
   xlim <- settings$xlim
   ylim <- settings$ylim
   stopifnot(!is.null(xlim))
@@ -203,17 +209,21 @@ generate_positions_random <- function(
       shapes[shape],
       square = random_coords_in_square(
         n,
-        xlim[1] + border_distance, xlim[2] - border_distance,
-        ylim[1] + border_distance, ylim[2] - border_distance
+        xlim[1] + border_distance,
+        xlim[2] - border_distance,
+        ylim[1] + border_distance,
+        ylim[2] - border_distance
       ),
       circle = random_coords_in_circle(
         n,
-        mean(xlim), mean(ylim),
+        mean(xlim),
+        mean(ylim),
         sum(c(diff(xlim), diff(ylim)) / 4) - border_distance
       ),
       donut = random_coords_in_donut(
         n,
-        mean(xlim), mean(ylim),
+        mean(xlim),
+        mean(ylim),
         sum(c(diff(xlim), diff(ylim)) / 4) - border_distance,
         settings$arena_inside_radius + border_distance
       )
@@ -301,11 +311,13 @@ random_coords_in_donut <- function(n, xmid, ymid, radius_out, radius_in) {
 #' plot_position(pos, default_settings(), 1:4)
 #' pos$fill <- rainbow(8)
 #' plot_position(pos, default_settings())
-plot_position <- function(position,
-                          settings = default_settings(),
-                          targets = NULL,
-                          background_annotation = NULL,
-                          foreground_annotation = NULL) {
+plot_position <- function(
+  position,
+  settings = default_settings(),
+  targets = NULL,
+  background_annotation = NULL,
+  foreground_annotation = NULL
+) {
   # check extra parameters
   if (!is.null(targets)) {
     # passed in call
@@ -329,15 +341,21 @@ plot_position <- function(position,
     ggplot2::ggplot(
       position,
       ggplot2::aes_string(
-        x0 = "x", y0 = "y",
-        fill = "I(fill)", colour = "I(border)"
+        x0 = "x",
+        y0 = "y",
+        fill = "I(fill)",
+        colour = "I(border)"
       )
     ) +
     background_annotation +
     ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
     foreground_annotation +
     ggplot2::theme(panel.background = ggplot2::element_blank()) +
-    ggplot2::coord_fixed(xlim = settings$xlim, ylim = settings$ylim, expand = F) +
+    ggplot2::coord_fixed(
+      xlim = settings$xlim,
+      ylim = settings$ylim,
+      expand = F
+    ) +
     NULL
   if (settings$show_labels) {
     fig <-
@@ -350,21 +368,33 @@ plot_position <- function(position,
   if (settings$arena_border) {
     if (settings$arena_shape == "square") {
       fig <- fig +
-        ggplot2::annotate("segment",
-          x = settings$xlim[1], y = settings$ylim[1],
-          xend = settings$xlim[1], yend = settings$ylim[2]
+        ggplot2::annotate(
+          "segment",
+          x = settings$xlim[1],
+          y = settings$ylim[1],
+          xend = settings$xlim[1],
+          yend = settings$ylim[2]
         ) +
-        ggplot2::annotate("segment",
-          x = settings$xlim[1], y = settings$ylim[1],
-          xend = settings$xlim[2], yend = settings$ylim[1]
+        ggplot2::annotate(
+          "segment",
+          x = settings$xlim[1],
+          y = settings$ylim[1],
+          xend = settings$xlim[2],
+          yend = settings$ylim[1]
         ) +
-        ggplot2::annotate("segment",
-          x = settings$xlim[1], y = settings$ylim[2],
-          xend = settings$xlim[2], yend = settings$ylim[2]
+        ggplot2::annotate(
+          "segment",
+          x = settings$xlim[1],
+          y = settings$ylim[2],
+          xend = settings$xlim[2],
+          yend = settings$ylim[2]
         ) +
-        ggplot2::annotate("segment",
-          x = settings$xlim[2], y = settings$ylim[1],
-          xend = settings$xlim[2], yend = settings$ylim[2]
+        ggplot2::annotate(
+          "segment",
+          x = settings$xlim[2],
+          y = settings$ylim[1],
+          xend = settings$xlim[2],
+          yend = settings$ylim[2]
         )
     }
     if (settings$arena_shape == "circle") {
@@ -374,7 +404,13 @@ plot_position <- function(position,
       fig <- fig +
         ggforce::geom_circle(
           ggplot2::aes_string(
-            x0 = "xx", y0 = "yy", r = "rr", fill = "NULL", border = "NULL", colour = "I(\"black\")"),
+            x0 = "xx",
+            y0 = "yy",
+            r = "rr",
+            fill = "NULL",
+            border = "NULL",
+            colour = "I(\"black\")"
+          ),
           data = tibble::tibble(xx = xm, yy = ym, rr = rr)
         )
     }
@@ -385,9 +421,17 @@ plot_position <- function(position,
       fig <- fig +
         ggforce::geom_circle(
           ggplot2::aes_string(
-            x0 = "xx", y0 = "yy", r = "rr", fill = "NULL", border = "NULL", colour = "I(\"black\")"),
+            x0 = "xx",
+            y0 = "yy",
+            r = "rr",
+            fill = "NULL",
+            border = "NULL",
+            colour = "I(\"black\")"
+          ),
           data = tibble::tibble(
-            xx = c(xm, xm), yy = c(ym, ym), rr = c(rr, settings$arena_inside_radius)
+            xx = c(xm, xm),
+            yy = c(ym, ym),
+            rr = c(rr, settings$arena_inside_radius)
           )
         )
     }
@@ -419,9 +463,15 @@ annotate_image <- function(image, xlim = NULL, ylim = NULL, settings = NULL) {
   }
   if (is.character(image)) {
     pic <- png::readPNG(image)
-    image <- grid::rasterGrob(pic, interpolate=FALSE)
+    image <- grid::rasterGrob(pic, interpolate = FALSE)
   }
-  ggplot2::annotation_custom(image, xmin = xlim[1], ymin = ylim[1], xmax = xlim[2], ymax = ylim[2])
+  ggplot2::annotation_custom(
+    image,
+    xmin = xlim[1],
+    ymin = ylim[1],
+    xmax = xlim[2],
+    ymax = ylim[2]
+  )
 }
 
 #' Draw bitmap image as ggplot2 annotation and cover rest with filled colour
@@ -446,11 +496,16 @@ annotate_image <- function(image, xlim = NULL, ylim = NULL, settings = NULL) {
 #'   foreground_annotation = annotate_aperture(
 #'     image, xlim_in = c(-6, 6), ylim_in = c(-6, 6), colour = "white", settings = s
 #' ))
-annotate_aperture <- function(image,
-                              xlim_in, ylim_in,
-                              colour, alpha = 1,
-                              xlim_out = NULL, ylim_out = NULL,
-                              settings = NULL) {
+annotate_aperture <- function(
+  image,
+  xlim_in,
+  ylim_in,
+  colour,
+  alpha = 1,
+  xlim_out = NULL,
+  ylim_out = NULL,
+  settings = NULL
+) {
   if (is.null(xlim_out)) {
     xlim_out <- settings$xlim
   }
@@ -459,23 +514,26 @@ annotate_aperture <- function(image,
   }
   if (is.character(image)) {
     pic <- png::readPNG(image)
-    image <- grid::rasterGrob(pic, interpolate=FALSE)
+    image <- grid::rasterGrob(pic, interpolate = FALSE)
   }
   list(
     ggplot2::annotation_custom(
-      image, xmin = xlim_in[1], ymin = ylim_in[1], xmax = xlim_in[2], ymax = ylim_in[2]
+      image,
+      xmin = xlim_in[1],
+      ymin = ylim_in[1],
+      xmax = xlim_in[2],
+      ymax = ylim_in[2]
     ),
     # bottom, top, left, right
     ggplot2::annotate(
       "rect",
       xmin = c(xlim_out[1], xlim_out[1], xlim_out[1], xlim_in[2]),
-      ymin = c(ylim_out[1], ylim_in[2],  ylim_in[1],  ylim_in[1]),
-      xmax = c(xlim_out[2], xlim_out[2], xlim_in[1],  xlim_out[2]),
-      ymax = c(ylim_in[1],  ylim_out[2], ylim_in[2],  ylim_in[2]),
+      ymin = c(ylim_out[1], ylim_in[2], ylim_in[1], ylim_in[1]),
+      xmax = c(xlim_out[2], xlim_out[2], xlim_in[1], xlim_out[2]),
+      ymax = c(ylim_in[1], ylim_out[2], ylim_in[2], ylim_in[2]),
       fill = rep(colour, 4),
       colour = rep(NA, 4),
       alpha = rep(alpha, 4)
     )
   )
 }
-

@@ -104,7 +104,7 @@ cur_speed <- function(moment, cur_time = NULL) {
   }
   if (is.list(moment$speed)) {
     # single speed function?
-    if (length(unique(moment$speed)) ==  1) {
+    if (length(unique(moment$speed)) == 1) {
       f <- moment$speed[[1]]
       s <- f(cur_time, moment)
     }
@@ -170,7 +170,13 @@ extrapolate_moment <- function(moment, timestep, cur_time, new_time = NULL) {
 #' tt <- make_random_trajectory(
 #'   moment, seq(0, 8, by = 0.1), sett_move, step_direct
 #' )
-make_random_trajectory <- function(start, timescale, settings, step_function, ...) {
+make_random_trajectory <- function(
+  start,
+  timescale,
+  settings,
+  step_function,
+  ...
+) {
   # take start position
   # are direction/speed present? - add if not
   # make step
@@ -191,10 +197,12 @@ make_random_trajectory <- function(start, timescale, settings, step_function, ..
   #   - time (from timescale)
   #   - position (embedded moment tibble for each time)
   # Later we expand tibbles into trajectory tibble
-  moment_tbl <- tibble::tibble(time = timescale, position = list(tibble::tibble))
+  moment_tbl <- tibble::tibble(
+    time = timescale,
+    position = list(tibble::tibble)
+  )
   moment_tbl$position[[1]] <- moment
   for (i in 2:length(timescale)) {
-
     if (settings$bounce_off_square) {
       moment <- bounce_off_square(moment, timescale[i], settings)
     }
@@ -251,8 +259,13 @@ step_direct <- function(moment, time_next, settings) {
 #' extra columns `direction`, `speed` and `ttt` corresponding to time_next
 #' @export
 #' @family step_functions
-step_zigzag <- function(moment, time_next, settings,
-                        ttt = c(.5, 1.5), syncstart = F) {
+step_zigzag <- function(
+  moment,
+  time_next,
+  settings,
+  ttt = c(.5, 1.5),
+  syncstart = F
+) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # ttt is time-to-turn - when object should turn randomly
@@ -300,8 +313,15 @@ step_zigzag <- function(moment, time_next, settings,
 #' extra columns `direction`, `speed`, `speed_scale`, `ttc` and `mov_state`
 #' @export
 #' @family step_functions
-step_waitandmove <- function(moment, time_next, settings,
-                             move_time = c(.5, 1.5), wait_time = c(.2,.5), wait_prob = 0.1, syncstart = F) {
+step_waitandmove <- function(
+  moment,
+  time_next,
+  settings,
+  move_time = c(.5, 1.5),
+  wait_time = c(.2, .5),
+  wait_prob = 0.1,
+  syncstart = F
+) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # move_time is time of movement
@@ -310,21 +330,45 @@ step_waitandmove <- function(moment, time_next, settings,
   n <- nrow(moment)
 
   if (!"mov_state" %in% names(moment)) {
-
-    moment <- moment %>% dplyr::mutate(mov_state = sample(c("w","m"),n, replace = T, prob = c(wait_prob,1-wait_prob)))
+    moment <- moment %>%
+      dplyr::mutate(
+        mov_state = sample(
+          c("w", "m"),
+          n,
+          replace = T,
+          prob = c(wait_prob, 1 - wait_prob)
+        )
+      )
   }
   # all objects are in certain state
-  if (!"ttc" %in% names(moment)) { # first call, time to change should be defined based on the their state
+  if (!"ttc" %in% names(moment)) {
+    # first call, time to change should be defined based on the their state
     times <- vector(mode = "numeric", length = n)
-    times[moment$mov_state == "m"] <- stats::runif(sum(moment$mov_state == "m"), min = move_time[1], max = move_time[2])
-    times[moment$mov_state == "w"] <- stats::runif(sum(moment$mov_state == "w"), min = wait_time[1], max = wait_time[2])
-    if(any(is.na(times))) {
+    times[moment$mov_state == "m"] <- stats::runif(
+      sum(moment$mov_state == "m"),
+      min = move_time[1],
+      max = move_time[2]
+    )
+    times[moment$mov_state == "w"] <- stats::runif(
+      sum(moment$mov_state == "w"),
+      min = wait_time[1],
+      max = wait_time[2]
+    )
+    if (any(is.na(times))) {
       stop("Missing movement state")
     }
     if (!syncstart) {
       passed <- vector(mode = "numeric", length = n)
-      passed[moment$mov_state == "m"] <- stats::runif(sum(moment$mov_state == "m"), min = 0, max = move_time[1])
-      passed[moment$mov_state == "w"] <- stats::runif(sum(moment$mov_state == "w"), min = 0, max = wait_time[1])
+      passed[moment$mov_state == "m"] <- stats::runif(
+        sum(moment$mov_state == "m"),
+        min = 0,
+        max = move_time[1]
+      )
+      passed[moment$mov_state == "w"] <- stats::runif(
+        sum(moment$mov_state == "w"),
+        min = 0,
+        max = wait_time[1]
+      )
       times <- times - passed
     }
 
@@ -342,9 +386,15 @@ step_waitandmove <- function(moment, time_next, settings,
   # which objects should change their state
   which_change <- moment$ttc < time_next
 
-  if (any(which_change)) { # we have some objects that need to change their behavior
+  if (any(which_change)) {
+    # we have some objects that need to change their behavior
     # change state of objects
-    moment$mov_state[which_change] <- sample(c("w","m"),sum(which_change), replace = T, prob = c(wait_prob,1-wait_prob))
+    moment$mov_state[which_change] <- sample(
+      c("w", "m"),
+      sum(which_change),
+      replace = T,
+      prob = c(wait_prob, 1 - wait_prob)
+    )
 
     # do computations separately for moving and waiting objects
     which_wait <- which_change & moment$mov_state == "w"
@@ -367,7 +417,6 @@ step_waitandmove <- function(moment, time_next, settings,
     moment$ttc[which_wait] <- # for waiting objects sample from wait_time range
       moment$ttc[which_wait] +
       stats::runif(sum(which_wait), min = wait_time[1], max = wait_time[2])
-
   }
   # compute new positions, scaling factors sets, whether objects are moving or not
   moment_next <-
@@ -394,15 +443,12 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
   n <- nrow(moment)
   moment_next <- moment %>%
     dplyr::mutate(
-      direction =
-        (.data$direction +
-          as.numeric(
-            circular::rvonmises(n,
-              circular::circular(0),
-              kappa = kappa
-            )
-          )) %%
-          (2 * pi))
+      direction = (.data$direction +
+        as.numeric(
+          circular::rvonmises(n, circular::circular(0), kappa = kappa)
+        )) %%
+        (2 * pi)
+    )
   moment_next <-
     extrapolate_moment(moment_next, timestep, time_now, time_next)
   moment_next
@@ -437,10 +483,12 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
 bounce_pair <- function(v1, v2, x1, x2) {
   v1n <- v1 -
     sum((v1 - v2) * (x1 - x2)) /
-      sum((x1 - x2)^2) * (x1 - x2)
+      sum((x1 - x2)^2) *
+      (x1 - x2)
   v2n <- v2 -
     sum((v2 - v1) * (x2 - x1)) /
-      sum((x2 - x1)^2) * (x2 - x1)
+      sum((x2 - x1)^2) *
+      (x2 - x1)
   list(v1n, v2n)
 }
 
@@ -467,7 +515,8 @@ bounce_off_others <- function(moment, time_next, settings) {
     dplyr::select(.data$x, .data$y) %>%
     as.matrix() %>%
     stats::dist()
-  groups <- stats::cutree(stats::hclust(dist_next, "single"),
+  groups <- stats::cutree(
+    stats::hclust(dist_next, "single"),
     h = settings$min_distance
   )
   for (i in unique(groups)) {
@@ -495,7 +544,8 @@ bounce_off_others <- function(moment, time_next, settings) {
     }
     if (n_involved > 2) {
       # reverse directions
-      moment$direction[involved] <- (moment$direction[involved] + pi) %% (2 * pi)
+      moment$direction[involved] <- (moment$direction[involved] + pi) %%
+        (2 * pi)
     }
   }
   moment
@@ -563,7 +613,8 @@ bounce_off_circle <- function(moment, time_next, settings) {
   beyond_border <- sqrt(
     (moment_next$x - midpoint_x)^2 +
       (moment_next$y - midpoint_y)^2
-  ) > arena_radius
+  ) >
+    arena_radius
   vector_to_midpoint <-
     (atan2(moment$y - midpoint_y, moment$x - midpoint_x) + pi) %% (2 * pi)
   jitter <- stats::runif(
@@ -594,7 +645,8 @@ bounce_off_inside <- function(moment, time_next, settings) {
   beyond_inside_border <- sqrt(
     (moment_next$x - midpoint_x)^2 +
       (moment_next$y - midpoint_y)^2
-  ) < settings$arena_inside_radius
+  ) <
+    settings$arena_inside_radius
   vector_to_midpoint <-
     (atan2(moment$y - midpoint_y, moment$x - midpoint_x)) %% (2 * pi)
   jitter <- stats::runif(
@@ -603,7 +655,8 @@ bounce_off_inside <- function(moment, time_next, settings) {
     max = settings$circle_bounce_jitter
   )
   moment$direction[beyond_inside_border] <-
-    (vector_to_midpoint[beyond_inside_border] + jitter[beyond_inside_border]) %% (2 * pi)
+    (vector_to_midpoint[beyond_inside_border] + jitter[beyond_inside_border]) %%
+    (2 * pi)
   moment
 }
 
@@ -660,23 +713,29 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
         direction = atan2(.data$dy, .data$dx) %% (2 * pi)
       )
   }
-  large_or_na <- function(x) { is.na(x) | abs(x) > eps}
-  small_and_not_na <- function(x) { !is.na(x) & abs(x) < eps}
+  large_or_na <- function(x) {
+    is.na(x) | abs(x) > eps
+  }
+  small_and_not_na <- function(x) {
+    !is.na(x) & abs(x) < eps
+  }
   find_critical_timepoints <- function(t1) {
     # assumptions: one object, time sorted, direction column
     # keep: 1st, last, direction changes
     t1 %>%
-      dplyr::mutate(keep = large_or_na(.data$direction - dplyr::lag(.data$direction)))
+      dplyr::mutate(
+        keep = large_or_na(.data$direction - dplyr::lag(.data$direction))
+      )
   }
-  events <- trajectory %>% dplyr::group_split(.data$object) %>%
+  events <- trajectory %>%
+    dplyr::group_split(.data$object) %>%
     purrr::map(~ dplyr::arrange(., .data$time)) %>%
     purrr::map(~ calculate_direction_for_single_object(.)) %>%
     purrr::map(~ find_critical_timepoints(.)) %>%
     purrr::map(~ dplyr::filter(., .data$keep)) %>%
     dplyr::bind_rows()
   if (snapshot)
-    trajectory %>% dplyr::filter(.data$time %in% unique(events$time))
-  else
+    trajectory %>% dplyr::filter(.data$time %in% unique(events$time)) else
     # we return only the original columns
     events %>% dplyr::select(tidyselect::all_of(names(trajectory)))
 }
@@ -706,12 +765,15 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
 #'
 #' # first four objects are targets
 #' plot_trajectory(trajectory8c, default_settings(), 1:4)
-plot_trajectory <- function(trajectory,
-                            settings = default_settings(),
-                            targets = NULL,
-                            ...) {
+plot_trajectory <- function(
+  trajectory,
+  settings = default_settings(),
+  targets = NULL,
+  ...
+) {
   start_time <- min(trajectory$time)
-  fig <- plot_position(trajectory %>% dplyr::filter(.data$time == start_time),
+  fig <- plot_position(
+    trajectory %>% dplyr::filter(.data$time == start_time),
     settings = settings,
     targets = targets,
     ...
@@ -719,8 +781,11 @@ plot_trajectory <- function(trajectory,
   fig <- fig +
     ggplot2::geom_path(
       ggplot2::aes_string(
-        x = "x", y = "y", group = "object",
-        fill = NULL, colour = NULL
+        x = "x",
+        y = "y",
+        group = "object",
+        fill = NULL,
+        colour = NULL
       ),
       data = trajectory %>% dplyr::arrange(.data$time),
       colour = "blue"
@@ -791,11 +856,14 @@ estimate_position_for_time <- function(trajectory, timepoint) {
 #'   targets = 1:4
 #' )
 #' }
-render_trajectory_video <- function(filename,
-                                    trajectory,
-                                    settings = default_settings(),
-                                    targets = NULL,
-                                    outdir = getwd(), ...) {
+render_trajectory_video <- function(
+  filename,
+  trajectory,
+  settings = default_settings(),
+  targets = NULL,
+  outdir = getwd(),
+  ...
+) {
   # animation parameters
   fps <- 25
   video_width <- 600
@@ -807,27 +875,35 @@ render_trajectory_video <- function(filename,
   tmax <- max(trajectory$time)
   tlen <- tmax - tmin
   oopt <- animation::ani.options(
-    interval = 1 / fps, nmax = fps * tlen * 2,
-    outdir = outdir, ani.width = video_width, ani.height = video_height
+    interval = 1 / fps,
+    nmax = fps * tlen * 2,
+    outdir = outdir,
+    ani.width = video_width,
+    ani.height = video_height
   )
-  animation::saveVideo({
-    # preview
-    for (i in 1:(preview_seconds * fps)) {
-      p <- estimate_position_for_time(trajectory, tmin)
-      fig <- plot_position(p, settings = settings, targets = targets, ...)
-      print(fig)
-    }
-    for (tim in seq(tmin, tmax, 1 / fps)) {
-      p <- estimate_position_for_time(trajectory, tim)
-      fig <- plot_position(p, settings = settings, targets = targets, ...)
-      print(fig)
-    }
-    for (i in 1:(respond_seconds * fps)) {
-      p <- estimate_position_for_time(trajectory, tmax)
-      fig <- plot_position(p, settings = settings, targets = targets, ...)
-      print(fig)
-    }
-  }, video.name = filename, other.opts = "-pix_fmt yuv420p -b 600k", clean = T)
+  animation::saveVideo(
+    {
+      # preview
+      for (i in 1:(preview_seconds * fps)) {
+        p <- estimate_position_for_time(trajectory, tmin)
+        fig <- plot_position(p, settings = settings, targets = targets, ...)
+        print(fig)
+      }
+      for (tim in seq(tmin, tmax, 1 / fps)) {
+        p <- estimate_position_for_time(trajectory, tim)
+        fig <- plot_position(p, settings = settings, targets = targets, ...)
+        print(fig)
+      }
+      for (i in 1:(respond_seconds * fps)) {
+        p <- estimate_position_for_time(trajectory, tmax)
+        fig <- plot_position(p, settings = settings, targets = targets, ...)
+        print(fig)
+      }
+    },
+    video.name = filename,
+    other.opts = "-pix_fmt yuv420p -b 600k",
+    clean = T
+  )
   animation::ani.options(oopt)
 }
 
@@ -884,7 +960,8 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
 load_trajectory <- function(filename, delim = ",", ...) {
   input <- readr::read_delim(
     filename,
-    delim = delim, col_names = F,
+    delim = delim,
+    col_names = F,
     col_types = readr::cols(.default = readr::col_double()),
     ...
   )
@@ -900,7 +977,8 @@ load_trajectory <- function(filename, delim = ",", ...) {
     object = rep(1:n, each = nrow(input)),
     x = xx,
     y = yy
-  ) %>% dplyr::arrange(.data$time)
+  ) %>%
+    dplyr::arrange(.data$time)
   trajectory
 }
 
@@ -935,17 +1013,21 @@ load_trajectory <- function(filename, delim = ",", ...) {
 #'
 #' @examples
 #' validate_trajectory(trajectory8c)
-validate_trajectory <- function(trajectory, change_angle = 30,
-                                min_interval = 0.2,
-                                min_distance = 1,
-                                verbose = F) {
+validate_trajectory <- function(
+  trajectory,
+  change_angle = 30,
+  min_interval = 0.2,
+  min_distance = 1,
+  verbose = F
+) {
   # for each object we will check the direction changes and report if there
   # are two changes too soon after each other
   crit1 <- T
   for (o in unique(trajectory$object)) {
     ok <- validate_object_direction_change(
       trajectory %>% dplyr::filter(.data$object == o),
-      change_angle, min_interval
+      change_angle,
+      min_interval
     )
     if (!ok) crit1 <- F
   }
@@ -975,9 +1057,11 @@ validate_trajectory <- function(trajectory, change_angle = 30,
 #' @return Logical. `TRUE` if each pair of consecutive bounces
 #' is separated by at least `min_interval` seconds.
 #' @export
-validate_object_direction_change <- function(trajectory1,
-                                             change_angle = 30,
-                                             min_interval = 0.2) {
+validate_object_direction_change <- function(
+  trajectory1,
+  change_angle = 30,
+  min_interval = 0.2
+) {
   # check direction changes in single object
   trajectory1 <- trajectory1 %>% dplyr::arrange(.data$time)
   change_min <- change_angle / 360 * 2 * pi
@@ -991,9 +1075,8 @@ validate_object_direction_change <- function(trajectory1,
   tr <- tr %>%
     dplyr::mutate(
       dirchange = (.data$direction - dplyr::lag(.data$direction)) %% (2 * pi),
-      dirchange_large =
-        (.data$dirchange > change_min) &
-          (.data$dirchange < 2 * pi - change_min)
+      dirchange_large = (.data$dirchange > change_min) &
+        (.data$dirchange < 2 * pi - change_min)
     )
   changed <- tr %>%
     dplyr::filter(.data$dirchange_large) %>%
