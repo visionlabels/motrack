@@ -47,13 +47,60 @@ generate_positions_grid <- function(n, step = 1, offset = 0, settings) {
 
 
 step_vortex <- function(moment, time_next, settings) {
+  time_now <- moment$time[1]
+  timestep <- time_next - time_now
+  global_speed <- settings$speed
   # limits are valid locations (xlim...)
-  offset <- c(0, 0)
+  offset <- c(sample(0:1, 1), sample(0:1, 1))
   v <- coords_to_vortex_coords(moment, offset, settings)
   vm <- calculate_incomplete_vortex(v, offset, settings)
-  v <- v |> left_join(vm, by = join_by(vx, vy))
-  # TODO continue here with directions
+  v <- v |>
+    left_join(vm, by = join_by(vx, vy)) |>
+    mutate(direction = NA_real_, speed = global_speed)
+  v <- v |> select(-vx, -vy)
+  # The orientation guide using clock analogy:
+  # 0 = 3 o'clock, pi/2 = 12 o'clock, pi = 9 o'clock, 3*pi/2 = 6 o'clock
+  dir_E <- 0
+  dir_N <- pi / 2
+  dir_S <- (3 * pi / 2)
+  dir_W <- pi
+  for (r in seq_len(nrow(v))) {
+    if (v$ok[r]) {
+      # we can make circles
+      if ((v$pos[r] == "NW") && (v$rot[r] == "CW")) v$direction[r] <- dir_E
+      if ((v$pos[r] == "SW") && (v$rot[r] == "CW")) v$direction[r] <- dir_N
+      if ((v$pos[r] == "SE") && (v$rot[r] == "CW")) v$direction[r] <- dir_W
+      if ((v$pos[r] == "NE") && (v$rot[r] == "CW")) v$direction[r] <- dir_S
+
+      if ((v$pos[r] == "NW") && (v$rot[r] == "CCW")) v$direction[r] <- dir_S
+      if ((v$pos[r] == "SW") && (v$rot[r] == "CCW")) v$direction[r] <- dir_E
+      if ((v$pos[r] == "SE") && (v$rot[r] == "CCW")) v$direction[r] <- dir_N
+      if ((v$pos[r] == "NE") && (v$rot[r] == "CCW")) v$direction[r] <- dir_W
+    }
+    if (v$ok_horizontal[r] && !v$ok_vertical[r]) {
+      # we can only go W and E
+      v$direction[r] <- dir_E
+      v$speed[r] <- 0
+    }
+    if (!v$ok_horizontal[r] && v$ok_vertical[r]) {
+      # we can only go N and S
+      v$direction[r] <- dir_E
+      v$speed[r] <- 0
+    }
+    if (!v$ok_horizontal[r] && !v$ok_vertical[r]) {
+      # we cannot go anywhere
+      v$direction[r] <- dir_E
+      v$speed[r] <- 0
+    }
+  }
+
+  moment_next <-
+    extrapolate_moment(v, timestep, time_now, time_next) |>
+    mutate(x = round(x), y = round(y))
+  moment_next |>
+    select(x, y, object, time)
 }
+step_vortex(p1 |> mutate(time = 0, speed = 1), 1, s)
 
 coords_to_vortex_coords <- function(moment, offset, settings) {
   m <- moment |>
@@ -82,7 +129,7 @@ calculate_incomplete_vortex <- function(moment, offset, settings) {
       ok_horizontal = ((v$vy * 2 - offset[2]) >= settings$ylim[1]) &
         ((v$vy * 2 - offset[2] + 1) <= settings$ylim[2]),
       ok = ok_vertical & ok_horizontal,
-      rotation = sample(c("CW", "CCW"), n(), replace = TRUE)
+      rot = sample(c("CW", "CCW"), n(), replace = TRUE)
     )
 
   v
@@ -159,5 +206,7 @@ p1 <- expand_grid(x = c(-2, 0, 2), y = c(-2, 0, 2)) |>
 plot_position(p1)
 timescale <- seq(0, 8 * 4, by = 1)
 t1 <- make_random_trajectory(p1, timescale, s, step_grid)
+t1 <- make_random_trajectory(p1, timescale, s, step_vortex)
 plot_trajectory(t1)
+render_trajectory_video("test.mp4", t1, s)
 max(t1$x)
