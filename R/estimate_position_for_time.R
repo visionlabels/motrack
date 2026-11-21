@@ -1,3 +1,26 @@
+#' Estimate object positions at an arbitrary time
+#'
+#' Linearly interpolates the `x` and `y` coordinates of all objects between
+#' the two nearest time points of the trajectory (the closest one at or
+#' before `timepoint` and the closest one at or after it). If `timepoint`
+#' coincides with a time point in the trajectory, that row set is returned
+#' unchanged. Used by [render_trajectory_video()] to get positions between
+#' recorded frames, e.g., for trajectories reduced by
+#' [simplify_trajectory()].
+#'
+#' Only `x` and `y` are interpolated. All other columns (including `time`,
+#' `direction` and `speed`) are taken from the earlier time point, so `time`
+#' of the result is *not* `timepoint`.
+#'
+#' @param trajectory Trajectory tibble with `time`, `object`, `x` and `y`
+#'   columns. All objects must be present at both neighbouring time points.
+#' @param timepoint Single time value, between the minimum and the maximum
+#'   `time` of `trajectory` (inclusive). Otherwise the function stops
+#'   with an error.
+#'
+#' @return Tibble with one row per object (ordered by `object`) and
+#'   interpolated `x` and `y`.
+#' @noRd
 estimate_position_for_time <- function(trajectory, timepoint) {
   stopifnot(timepoint <= max(trajectory$time))
   stopifnot(timepoint >= min(trajectory$time))

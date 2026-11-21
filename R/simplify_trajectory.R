@@ -23,6 +23,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(ggplot2)
 #' sett_move <-
 #' new_settings(
@@ -41,6 +42,7 @@
 #' # number of lines reduced down to:
 #' nrow(tt2) / nrow(tt1)
 #' nrow(tt3) / nrow(tt1)
+#' }
 simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   # calculate directions
   calculate_direction_for_single_object <- function(t1) {
