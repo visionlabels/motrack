@@ -35,7 +35,7 @@ Another moment - position tibble with extra columns `direction` and
 ## Examples
 
 ``` r
-moment <- position8c %>% add_random_direction() %>%
+moment <- position8c |> add_random_direction() |>
   dplyr::mutate(speed = 3)
 extrapolate_moment(moment, 0.1, 0)
 #> # A tibble: 8 × 6

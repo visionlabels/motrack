@@ -78,7 +78,7 @@ to calculate next position in sequence</p></dd>
 <span class="r-in"><span>    bounce_off_square <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>    bounce_off_circle <span class="op">=</span> <span class="cn">TRUE</span>, circle_bounce_jitter <span class="op">=</span> <span class="va">pi</span> <span class="op">/</span> <span class="fl">6</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">moment</span> <span class="op">&lt;-</span> <span class="va">position8c</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="add_random_direction.html">add_random_direction</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">moment</span> <span class="op">&lt;-</span> <span class="va">position8c</span> <span class="op">|&gt;</span> <span class="fu"><a href="add_random_direction.html">add_random_direction</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu">make_random_trajectory</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">moment</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, <span class="va">sett_move</span>, <span class="va">step_direct</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

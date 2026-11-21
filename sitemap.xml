@@ -9,6 +9,7 @@
 <url><loc>https://visionlabels.github.io/motrack/reference/annotate_aperture.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/annotate_image.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_circle.html</loc></url>
+<url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_inside.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_others.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/bounce_off_square.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/bounce_pair.html</loc></url>
@@ -26,7 +27,6 @@
 <url><loc>https://visionlabels.github.io/motrack/reference/make_random_trajectory.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/motrack-package.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/new_settings.html</loc></url>
-<url><loc>https://visionlabels.github.io/motrack/reference/pipe.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/plot_position.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/plot_trajectory.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/position8c.html</loc></url>
@@ -39,7 +39,6 @@
 <url><loc>https://visionlabels.github.io/motrack/reference/step_vortex.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/step_waitandmove.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/step_zigzag.html</loc></url>
-<url><loc>https://visionlabels.github.io/motrack/reference/tidyeval.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/trajectory8c.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/validate_object_direction_change.html</loc></url>
 <url><loc>https://visionlabels.github.io/motrack/reference/validate_trajectory.html</loc></url>

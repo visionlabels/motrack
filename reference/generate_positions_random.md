@@ -11,7 +11,12 @@ helps to put objects more together in the beginning.
 ## Usage
 
 ``` r
-generate_positions_random(n, settings, check_distance = T, border_distance = 0)
+generate_positions_random(
+  n,
+  settings,
+  check_distance = TRUE,
+  border_distance = 0
+)
 ```
 
 ## Arguments

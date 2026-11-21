@@ -12,7 +12,7 @@ validate_trajectory(
   change_angle = 30,
   min_interval = 0.2,
   min_distance = 1,
-  verbose = F
+  verbose = FALSE
 )
 ```
 

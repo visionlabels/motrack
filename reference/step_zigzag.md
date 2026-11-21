@@ -5,7 +5,7 @@ Zigzag trajectory step function
 ## Usage
 
 ``` r
-step_zigzag(moment, time_next, settings, ttt = c(0.5, 1.5), syncstart = F)
+step_zigzag(moment, time_next, settings, ttt = c(0.5, 1.5), syncstart = FALSE)
 ```
 
 ## Arguments

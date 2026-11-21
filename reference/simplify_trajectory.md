@@ -39,6 +39,7 @@ which could be interpolated are omitted.
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 library(ggplot2)
 sett_move <-
 new_settings(
@@ -46,7 +47,7 @@ new_settings(
   bounce_off_square = FALSE,
   bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 )
-moment <- position8c %>% add_random_direction()
+moment <- position8c |> add_random_direction()
 tt1 <- make_random_trajectory(
   moment, seq(0, 8, by = 0.1), sett_move, step_direct)
 tt2 <- simplify_trajectory(tt1, snapshot = TRUE)
@@ -54,10 +55,8 @@ tt3 <- simplify_trajectory(tt1, snapshot = FALSE)
 ggplot(tt1, aes(x = x, y = y, group = object)) +
   geom_path() +
   geom_point(data = tt2)
-
 # number of lines reduced down to:
 nrow(tt2) / nrow(tt1)
-#> [1] 0.3333333
 nrow(tt3) / nrow(tt1)
-#> [1] 0.08024691
+} # }
 ```

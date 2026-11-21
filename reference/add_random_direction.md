@@ -24,7 +24,7 @@ same tibble with extra direction column
 ## Examples
 
 ``` r
-position8c %>% add_random_direction()
+position8c |> add_random_direction()
 #> # A tibble: 8 × 4
 #>   object      x      y direction
 #>    <int>  <dbl>  <dbl>     <dbl>

@@ -11,6 +11,8 @@
   : Draw bitmap image as ggplot2 annotation
 - [`bounce_off_circle()`](https://visionlabels.github.io/motrack/reference/bounce_off_circle.md)
   : Check for circular arena bouncing and recalculate directions
+- [`bounce_off_inside()`](https://visionlabels.github.io/motrack/reference/bounce_off_inside.md)
+  : Check for bouncing off the inner circle of a donut arena
 - [`bounce_off_others()`](https://visionlabels.github.io/motrack/reference/bounce_off_others.md)
   : Check for inter-object bouncing and recalculate directions
 - [`bounce_off_square()`](https://visionlabels.github.io/motrack/reference/bounce_off_square.md)

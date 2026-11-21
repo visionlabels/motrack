@@ -12,7 +12,7 @@ step_waitandmove(
   move_time = c(0.5, 1.5),
   wait_time = c(0.2, 0.5),
   wait_prob = 0.1,
-  syncstart = F
+  syncstart = FALSE
 )
 ```
 
