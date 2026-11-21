@@ -16,7 +16,7 @@ RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Imports: 
     circular,
-    dplyr,
+    dplyr (>= 1.1.0),
     ggforce,
     ggplot2,
     tibble,
@@ -28,10 +28,11 @@ Imports:
     png,
     grid,
     purrr,
-    tidyselect
+    tidyselect,
+    stats
 Suggests: 
     testthat,
     roxygen2
 URL: https://visionlabels.github.io/motrack/
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)

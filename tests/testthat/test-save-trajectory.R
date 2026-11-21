@@ -1,5 +1,3 @@
-context("File input/output")
-
 filename <- tempfile(fileext = ".csv")
 
 save_trajectory(trajectory8c, filename)

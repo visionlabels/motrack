@@ -17,7 +17,7 @@
 is_distance_at_least <- function(position, min_distance) {
   dist_triangle <-
     position |>
-    dplyr::select(.data$x, .data$y) |>
+    dplyr::select("x", "y") |>
     as.matrix() |>
     stats::dist()
   all(dist_triangle >= min_distance)

@@ -1,5 +1,3 @@
-context("Pairwise collision calculations")
-
 v1 <- c(0, 1)
 v2 <- c(0, -1)
 v3 <- c(0, -2)
@@ -9,7 +7,7 @@ a30 <- pi / 6
 a60 <- pi / 3
 # known directions, 0 = right, counter-clockwise, y > 0 is up
 v210 <- c(cos(210 * pi / 180), sin(210 * pi / 180))
-v030 <- c(cos( 30 * pi / 180), sin( 30 * pi / 180))
+v030 <- c(cos(30 * pi / 180), sin(30 * pi / 180))
 
 test_that("Direct collision swaps velocities", {
   # same velocity
@@ -25,13 +23,13 @@ test_that("Direct collision swaps velocities", {
 test_that("Velocity is retained when two objects with same velocities collide", {
   # same vectors, only change angle/distance
   b <- bounce_pair(v1, v2, c(0, 0), c(0, 1))
-  expect_equal(sum(b[[1]] ^ 2), 1, tolerance = .001)
+  expect_equal(sum(b[[1]]^2), 1, tolerance = .001)
   b <- bounce_pair(v1, v2, c(0, 0), c(0, 2))
-  expect_equal(sum(b[[1]] ^ 2), 1, tolerance = .001)
+  expect_equal(sum(b[[1]]^2), 1, tolerance = .001)
   b <- bounce_pair(v1, v2, c(0, 0), c(0, 3))
-  expect_equal(sum(b[[1]] ^ 2), 1, tolerance = .001)
+  expect_equal(sum(b[[1]]^2), 1, tolerance = .001)
   b <- bounce_pair(v1, v2, c(0, 0), c(0, 4))
-  expect_equal(sum(b[[1]] ^ 2), 1, tolerance = .001)
+  expect_equal(sum(b[[1]]^2), 1, tolerance = .001)
 })
 
 

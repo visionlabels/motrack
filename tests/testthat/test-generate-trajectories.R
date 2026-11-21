@@ -111,21 +111,21 @@ test_that("Objects do not move outside the circular arena", {
   expect_true(min(trajectory_v$y) >= min(ylims_move))
 })
 
-time_diff_d <- trajectory_d %>%
-  dplyr::group_by(object) %>%
-  dplyr::mutate(past_time = lag(time), time_diff = time - past_time) %>%
+time_diff_d <- trajectory_d |>
+  dplyr::group_by(object) |>
+  dplyr::mutate(past_time = dplyr::lag(time), time_diff = time - past_time) |>
   dplyr::pull(time_diff)
-time_diff_z <- trajectory_z %>%
-  dplyr::group_by(object) %>%
-  dplyr::mutate(past_time = lag(time), time_diff = time - past_time) %>%
+time_diff_z <- trajectory_z |>
+  dplyr::group_by(object) |>
+  dplyr::mutate(past_time = dplyr::lag(time), time_diff = time - past_time) |>
   dplyr::pull(time_diff)
-time_diff_v <- trajectory_v %>%
-  dplyr::group_by(object) %>%
-  dplyr::mutate(past_time = lag(time), time_diff = time - past_time) %>%
+time_diff_v <- trajectory_v |>
+  dplyr::group_by(object) |>
+  dplyr::mutate(past_time = dplyr::lag(time), time_diff = time - past_time) |>
   dplyr::pull(time_diff)
-time_diff_wm <- trajectory_wm %>%
-  dplyr::group_by(object) %>%
-  dplyr::mutate(past_time = lag(time), time_diff = time - past_time) %>%
+time_diff_wm <- trajectory_wm |>
+  dplyr::group_by(object) |>
+  dplyr::mutate(past_time = dplyr::lag(time), time_diff = time - past_time) |>
   dplyr::pull(time_diff)
 
 test_that("Time coordinates are set properly", {
