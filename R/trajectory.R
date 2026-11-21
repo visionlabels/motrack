@@ -944,13 +944,12 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   xpart <- trajectory |>
     dplyr::select("time", "object", "x") |>
     tidyr::spread(key = .data$object, value = .data$x) |>
-    dplyr::select(sort(names(.))) |>
     dplyr::select("time", dplyr::everything())
   ypart <- trajectory |>
     dplyr::select("time", "object", "y") |>
     tidyr::spread(key = .data$object, value = .data$y) |>
-    dplyr::select(sort(names(.))) |>
     dplyr::select("time", dplyr::everything())
+
   n <- ncol(xpart) - 1
   stopifnot(all(names(xpart) == names(ypart)))
   stopifnot(all(xpart$time == ypart$time))
