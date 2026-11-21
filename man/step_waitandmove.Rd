@@ -46,7 +46,9 @@ When probability of waiting is set to zero, objects move in a same way as in  \c
 \seealso{
 Other step_functions: 
 \code{\link{step_direct}()},
+\code{\link{step_grid}()},
 \code{\link{step_vonmises}()},
+\code{\link{step_vortex}()},
 \code{\link{step_zigzag}()}
 }
 \concept{step_functions}

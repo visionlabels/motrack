@@ -22,7 +22,9 @@ Simple trajectory step function
 }
 \seealso{
 Other step_functions: 
+\code{\link{step_grid}()},
 \code{\link{step_vonmises}()},
+\code{\link{step_vortex}()},
 \code{\link{step_waitandmove}()},
 \code{\link{step_zigzag}()}
 }
