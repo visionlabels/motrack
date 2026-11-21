@@ -22,8 +22,8 @@ is_valid_trajectory <- function(trajectory) {
   # requirements:
   # 1) each object*time only once
   # 2) no missing x, y
-  tmp <- trajectory %>%
-    dplyr::group_by(.data$object, .data$time) %>%
+  tmp <- trajectory |>
+    dplyr::group_by(.data$object, .data$time) |>
     dplyr::summarise(n = dplyr::n())
   all(tmp$n == 1) &&
     all(!is.na(trajectory$x)) &&
@@ -46,16 +46,17 @@ is_valid_trajectory <- function(trajectory) {
 #' @export
 #'
 #' @examples
-#' position8c %>% add_random_direction()
+#' position8c |> add_random_direction()
 add_random_direction <- function(position) {
-  position %>%
+  position |>
     dplyr::mutate(direction = stats::runif(dplyr::n(), 0, 2 * pi))
 }
 
 #' Get current speed
 #'
 #' If speeds are constant, returns `speed` column of the `moment`.
-#' If speeds are functions, evaluates the speed functions and returns their results.
+#' If speeds are functions, evaluates the speed functions and
+#' returns their results.
 #'
 #' @param moment Position tibble with extra columns `direction` and `speed`
 #' @param cur_time Current time
@@ -93,7 +94,7 @@ add_random_direction <- function(position) {
 #'     bounce_off_square = FALSE,
 #'     bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 #'   )
-#' moment <- position8c %>% add_random_direction()
+#' moment <- position8c |> add_random_direction()
 #' tt <- make_random_trajectory(
 #'    moment, seq(0, 8, by = 0.1), sett_move, step_direct
 #' )
@@ -123,21 +124,25 @@ cur_speed <- function(moment, cur_time = NULL) {
 #'
 #' @param moment Position tibble with extra columns `direction` and `speed`
 #' @param timestep How far into future should the objects move (linearly)
-#' @param cur_time Current time, for time-sensitive speed functions (e.g., accelerations)
-#' @param new_time New time value for the returned object. If omitted, it is calculated automatically as `cur_time + timestep`
+#' @param cur_time Current time, for time-sensitive speed functions
+#'        (e.g., accelerations)
+#' @param new_time New time value for the returned object.
+#'        If omitted, it is calculated automatically as `cur_time + timestep`
 #'
 #' @return Another moment - position tibble with
 #' extra columns `direction` and `speed` corresponding to time_next
 #' @export
 #'
 #' @examples
-#' moment <- position8c %>% add_random_direction() %>%
+#' moment <- position8c |> add_random_direction() |>
 #'   dplyr::mutate(speed = 3)
 #' extrapolate_moment(moment, 0.1, 0)
 extrapolate_moment <- function(moment, timestep, cur_time, new_time = NULL) {
   s <- cur_speed(moment, cur_time)
-  if (is.null(new_time)) new_time <- cur_time + timestep
-  moment_next <- moment %>%
+  if (is.null(new_time)) {
+    new_time <- cur_time + timestep
+  }
+  moment_next <- moment |>
     dplyr::mutate(
       x = .data$x + cos(.data$direction) * s * timestep,
       y = .data$y + sin(.data$direction) * s * timestep,
@@ -165,7 +170,7 @@ extrapolate_moment <- function(moment, timestep, cur_time, new_time = NULL) {
 #'     bounce_off_square = FALSE,
 #'     bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 #'   )
-#' moment <- position8c %>% add_random_direction()
+#' moment <- position8c |> add_random_direction()
 #' tt <- make_random_trajectory(
 #'   moment, seq(0, 8, by = 0.1), sett_move, step_direct
 #' )
@@ -183,13 +188,13 @@ make_random_trajectory <- function(
   if ("direction" %in% names(start)) {
     moment <- start
   } else {
-    moment <- start %>% add_random_direction()
+    moment <- start |> add_random_direction()
   }
 
   if (!"speed" %in% names(moment)) {
-    moment <- moment %>% dplyr::mutate(speed = settings$speed)
+    moment <- moment |> dplyr::mutate(speed = settings$speed)
   }
-  moment <- moment %>% dplyr::mutate(time = timescale[1])
+  moment <- moment |> dplyr::mutate(time = timescale[1])
 
   # moment is position + direction + speed
   # here we have tibble of moments with two columns:
@@ -219,8 +224,8 @@ make_random_trajectory <- function(
     moment_tbl$position[[i]] <- moment_next
     moment <- moment_next
   }
-  moment_tbl %>%
-    dplyr::select(-.data$time) %>%
+  moment_tbl |>
+    dplyr::select(-"time") |>
     tidyr::unnest(cols = c("position"))
 }
 
@@ -275,7 +280,7 @@ step_zigzag <- function(
       passed <- stats::runif(n, min = 0, max = ttt[1])
       times <- times - passed
     }
-    moment <- moment %>% dplyr::mutate(ttt = times)
+    moment <- moment |> dplyr::mutate(ttt = times)
   }
   which_turn <- moment$ttt < time_next
   if (any(which_turn)) {
@@ -294,10 +299,12 @@ step_zigzag <- function(
 #'
 #' Step function for wait-and-move movement pattern
 #'
-#' Using this step function, objects changes between two states - moving and waiting.
+#' Using this step function, objects changes between
+#' two states - moving and waiting.
 #' After each state, new state is sampled with given probability.
 #'
-#' When probability of waiting is set to zero, objects move in a same way as in  [step_zigzag()] step function
+#' When probability of waiting is set to zero,
+#' objects move in a same way as in  [step_zigzag()] step function
 #'
 #' @param moment Position tibble with extra columns `direction` and `speed`
 #' @param time_next Next time step to predict
@@ -319,22 +326,24 @@ step_waitandmove <- function(
   move_time = c(.5, 1.5),
   wait_time = c(.2, .5),
   wait_prob = 0.1,
-  syncstart = F
+  syncstart = FALSE
 ) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # move_time is time of movement
   # wait_time is time os waiting
-  # after this time, object change its statewhen object change their state (either move of wait)
+  # after this time,
+  # object change its statewhen object change their state
+  # (either move of wait)
   n <- nrow(moment)
 
   if (!"mov_state" %in% names(moment)) {
-    moment <- moment %>%
+    moment <- moment |>
       dplyr::mutate(
         mov_state = sample(
           c("w", "m"),
           n,
-          replace = T,
+          replace = TRUE,
           prob = c(wait_prob, 1 - wait_prob)
         )
       )
@@ -371,7 +380,7 @@ step_waitandmove <- function(
       times <- times - passed
     }
 
-    moment <- moment %>% dplyr::mutate(ttc = times)
+    moment <- moment |> dplyr::mutate(ttc = times)
   }
   # all objects have defined time to change
 
@@ -379,7 +388,7 @@ step_waitandmove <- function(
     speed_scales <- vector(mode = "numeric", length = n)
     speed_scales[moment$mov_state == "m"] <- 1
     speed_scales[moment$mov_state == "w"] <- 0
-    moment <- moment %>% dplyr::mutate(speed_scale = speed_scales)
+    moment <- moment |> dplyr::mutate(speed_scale = speed_scales)
   }
 
   # which objects should change their state
@@ -391,7 +400,7 @@ step_waitandmove <- function(
     moment$mov_state[which_change] <- sample(
       c("w", "m"),
       sum(which_change),
-      replace = T,
+      replace = TRUE,
       prob = c(wait_prob, 1 - wait_prob)
     )
 
@@ -400,7 +409,10 @@ step_waitandmove <- function(
     which_move <- which_change & moment$mov_state == "m"
 
     # set speed scaling factor
-    # this is basically a trick, how to stop object from moving, we are not modifying the speed, as it could be used by other functions
+    # this is basically a trick,
+    # how to stop object from moving,
+    # we are not modifying the speed,
+    # as it could be used by other functions
     moment$speed_scale[which_wait] <- 0 # stop the movement
     moment$speed_scale[which_move] <- 1 # start the movement
 
@@ -417,7 +429,8 @@ step_waitandmove <- function(
       moment$ttc[which_wait] +
       stats::runif(sum(which_wait), min = wait_time[1], max = wait_time[2])
   }
-  # compute new positions, scaling factors sets, whether objects are moving or not
+  # compute new positions, scaling factors sets,
+  # whether objects are moving or not
   moment_next <-
     extrapolate_moment(moment, timestep, time_now, time_next)
   moment_next
@@ -440,7 +453,7 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   n <- nrow(moment)
-  moment_next <- moment %>%
+  moment_next <- moment |>
     dplyr::mutate(
       direction = (.data$direction +
         as.numeric(
@@ -458,8 +471,10 @@ step_vonmises <- function(moment, time_next, settings, kappa) {
 #'
 #' @param v1 Velocity vector of object 1. Two-dimensional numeric vector.
 #' @param v2 Velocity vector of object 2. Two-dimensional numeric vector.
-#' @param x1 Center of object 1 in the time collision. Two-dimensional numeric vector.
-#' @param x2 Center of object 1 in the time collision. Two-dimensional numeric vector.
+#' @param x1 Center of object 1 in the time collision.
+#'           Two-dimensional numeric vector.
+#' @param x2 Center of object 1 in the time collision.
+#'           Two-dimensional numeric vector.
 #'
 #' @return list of the two two-dimension vectors - new speed for object 1 and 2
 #' @export
@@ -504,15 +519,15 @@ bounce_off_others <- function(moment, time_next, settings) {
   time_now <- moment$time[1]
   timestep <- time_next - time_now
   # extrapolate future
-  moment <- moment %>% dplyr::arrange(.data$object)
+  moment <- moment |> dplyr::arrange(.data$object)
 
   moment_next <-
     extrapolate_moment(moment, timestep, time_now, NA)
 
   # check distances
-  dist_next <- moment_next %>%
-    dplyr::select(.data$x, .data$y) %>%
-    as.matrix() %>%
+  dist_next <- moment_next |>
+    dplyr::select("x", "y") |>
+    as.matrix() |>
     stats::dist()
   groups <- stats::cutree(
     stats::hclust(dist_next, "single"),
@@ -671,7 +686,8 @@ bounce_off_inside <- function(moment, time_next, settings) {
 #' The resulting trajectory has irregular timeline.
 #' If `snapshot`, then for each
 #' timepoint positions of all objects are included
-#' (i.e., also positions for these, which could be interpolated for a given timepoint).
+#' (i.e., also positions for these,
+#' which could be interpolated for a given timepoint).
 #' If `snapshot == FALSE`, then only the data for changing points are included.
 #'
 #' @param trajectory Trajectory data
@@ -690,7 +706,7 @@ bounce_off_inside <- function(moment, time_next, settings) {
 #'   bounce_off_square = FALSE,
 #'   bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 #' )
-#' moment <- position8c %>% add_random_direction()
+#' moment <- position8c |> add_random_direction()
 #' tt1 <- make_random_trajectory(
 #'   moment, seq(0, 8, by = 0.1), sett_move, step_direct)
 #' tt2 <- simplify_trajectory(tt1, snapshot = TRUE)
@@ -704,8 +720,8 @@ bounce_off_inside <- function(moment, time_next, settings) {
 simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   # calculate directions
   calculate_direction_for_single_object <- function(t1) {
-    t1 %>%
-      dplyr::arrange(.data$time) %>%
+    t1 |>
+      dplyr::arrange(.data$time) |>
       dplyr::mutate(
         dx = dplyr::lead(.data$x) - .data$x,
         dy = dplyr::lead(.data$y) - .data$y,
@@ -721,22 +737,24 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   find_critical_timepoints <- function(t1) {
     # assumptions: one object, time sorted, direction column
     # keep: 1st, last, direction changes
-    t1 %>%
+    t1 |>
       dplyr::mutate(
         keep = large_or_na(.data$direction - dplyr::lag(.data$direction))
       )
   }
-  events <- trajectory %>%
-    dplyr::group_split(.data$object) %>%
-    purrr::map(~ dplyr::arrange(., .data$time)) %>%
-    purrr::map(~ calculate_direction_for_single_object(.)) %>%
-    purrr::map(~ find_critical_timepoints(.)) %>%
-    purrr::map(~ dplyr::filter(., .data$keep)) %>%
+  events <- trajectory |>
+    dplyr::group_split(.data$object) |>
+    purrr::map(~ dplyr::arrange(., .data$time)) |>
+    purrr::map(~ calculate_direction_for_single_object(.)) |>
+    purrr::map(~ find_critical_timepoints(.)) |>
+    purrr::map(~ dplyr::filter(., .data$keep)) |>
     dplyr::bind_rows()
-  if (snapshot)
-    trajectory %>% dplyr::filter(.data$time %in% unique(events$time)) else
+  if (snapshot) {
+    trajectory |> dplyr::filter(.data$time %in% unique(events$time))
+  } else {
     # we return only the original columns
-    events %>% dplyr::select(tidyselect::all_of(names(trajectory)))
+    events |> dplyr::select(tidyselect::all_of(names(trajectory)))
+  }
 }
 
 
@@ -772,7 +790,7 @@ plot_trajectory <- function(
 ) {
   start_time <- min(trajectory$time)
   fig <- plot_position(
-    trajectory %>% dplyr::filter(.data$time == start_time),
+    trajectory |> dplyr::filter(.data$time == start_time),
     settings = settings,
     targets = targets,
     ...
@@ -786,7 +804,7 @@ plot_trajectory <- function(
         fill = NULL,
         colour = NULL
       ),
-      data = trajectory %>% dplyr::arrange(.data$time),
+      data = trajectory |> dplyr::arrange(.data$time),
       colour = "blue"
     ) +
     ggforce::geom_circle(ggplot2::aes_string(r = "settings$r")) +
@@ -809,11 +827,11 @@ estimate_position_for_time <- function(trajectory, timepoint) {
   time_all <- sort(unique(trajectory$time))
   time_before <- max(time_all[time_all <= timepoint])
   time_after <- min(time_all[time_all >= timepoint])
-  points_before <- trajectory %>%
-    dplyr::filter(.data$time == time_before) %>%
+  points_before <- trajectory |>
+    dplyr::filter(.data$time == time_before) |>
     dplyr::arrange(.data$object)
-  points_after <- trajectory %>%
-    dplyr::filter(.data$time == time_after) %>%
+  points_after <- trajectory |>
+    dplyr::filter(.data$time == time_after) |>
     dplyr::arrange(.data$object)
   stopifnot(all(points_before$object == points_after$object))
   if (time_after > time_before) {
@@ -910,7 +928,8 @@ render_trajectory_video <- function(
 #'
 #' @param trajectory Trajectory object to be exported to file
 #' @param filename Name of output file (e.g., .csv)
-#' @param delim Single character used to separate fields within a record. Default `","`
+#' @param delim Single character used to separate fields
+#' within a record. Default `","`
 #'
 #' @return Invisibly returns data in wide format (as saved to file)
 #' @export
@@ -922,16 +941,16 @@ render_trajectory_video <- function(
 save_trajectory <- function(trajectory, filename, delim = ",") {
   # we aim for format: time, x1, y1, x2, y2 ...
   # sort them by names and check if same
-  xpart <- trajectory %>%
-    dplyr::select(.data$time, .data$object, .data$x) %>%
-    tidyr::spread(key = .data$object, value = .data$x) %>%
-    dplyr::select(sort(names(.))) %>%
-    dplyr::select(.data$time, dplyr::everything())
-  ypart <- trajectory %>%
-    dplyr::select(.data$time, .data$object, .data$y) %>%
-    tidyr::spread(key = .data$object, value = .data$y) %>%
-    dplyr::select(sort(names(.))) %>%
-    dplyr::select(.data$time, dplyr::everything())
+  xpart <- trajectory |>
+    dplyr::select("time", "object", "x") |>
+    tidyr::spread(key = .data$object, value = .data$x) |>
+    dplyr::select(sort(names(.))) |>
+    dplyr::select("time", dplyr::everything())
+  ypart <- trajectory |>
+    dplyr::select("time", "object", "y") |>
+    tidyr::spread(key = .data$object, value = .data$y) |>
+    dplyr::select(sort(names(.))) |>
+    dplyr::select("time", dplyr::everything())
   n <- ncol(xpart) - 1
   stopifnot(all(names(xpart) == names(ypart)))
   stopifnot(all(xpart$time == ypart$time))
@@ -939,19 +958,20 @@ save_trajectory <- function(trajectory, filename, delim = ",") {
   names(ypart)[-1] <- stringr::str_c("y", names(ypart)[-1])
   merged <- dplyr::bind_cols(
     xpart,
-    ypart %>% dplyr::select(-.data$time)
+    ypart |> dplyr::select(-"time")
   )
   column_index <- c(1:n, 0.5 + (1:n))
-  merged <- merged %>% dplyr::select(c(1, order(column_index) + 1))
-  merged %>%
-    readr::write_delim(filename, delim = delim, col_names = F)
+  merged <- merged |> dplyr::select(c(1, order(column_index) + 1))
+  merged |>
+    readr::write_delim(filename, delim = delim, col_names = FALSE)
   invisible(merged)
 }
 
 #' Load trajectory from file
 #'
 #' @param filename Name of input file (e.g., .csv)
-#' @param delim Single character used to separate fields within a record. Default `","`
+#' @param delim Single character used to separate fields within a record.
+#'        Default `","`
 #' @param ... Parameters passed to `readr::read_delim`
 #'
 #' @return Tibble trajectory object with loaded data
@@ -960,7 +980,7 @@ load_trajectory <- function(filename, delim = ",", ...) {
   input <- readr::read_delim(
     filename,
     delim = delim,
-    col_names = F,
+    col_names = FALSE,
     col_types = readr::cols(.default = readr::col_double()),
     ...
   )
@@ -972,11 +992,11 @@ load_trajectory <- function(filename, delim = ",", ...) {
   xx <- as.numeric(as.matrix(input[, xcols]))
   yy <- as.numeric(as.matrix(input[, ycols]))
   trajectory <- tibble::tibble(
-    time = rep(input %>% dplyr::select(1) %>% dplyr::pull(), n),
+    time = rep(input |> dplyr::select(1) |> dplyr::pull(), n),
     object = rep(1:n, each = nrow(input)),
     x = xx,
     y = yy
-  ) %>%
+  ) |>
     dplyr::arrange(.data$time)
   trajectory
 }
@@ -1016,26 +1036,26 @@ validate_trajectory <- function(
   change_angle = 30,
   min_interval = 0.2,
   min_distance = 1,
-  verbose = F
+  verbose = FALSE
 ) {
   # for each object we will check the direction changes and report if there
   # are two changes too soon after each other
-  crit1 <- T
+  crit1 <- TRUE
   for (o in unique(trajectory$object)) {
     ok <- validate_object_direction_change(
-      trajectory %>% dplyr::filter(.data$object == o),
+      trajectory |> dplyr::filter(.data$object == o),
       change_angle,
       min_interval
     )
-    if (!ok) crit1 <- F
+    if (!ok) crit1 <- FALSE
   }
-  crit2 <- T
+  crit2 <- TRUE
   for (tt in unique(trajectory$time)) {
     ok <- is_distance_at_least(
-      trajectory %>% dplyr::filter(.data$time == tt),
+      trajectory |> dplyr::filter(.data$time == tt),
       min_distance
     )
-    if (!ok) crit2 <- F
+    if (!ok) crit2 <- FALSE
   }
   if (verbose) {
     message(ifelse(crit1, "PASS", "FAIL"), " Sudden motion changes")
@@ -1061,23 +1081,23 @@ validate_object_direction_change <- function(
   min_interval = 0.2
 ) {
   # check direction changes in single object
-  trajectory1 <- trajectory1 %>% dplyr::arrange(.data$time)
+  trajectory1 <- trajectory1 |> dplyr::arrange(.data$time)
   change_min <- change_angle / 360 * 2 * pi
   # calculate direction
-  tr <- trajectory1 %>%
+  tr <- trajectory1 |>
     dplyr::mutate(
       dx = dplyr::lead(.data$x) - .data$x,
       dy = dplyr::lead(.data$y) - .data$y,
       direction = atan2(.data$dy, .data$dx) %% (2 * pi)
     )
-  tr <- tr %>%
+  tr <- tr |>
     dplyr::mutate(
       dirchange = (.data$direction - dplyr::lag(.data$direction)) %% (2 * pi),
       dirchange_large = (.data$dirchange > change_min) &
         (.data$dirchange < 2 * pi - change_min)
     )
-  changed <- tr %>%
-    dplyr::filter(.data$dirchange_large) %>%
+  changed <- tr |>
+    dplyr::filter(.data$dirchange_large) |>
     dplyr::arrange(.data$time)
   all(diff(changed$time) >= min_interval)
 }
