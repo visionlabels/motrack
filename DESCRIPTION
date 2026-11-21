@@ -33,3 +33,5 @@ Suggests:
     testthat,
     roxygen2
 URL: https://visionlabels.github.io/motrack/
+Depends: 
+    R (>= 3.5)
