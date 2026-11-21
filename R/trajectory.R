@@ -1,12 +1,11 @@
 #' Is the object a valid trajectory
 #'
 #' The function tests an object (tibble) for several requirements:
-#' \itemize{
-#'   \item columns `time`, `object`, `x` and `y` are present.
-#'   \item `object` column contains unique values
-#'   \item no value missing in `x` and `y`
-#'   \item `x` and `y` are numeric
-#' }
+#'
+#' - columns `time`, `object`, `x` and `y` are present.
+#' - `object` column contains unique values
+#' - no value missing in `x` and `y`
+#' - `x` and `y` are numeric
 #'
 #' No restriction about data type of `object` is placed.
 #'
@@ -298,7 +297,7 @@ step_zigzag <- function(
 #' Using this step function, objects changes between two states - moving and waiting.
 #' After each state, new state is sampled with given probability.
 #'
-#' When probability of waiting is set to zero, objects move in a same way as in  \link{step_zigzag} step function
+#' When probability of waiting is set to zero, objects move in a same way as in  [step_zigzag()] step function
 #'
 #' @param moment Position tibble with extra columns `direction` and `speed`
 #' @param time_next Next time step to predict
@@ -989,14 +988,13 @@ load_trajectory <- function(filename, delim = ",", ...) {
 #' in trajectory data.
 #'
 #' We test for following conditions:
-#' \itemize{
-#'   \item *Sudden motion changes* - Sometimes objects bounce too frequently,
+#'
+#' - *Sudden motion changes* - Sometimes objects bounce too frequently,
 #'   which may attract attention. For each object, we test what is the minimal
 #'   time interval between two consecutive large direction changes.
-#'   \item *Minimum interobject distance* - The minimum distance is checked
+#' - *Minimum interobject distance* - The minimum distance is checked
 #'   when generating positions and also in each step of generating trajectories.
 #'   Here, we make final check if the minimum distance is complied.
-#' }
 #'
 #' @param trajectory Tibble object with trajectory
 #' @param change_angle Angle value in degrees.

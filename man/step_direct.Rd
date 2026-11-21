@@ -7,7 +7,7 @@
 step_direct(moment, time_next, settings)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{time_next}{Next time step to predict}
 
@@ -15,7 +15,7 @@ step_direct(moment, time_next, settings)
 }
 \value{
 Another moment - position tibble with
-extra columns `direction` and `speed` corresponding to time_next
+extra columns \code{direction} and \code{speed} corresponding to time_next
 }
 \description{
 Simple trajectory step function

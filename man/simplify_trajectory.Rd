@@ -11,7 +11,7 @@ simplify_trajectory(trajectory, snapshot = T, eps = 1e-04)
 
 \item{snapshot}{Logical, if each timepoint should include data for all point.}
 
-\item{eps}{Direction changes smaller than `eps` (in radians) are ignored}
+\item{eps}{Direction changes smaller than \code{eps} (in radians) are ignored}
 }
 \value{
 Subset of the original data. The timeline is irregular,
@@ -21,15 +21,15 @@ the positions which could be interpolated are omitted.
 To save space we can simplify the trajectory data. Trajectories
 usually have very fine timeline, because small time steps allows to
 (1) minimize potential collision artifacts,
-(2) allow smooth directional changes like in `step_vonmises`.
+(2) allow smooth directional changes like in \code{step_vonmises}.
 When simplifying, we go through time points and detect
 for which timepoints we can interpolate all object positions.
 We keep these positions and remove the rest.
 The resulting trajectory has irregular timeline.
-If `snapshot`, then for each
+If \code{snapshot}, then for each
 timepoint positions of all objects are included
 (i.e., also positions for these, which could be interpolated for a given timepoint).
-If `snapshot == FALSE`, then only the data for changing points are included.
+If \code{snapshot == FALSE}, then only the data for changing points are included.
 }
 \examples{
 library(ggplot2)

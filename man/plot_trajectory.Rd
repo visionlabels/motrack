@@ -13,7 +13,7 @@ plot_trajectory(trajectory, settings = default_settings(), targets = NULL, ...)
 
 \item{targets}{Which objects should be treated as targets}
 
-\item{...}{Parameters passed to `plot_position`}
+\item{...}{Parameters passed to \code{plot_position}}
 }
 \value{
 ggplot2 figure

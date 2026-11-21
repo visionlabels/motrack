@@ -14,15 +14,16 @@ TRUE if conditions above are met, FALSE otherwise
 }
 \description{
 The function tests an object (tibble) for several requirements:
-\itemize{
-  \item columns `object`, `x` and `y` are present.
-  \item `object` column contains unique values
-  \item no value missing in `x` and `y`
-  \item `x` and `y` are numeric
-}
 }
 \details{
-No restriction about data type of `object` is placed.
+\itemize{
+\item columns \code{object}, \code{x} and \code{y} are present.
+\item \code{object} column contains unique values
+\item no value missing in \code{x} and \code{y}
+\item \code{x} and \code{y} are numeric
+}
+
+No restriction about data type of \code{object} is placed.
 }
 \examples{
 example_pos <-

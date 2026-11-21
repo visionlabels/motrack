@@ -7,7 +7,7 @@
 cur_speed(moment, cur_time = NULL)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{cur_time}{Current time
 
@@ -21,21 +21,21 @@ in one call. If there is more than one speed function,
 speeds are evaluated individually, one object at time.
 
 Speed functions follow the template
-`function(time, moment)` and return a vector of speeds.
+\verb{function(time, moment)} and return a vector of speeds.
 They should be written to handle both vector calculations
 (moment is a tibble with multiple rows) and individual values
 (moment is a one-row-tibble).
 
-Speed functions could be introduced via `settings$speed` or
-added directly into the `speed` column of the initial position tibble.
+Speed functions could be introduced via \code{settings$speed} or
+added directly into the \code{speed} column of the initial position tibble.
 When passing functions they should be encapsulated in a list
-(`settings$speed <- c(my_fun)`).}
+(\code{settings$speed <- c(my_fun)}).}
 }
 \value{
 numerical vector of speed
 }
 \description{
-If speeds are constant, returns `speed` column of the `moment`.
+If speeds are constant, returns \code{speed} column of the \code{moment}.
 If speeds are functions, evaluates the speed functions and returns their results.
 }
 \examples{

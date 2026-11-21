@@ -7,17 +7,17 @@
 extrapolate_moment(moment, timestep, cur_time, new_time = NULL)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{timestep}{How far into future should the objects move (linearly)}
 
 \item{cur_time}{Current time, for time-sensitive speed functions (e.g., accelerations)}
 
-\item{new_time}{New time value for the returned object. If omitted, it is calculated automatically as `cur_time + timestep`}
+\item{new_time}{New time value for the returned object. If omitted, it is calculated automatically as \code{cur_time + timestep}}
 }
 \value{
 Another moment - position tibble with
-extra columns `direction` and `speed` corresponding to time_next
+extra columns \code{direction} and \code{speed} corresponding to time_next
 }
 \description{
 Intended for the use in custom step functions.

@@ -9,24 +9,24 @@ generate_positions_random(n, settings, check_distance = T, border_distance = 0)
 \arguments{
 \item{n}{Number of objects}
 
-\item{settings}{Basic properties - namely `xlim`, `ylim`,
-possibly `min_distance`}
+\item{settings}{Basic properties - namely \code{xlim}, \code{ylim},
+possibly \code{min_distance}}
 
 \item{check_distance}{Logical.
 The positions are generated until
-minimum pairwise distance of `min_distance` is met.}
+minimum pairwise distance of \code{min_distance} is met.}
 
 \item{border_distance}{Distance from arena borders.}
 }
 \value{
-Tibble with `object`, `x` and `y` columns.
+Tibble with \code{object}, \code{x} and \code{y} columns.
 }
 \description{
-The function expects a square arena defined by `xlim` and `ylim` settings.
+The function expects a square arena defined by \code{xlim} and \code{ylim} settings.
 The objects are placed randomly (uniform distribution sampling) into the arena.
-If `check_distance` is `TRUE`, the process is repeated
+If \code{check_distance} is \code{TRUE}, the process is repeated
 until the minimum pairwise distance is met.
-`border_distance` specifies, whether objects should keep some initial distance
+\code{border_distance} specifies, whether objects should keep some initial distance
 from arena borders. This distance is not meant to be the bouncing distance,
 it helps to put objects more together in the beginning.
 }
@@ -37,7 +37,7 @@ pos <- generate_positions_random(8, default_settings())
 pos <- generate_positions_random(8, default_settings(), border_distance = 3)
 }
 \seealso{
-\code{\link{default_settings}} for setting definitions,
-\code{\link{new_settings}} for adjusting default settings,
-\code{\link{is_distance_at_least}} for checking distances
+\code{\link[=default_settings]{default_settings()}} for setting definitions,
+\code{\link[=new_settings]{new_settings()}} for adjusting default settings,
+\code{\link[=is_distance_at_least]{is_distance_at_least()}} for checking distances
 }

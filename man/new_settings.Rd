@@ -22,5 +22,5 @@ s1 <- new_settings(xlim = c(0, 10), ylim = c(0, 10))
 s2 <- new_settings(.from = s1, show_labels = TRUE)
 }
 \seealso{
-\code{\link{default_settings}}
+\code{\link[=default_settings]{default_settings()}}
 }

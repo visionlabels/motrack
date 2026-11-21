@@ -6,10 +6,10 @@
 \title{Example position}
 \format{
 A tibble with 8 rows and 3 variables:
-\describe{
-  \item{object}{Identifier of each object, 1 to 8}
-  \item{x}{x-coordinate, in deg}
-  \item{y}{y-coordinate, in deg}
+\itemize{
+\item \code{object}: Identifier of each object, 1 to 8
+\item \code{x}: x-coordinate, in deg
+\item \code{y}: y-coordinate, in deg
 }
 }
 \source{

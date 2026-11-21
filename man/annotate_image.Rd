@@ -16,7 +16,7 @@ annotate_image(image, xlim = NULL, ylim = NULL, settings = NULL)
 \item{settings}{list with named parameters, from which default values for xlim and ylim are taken}
 }
 \value{
-ggplot2 layer (as in `ggplot2::annotation_custom`)
+ggplot2 layer (as in \code{ggplot2::annotation_custom})
 }
 \description{
 Draw bitmap image as ggplot2 annotation

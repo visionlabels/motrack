@@ -15,7 +15,7 @@ step_waitandmove(
 )
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{time_next}{Next time step to predict}
 
@@ -32,16 +32,16 @@ when it is generated for the first time}
 }
 \value{
 Another moment - position tibble with
-extra columns `direction`, `speed`, `speed_scale`, `ttc` and `mov_state`
+extra columns \code{direction}, \code{speed}, \code{speed_scale}, \code{ttc} and \code{mov_state}
 }
 \description{
 Step function for wait-and-move movement pattern
 }
 \details{
 Using this step function, objects changes between two states - moving and waiting.
-After each state, new state is sampled with given proabability.
+After each state, new state is sampled with given probability.
 
-When probability of waiting is set to zero, objects move in a same way as in  \link{step_zigzag} step function
+When probability of waiting is set to zero, objects move in a same way as in  \code{\link[=step_zigzag]{step_zigzag()}} step function
 }
 \seealso{
 Other step_functions: 

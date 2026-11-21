@@ -1,12 +1,11 @@
 #' Is the object a valid position
 #'
 #' The function tests an object (tibble) for several requirements:
-#' \itemize{
-#'   \item columns `object`, `x` and `y` are present.
-#'   \item `object` column contains unique values
-#'   \item no value missing in `x` and `y`
-#'   \item `x` and `y` are numeric
-#' }
+#'
+#' - columns `object`, `x` and `y` are present.
+#' - `object` column contains unique values
+#' - no value missing in `x` and `y`
+#' - `x` and `y` are numeric
 #'
 #' No restriction about data type of `object` is placed.
 #'
@@ -68,29 +67,28 @@ is_distance_at_least <- function(position, min_distance) {
 #' The list is passed as a parameter to other functions.
 #'
 #' Currently used properties include:
-#' \describe{
-#'   \item{xlim}{A vector of form `c(xmin, xmax)`.
-#'   Represents x-limit of the arena square, objects are limited to this area.}
-#'   \item{ylim}{A vector of form `c(ymin, ymax)`.
-#'   Represents y-limit of the arena square, objects are limited to this area.}
-#'   \item{min_distance}{Minimum pairwise distance between centres of objects.}
-#'   \item{r}{Radius of the object. Object is considered to be a circle.}
-#'   \item{arena_border}{Logical. Whether arena border should be drawn.}
-#'   \item{arena_shape}{Character. "square" or "circle"}
-#'   \item{fill_object}{Character. Colour code of default fill colour.}
-#'   \item{fill_target}{Character. Colour code of target fill colour.}
-#'   \item{border_object}{Character. Colour code of default border.}
-#'   \item{border_target}{Character. Colour code of target border.}
-#'   \item{show_labels}{Logical. Should we show object numbers in plots?}
-#'   \item{bounce_off_square}{Logical. Should objects bounce off square arena?}
-#'   \item{bounce_off_others}{Logical. Should objects bounce off each other?}
-#'   \item{simplified_bouncing}{Logical.
-#'     Should pairwise collisions respect contact angle or
-#'     just swap velocity vectors (simplified bouncing)? }
-#'   \item{bounce_off_circle}{Logical. Should objects bounce off circular arena?}
-#'   \item{bounce_off_inside}{Logical. Should objects bounce off inside of circular arena (for donut shapes)?}
-#'   \item{circle_bounce_jitter}{Real. Amount of uniform angular jitter after bouncing, in radians.}
-#' }
+#'
+#' - `xlim`: A vector of form `c(xmin, xmax)`.
+#'   Represents x-limit of the arena square, objects are limited to this area.
+#' - `ylim`: A vector of form `c(ymin, ymax)`.
+#'   Represents y-limit of the arena square, objects are limited to this area.
+#' - `min_distance`: Minimum pairwise distance between centres of objects.
+#' - `r`: Radius of the object. Object is considered to be a circle.
+#' - `arena_border`: Logical. Whether arena border should be drawn.
+#' - `arena_shape`: Character. "square" or "circle"
+#' - `fill_object`: Character. Colour code of default fill colour.
+#' - `fill_target`: Character. Colour code of target fill colour.
+#' - `border_object`: Character. Colour code of default border.
+#' - `border_target`: Character. Colour code of target border.
+#' - `show_labels`: Logical. Should we show object numbers in plots?
+#' - `bounce_off_square`: Logical. Should objects bounce off square arena?
+#' - `bounce_off_others`: Logical. Should objects bounce off each other?
+#' - `simplified_bouncing`: Logical.
+#'   Should pairwise collisions respect contact angle or
+#'   just swap velocity vectors (simplified bouncing)?
+#' - `bounce_off_circle`: Logical. Should objects bounce off circular arena?
+#' - `bounce_off_inside`: Logical. Should objects bounce off inside of circular arena (for donut shapes)?
+#' - `circle_bounce_jitter`: Real. Amount of uniform angular jitter after bouncing, in radians.
 #'
 #' @return list of parameters
 #' @export
@@ -128,7 +126,7 @@ default_settings <- function() {
 #' @return Updated list of settings
 #' @export
 #'
-#' @seealso \code{\link{default_settings}}
+#' @seealso [`default_settings()`]
 #'
 #' @examples
 #' s1 <- new_settings(xlim = c(0, 10), ylim = c(0, 10))
@@ -180,9 +178,9 @@ new_settings <- function(.from = NULL, ...) {
 #' @export
 #'
 #' @seealso
-#' \code{\link{default_settings}} for setting definitions,
-#' \code{\link{new_settings}} for adjusting default settings,
-#' \code{\link{is_distance_at_least}} for checking distances
+#' [`default_settings()`] for setting definitions,
+#' [`new_settings()`] for adjusting default settings,
+#' [`is_distance_at_least()`] for checking distances
 #'
 #' @examples
 #' # sample positions with no other requirements

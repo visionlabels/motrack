@@ -7,7 +7,7 @@
 step_zigzag(moment, time_next, settings, ttt = c(0.5, 1.5), syncstart = F)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{time_next}{Next time step to predict}
 
@@ -20,7 +20,7 @@ when it is generated for the first time}
 }
 \value{
 Another moment - position tibble with
-extra columns `direction`, `speed` and `ttt` corresponding to time_next
+extra columns \code{direction}, \code{speed} and \code{ttt} corresponding to time_next
 }
 \description{
 Zigzag trajectory step function

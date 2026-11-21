@@ -8,3 +8,4 @@
 # Temporary files
 *.mp4
 docs
+.DS_Store

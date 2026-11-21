@@ -7,7 +7,7 @@
 step_vonmises(moment, time_next, settings, kappa)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{time_next}{Next time step to predict}
 
@@ -17,7 +17,7 @@ step_vonmises(moment, time_next, settings, kappa)
 }
 \value{
 Another moment - position tibble with
-extra columns `direction` and `speed` corresponding to time_next
+extra columns \code{direction} and \code{speed} corresponding to time_next
 }
 \description{
 Von Mises trajectory step function

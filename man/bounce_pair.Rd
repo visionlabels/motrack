@@ -2,7 +2,7 @@
 % Please edit documentation in R/trajectory.R
 \name{bounce_pair}
 \alias{bounce_pair}
-\title{Calculate collsion vectors for two objects}
+\title{Calculate collision vectors for two objects}
 \usage{
 bounce_pair(v1, v2, x1, x2)
 }
@@ -19,7 +19,7 @@ bounce_pair(v1, v2, x1, x2)
 list of the two two-dimension vectors - new speed for object 1 and 2
 }
 \description{
-Calculate collsion vectors for two objects
+Calculate collision vectors for two objects
 }
 \examples{
 # direct collision, speeds swap

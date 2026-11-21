@@ -19,28 +19,28 @@ The list is passed as a parameter to other functions.
 }
 \details{
 Currently used properties include:
-\describe{
-  \item{xlim}{A vector of form `c(xmin, xmax)`.
-  Represents x-limit of the arena square, objects are limited to this area.}
-  \item{ylim}{A vector of form `c(ymin, ymax)`.
-  Represents y-limit of the arena square, objects are limited to this area.}
-  \item{min_distance}{Minimum pairwise distance between centres of objects.}
-  \item{r}{Radius of the object. Object is considered to be a circle.}
-  \item{arena_border}{Logical. Whether arena border should be drawn.}
-  \item{arena_shape}{Character. "square" or "circle"}
-  \item{fill_object}{Character. Colour code of default fill colour.}
-  \item{fill_target}{Character. Colour code of target fill colour.}
-  \item{border_object}{Character. Colour code of default border.}
-  \item{border_target}{Character. Colour code of target border.}
-  \item{show_labels}{Logical. Should we show object numbers in plots?}
-  \item{bounce_off_square}{Logical. Should objects bounce off square arena?}
-  \item{bounce_off_others}{Logical. Should objects bounce off each other?}
-  \item{simplified_bouncing}{Logical.
-    Should pairwise collisions respect contact angle or
-    just swap velocity vectors (simplified bouncing)? }
-  \item{bounce_off_circle}{Logical. Should objects bounce off circular arena?}
-  \item{bounce_off_inside}{Logical. Should objects bounce off inside of circular arena (for donut shapes)?}
-  \item{circle_bounce_jitter}{Real. Amount of uniform angular jitter after bouncing, in radians.}
+\itemize{
+\item \code{xlim}: A vector of form \code{c(xmin, xmax)}.
+Represents x-limit of the arena square, objects are limited to this area.
+\item \code{ylim}: A vector of form \code{c(ymin, ymax)}.
+Represents y-limit of the arena square, objects are limited to this area.
+\item \code{min_distance}: Minimum pairwise distance between centres of objects.
+\item \code{r}: Radius of the object. Object is considered to be a circle.
+\item \code{arena_border}: Logical. Whether arena border should be drawn.
+\item \code{arena_shape}: Character. "square" or "circle"
+\item \code{fill_object}: Character. Colour code of default fill colour.
+\item \code{fill_target}: Character. Colour code of target fill colour.
+\item \code{border_object}: Character. Colour code of default border.
+\item \code{border_target}: Character. Colour code of target border.
+\item \code{show_labels}: Logical. Should we show object numbers in plots?
+\item \code{bounce_off_square}: Logical. Should objects bounce off square arena?
+\item \code{bounce_off_others}: Logical. Should objects bounce off each other?
+\item \code{simplified_bouncing}: Logical.
+Should pairwise collisions respect contact angle or
+just swap velocity vectors (simplified bouncing)?
+\item \code{bounce_off_circle}: Logical. Should objects bounce off circular arena?
+\item \code{bounce_off_inside}: Logical. Should objects bounce off inside of circular arena (for donut shapes)?
+\item \code{circle_bounce_jitter}: Real. Amount of uniform angular jitter after bouncing, in radians.
 }
 }
 \examples{

@@ -6,7 +6,7 @@
 #' Potentially the [0,0] point would be moved to this point (unless it is off limits).
 #' @param settings Basic properties - namely `xlim`, `ylim`
 #'
-#' If \code{step} or \code{offeset} vectors have only one element, they are recycled.
+#' If `step` or `offeset` vectors have only one element, they are recycled.
 #'
 #' @return Tibble with `object`, `x` and `y` columns.
 #' @export

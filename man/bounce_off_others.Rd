@@ -7,15 +7,15 @@
 bounce_off_others(moment, time_next, settings)
 }
 \arguments{
-\item{moment}{Position tibble with extra columns `direction` and `speed`}
+\item{moment}{Position tibble with extra columns \code{direction} and \code{speed}}
 
 \item{time_next}{Next timepoint}
 
 \item{settings}{list with basic properties}
 }
 \value{
-Like `moment`, but some directions are adjusted (reversed, swapped),
-if there were a collision in next time point (`timestep`)
+Like \code{moment}, but some directions are adjusted (reversed, swapped),
+if there were a collision in next time point (\code{timestep})
 }
 \description{
 Check for inter-object bouncing and recalculate directions

@@ -34,7 +34,7 @@ annotate_aperture(
 can be taken from xlim and ylim}
 }
 \value{
-ggplot2 layer (as in `ggplot2::annotate`)
+ggplot2 layer (as in \code{ggplot2::annotate})
 }
 \description{
 Draw bitmap image as ggplot2 annotation and cover rest with filled colour

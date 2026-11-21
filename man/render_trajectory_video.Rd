@@ -24,7 +24,7 @@ render_trajectory_video(
 
 \item{outdir}{output directory where the video is saved}
 
-\item{...}{Parameters passed to `plot_position`}
+\item{...}{Parameters passed to \code{plot_position}}
 }
 \value{
 No return value

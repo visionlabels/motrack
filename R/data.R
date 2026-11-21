@@ -3,15 +3,15 @@
 #' Eight objects in circular arena (radius = 10, speed = 5, 8 seconds).
 #'
 #' @format A tibble with 648 rows and 7 variables:
-#' \describe{
-#'   \item{time}{Time for each position, from 0 to 8 with 0.1 steps}
-#'   \item{object}{Identifier of each object, 1 to 8}
-#'   \item{x}{x-coordinate, in deg}
-#'   \item{y}{y-coordinate, in deg}
-#'   \item{direction}{Current direction, in rad}
-#'   \item{speed}{Object speed, in deg/s}
-#'   \item{time1}{?}
-#' }
+#'
+#' - `time`: Time for each position, from 0 to 8 with 0.1 steps
+#' - `object`: Identifier of each object, 1 to 8
+#' - `x`: x-coordinate, in deg
+#' - `y`: y-coordinate, in deg
+#' - `direction`: Current direction, in rad
+#' - `speed`: Object speed, in deg/s
+#' - `time1`: ?
+#'
 #' @source Generated with script
 "trajectory8c"
 
@@ -20,11 +20,11 @@
 #' Eight objects in circular arena (radius = 10).
 #'
 #' @format A tibble with 8 rows and 3 variables:
-#' \describe{
-#'   \item{object}{Identifier of each object, 1 to 8}
-#'   \item{x}{x-coordinate, in deg}
-#'   \item{y}{y-coordinate, in deg}
-#' }
+#'
+#' - `object`: Identifier of each object, 1 to 8
+#' - `x`: x-coordinate, in deg
+#' - `y`: y-coordinate, in deg
+#'
 #' @source Generated with script
 "position8c"
 

@@ -9,9 +9,9 @@ load_trajectory(filename, delim = ",", ...)
 \arguments{
 \item{filename}{Name of input file (e.g., .csv)}
 
-\item{delim}{Single character used to separate fields within a record. Default `","`}
+\item{delim}{Single character used to separate fields within a record. Default \code{","}}
 
-\item{...}{Parameters passed to `readr::read_delim`}
+\item{...}{Parameters passed to \code{readr::read_delim}}
 }
 \value{
 Tibble trajectory object with loaded data

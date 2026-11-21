@@ -20,8 +20,8 @@ Direction changes beyond this value are considered large.}
 too large direction changes.}
 }
 \value{
-Logical. `TRUE` if each pair of consecutive bounces
-is separated by at least `min_interval` seconds.
+Logical. \code{TRUE} if each pair of consecutive bounces
+is separated by at least \code{min_interval} seconds.
 }
 \description{
 Check direction changes for single object trajectory

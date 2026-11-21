@@ -1,4 +1,4 @@
-#' \code{motrack} package
+#' `motrack` package
 #'
 #' Multiple Object Tracking utilities
 #'

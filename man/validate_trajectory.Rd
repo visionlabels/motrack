@@ -24,11 +24,11 @@ too large direction changes.}
 \item{min_distance}{Minimum inter-object spacing, which should be
 complied in every frame.}
 
-\item{verbose}{If `TRUE`, results for each subtest are printed on console.
-Default `FALSE`.}
+\item{verbose}{If \code{TRUE}, results for each subtest are printed on console.
+Default \code{FALSE}.}
 }
 \value{
-Logical. `TRUE` if all conditions are passed.
+Logical. \code{TRUE} if all conditions are passed.
 }
 \description{
 Sometimes, we want have extra requirements for trajectories. The idea is to
@@ -38,12 +38,12 @@ in trajectory data.
 \details{
 We test for following conditions:
 \itemize{
-  \item *Sudden motion changes* - Sometimes objects bounce too frequently,
-  which may attract attention. For each object, we test what is the minimal
-  time interval between two consecutive large direction changes.
-  \item *Minimum interobject distance* - The minimum distance is checked
-  when generating positions and also in each step of generating trajectories.
-  Here, we make final check if the minimum distance is complied.
+\item \emph{Sudden motion changes} - Sometimes objects bounce too frequently,
+which may attract attention. For each object, we test what is the minimal
+time interval between two consecutive large direction changes.
+\item \emph{Minimum interobject distance} - The minimum distance is checked
+when generating positions and also in each step of generating trajectories.
+Here, we make final check if the minimum distance is complied.
 }
 }
 \examples{

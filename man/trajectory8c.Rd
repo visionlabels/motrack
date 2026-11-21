@@ -6,14 +6,14 @@
 \title{Example trajectory}
 \format{
 A tibble with 648 rows and 7 variables:
-\describe{
-  \item{time}{Time for each position, from 0 to 8 with 0.1 steps}
-  \item{object}{Identifier of each object, 1 to 8}
-  \item{x}{x-coordinate, in deg}
-  \item{y}{y-coordinate, in deg}
-  \item{direction}{Current direction, in rad}
-  \item{speed}{Object speed, in deg/s}
-  \item{time1}{?}
+\itemize{
+\item \code{time}: Time for each position, from 0 to 8 with 0.1 steps
+\item \code{object}: Identifier of each object, 1 to 8
+\item \code{x}: x-coordinate, in deg
+\item \code{y}: y-coordinate, in deg
+\item \code{direction}: Current direction, in rad
+\item \code{speed}: Object speed, in deg/s
+\item \code{time1}: ?
 }
 }
 \source{
