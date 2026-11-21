@@ -1,0 +1,62 @@
+# Render video from trajectory
+
+The function repeatedly calls plot_position function to generate preview
+of the trajectory motion. Extra time is added before and after the
+motion sequence (2 seconds each).
+
+## Usage
+
+``` r
+render_trajectory_video(
+  filename,
+  trajectory,
+  settings = default_settings(),
+  targets = NULL,
+  outdir = getwd(),
+  ...
+)
+```
+
+## Arguments
+
+- filename:
+
+  the file name of output video (e.g. "trajectory.mp4")
+
+- trajectory:
+
+  tibble with trajectory data
+
+- settings:
+
+  list with basic properties
+
+- targets:
+
+  Which objects should be treated as targets
+
+- outdir:
+
+  output directory where the video is saved
+
+- ...:
+
+  Parameters passed to `plot_position`
+
+## Value
+
+No return value
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# this example can take 30 seconds to run
+# set ffmpeg in necessary
+# ani.options(ffmpeg = "/PATH/TO/ffmpeg/ffmpeg")
+render_trajectory_video("trajectory.mp4", trajectory8c,
+  new_settings(show_labels = TRUE),
+  targets = 1:4
+)
+} # }
+```
