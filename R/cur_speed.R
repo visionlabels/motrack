@@ -56,7 +56,7 @@ cur_speed <- function(moment, cur_time = NULL) {
     }
     # multiple speed functions?
     s <- numeric(nrow(moment))
-    for (i in 1:length(s)) {
+    for (i in seq_along(s)) {
       f <- moment$speed[[i]]
       s[i] <- f(cur_time, moment[i, ])
     }

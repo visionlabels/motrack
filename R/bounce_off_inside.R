@@ -34,7 +34,7 @@ bounce_off_inside <- function(moment, time_next, settings) {
   if (length(unique(dims)) > 1) {
     stop("Multiple radius options for arena.")
   }
-  arena_radius <- unique(dims)[1] / 2
+  # arena_radius <- unique(dims)[1] / 2
   midpoint_x <- mean(settings$xlim)
   midpoint_y <- mean(settings$ylim)
   # check sides
