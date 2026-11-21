@@ -28,7 +28,8 @@ We keep these positions and remove the rest.
 The resulting trajectory has irregular timeline.
 If \code{snapshot}, then for each
 timepoint positions of all objects are included
-(i.e., also positions for these, which could be interpolated for a given timepoint).
+(i.e., also positions for these,
+which could be interpolated for a given timepoint).
 If \code{snapshot == FALSE}, then only the data for changing points are included.
 }
 \examples{
@@ -39,7 +40,7 @@ new_settings(
   bounce_off_square = FALSE,
   bounce_off_circle = TRUE, circle_bounce_jitter = pi / 6
 )
-moment <- position8c \%>\% add_random_direction()
+moment <- position8c |> add_random_direction()
 tt1 <- make_random_trajectory(
   moment, seq(0, 8, by = 0.1), sett_move, step_direct)
 tt2 <- simplify_trajectory(tt1, snapshot = TRUE)

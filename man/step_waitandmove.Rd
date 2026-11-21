@@ -11,7 +11,7 @@ step_waitandmove(
   move_time = c(0.5, 1.5),
   wait_time = c(0.2, 0.5),
   wait_prob = 0.1,
-  syncstart = F
+  syncstart = FALSE
 )
 }
 \arguments{
@@ -38,10 +38,12 @@ extra columns \code{direction}, \code{speed}, \code{speed_scale}, \code{ttc} and
 Step function for wait-and-move movement pattern
 }
 \details{
-Using this step function, objects changes between two states - moving and waiting.
+Using this step function, objects changes between
+two states - moving and waiting.
 After each state, new state is sampled with given probability.
 
-When probability of waiting is set to zero, objects move in a same way as in  \code{\link[=step_zigzag]{step_zigzag()}} step function
+When probability of waiting is set to zero,
+objects move in a same way as in  \code{\link[=step_zigzag]{step_zigzag()}} step function
 }
 \seealso{
 Other step_functions: 

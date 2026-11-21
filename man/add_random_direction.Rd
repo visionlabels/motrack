@@ -19,5 +19,5 @@ The orientation guide using clock analogy:
 0 = 3 o'clock, pi/2 = 12 o'clock, pi = 9 o'clock, 3*pi/2 = 6 o'clock
 }
 \examples{
-position8c \%>\% add_random_direction()
+position8c |> add_random_direction()
 }

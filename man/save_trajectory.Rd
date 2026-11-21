@@ -11,7 +11,8 @@ save_trajectory(trajectory, filename, delim = ",")
 
 \item{filename}{Name of output file (e.g., .csv)}
 
-\item{delim}{Single character used to separate fields within a record. Default \code{","}}
+\item{delim}{Single character used to separate fields
+within a record. Default \code{","}}
 }
 \value{
 Invisibly returns data in wide format (as saved to file)

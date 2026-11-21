@@ -11,9 +11,11 @@ extrapolate_moment(moment, timestep, cur_time, new_time = NULL)
 
 \item{timestep}{How far into future should the objects move (linearly)}
 
-\item{cur_time}{Current time, for time-sensitive speed functions (e.g., accelerations)}
+\item{cur_time}{Current time, for time-sensitive speed functions
+(e.g., accelerations)}
 
-\item{new_time}{New time value for the returned object. If omitted, it is calculated automatically as \code{cur_time + timestep}}
+\item{new_time}{New time value for the returned object.
+If omitted, it is calculated automatically as \code{cur_time + timestep}}
 }
 \value{
 Another moment - position tibble with
@@ -23,7 +25,7 @@ extra columns \code{direction} and \code{speed} corresponding to time_next
 Intended for the use in custom step functions.
 }
 \examples{
-moment <- position8c \%>\% add_random_direction() \%>\%
+moment <- position8c |> add_random_direction() |>
   dplyr::mutate(speed = 3)
 extrapolate_moment(moment, 0.1, 0)
 }

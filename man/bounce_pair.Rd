@@ -11,9 +11,11 @@ bounce_pair(v1, v2, x1, x2)
 
 \item{v2}{Velocity vector of object 2. Two-dimensional numeric vector.}
 
-\item{x1}{Center of object 1 in the time collision. Two-dimensional numeric vector.}
+\item{x1}{Center of object 1 in the time collision.
+Two-dimensional numeric vector.}
 
-\item{x2}{Center of object 1 in the time collision. Two-dimensional numeric vector.}
+\item{x2}{Center of object 1 in the time collision.
+Two-dimensional numeric vector.}
 }
 \value{
 list of the two two-dimension vectors - new speed for object 1 and 2
