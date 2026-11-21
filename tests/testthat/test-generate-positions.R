@@ -1,5 +1,3 @@
-context("Generate positions")
-
 xlims <- c(-12, 12)
 ylims <- c(-12, 12)
 xlims2 <- xlims + c(2, 2) # must be same, otherwise not square
@@ -12,41 +10,94 @@ radius_in <- 3
 set.seed(1)
 
 # square
-ss <- new_settings(xlim = xlims, ylim = ylims, arena_shape = "square", min_distance = object_gap)
-ps1 <- generate_positions_random(8, ss, check_distance = T, border_distance = 0)
-ps2 <- generate_positions_random(8, ss, check_distance = T, border_distance = border_gap)
+ss <- new_settings(
+  xlim = xlims,
+  ylim = ylims,
+  arena_shape = "square",
+  min_distance = object_gap
+)
+ps1 <- generate_positions_random(
+  8,
+  ss,
+  check_distance = TRUE,
+  border_distance = 0
+)
+ps2 <- generate_positions_random(
+  8,
+  ss,
+  check_distance = TRUE,
+  border_distance = border_gap
+)
 
 # circle
-sc <- new_settings(xlim = xlims, ylim = ylims, arena_shape = "circle", min_distance = object_gap)
-pc1 <- generate_positions_random(8, sc, check_distance = T, border_distance = 0) %>%
+sc <- new_settings(
+  xlim = xlims,
+  ylim = ylims,
+  arena_shape = "circle",
+  min_distance = object_gap
+)
+
+pc1 <- generate_positions_random(
+  8,
+  sc,
+  check_distance = TRUE,
+  border_distance = 0
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims))^2 + (y - mean(ylims))^2))
-pc2 <- generate_positions_random(8, sc, check_distance = T, border_distance = border_gap) %>%
+
+pc2 <- generate_positions_random(
+  8,
+  sc,
+  check_distance = TRUE,
+  border_distance = border_gap
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims))^2 + (y - mean(ylims))^2))
 
 # donut
 sd <- new_settings(
-  xlim = xlims, ylim = ylims, arena_shape = "donut", min_distance = object_gap,
+  xlim = xlims,
+  ylim = ylims,
+  arena_shape = "donut",
+  min_distance = object_gap,
   arena_inside_radius = radius_in
 )
-pd1 <- generate_positions_random(8, sd, check_distance = T, border_distance = 0) %>%
+
+pd1 <- generate_positions_random(
+  8,
+  sd,
+  check_distance = TRUE,
+  border_distance = 0
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims))^2 + (y - mean(ylims))^2))
-pd2 <- generate_positions_random(8, sd, check_distance = T, border_distance = border_gap) %>%
+pd2 <- generate_positions_random(
+  8,
+  sd,
+  check_distance = TRUE,
+  border_distance = border_gap
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims))^2 + (y - mean(ylims))^2))
 
 # shifted border - square, circle, donut
 ps3 <- generate_positions_random(
-  8, new_settings(.from = ss, xlim = xlims2, ylim = ylims2),
-  check_distance = T, border_distance = 0
+  8,
+  new_settings(.from = ss, xlim = xlims2, ylim = ylims2),
+  check_distance = TRUE,
+  border_distance = 0
 )
 pc3 <- generate_positions_random(
-  8, new_settings(.from = sc, xlim = xlims2, ylim = ylims2),
-  check_distance = T, border_distance = 0
-) %>%
+  8,
+  new_settings(.from = sc, xlim = xlims2, ylim = ylims2),
+  check_distance = TRUE,
+  border_distance = 0
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims2))^2 + (y - mean(ylims2))^2))
+
 pd3 <- generate_positions_random(
-  8, new_settings(.from = sd, xlim = xlims2, ylim = ylims2),
-  check_distance = T, border_distance = 0
-) %>%
+  8,
+  new_settings(.from = sd, xlim = xlims2, ylim = ylims2),
+  check_distance = TRUE,
+  border_distance = 0
+) |>
   dplyr::mutate(d = sqrt((x - mean(xlims2))^2 + (y - mean(ylims2))^2))
 
 test_that("Nothing exceeds outer limits: square", {
