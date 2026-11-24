@@ -22,11 +22,13 @@ TRUE if conditions above are met, FALSE otherwise
 
 - columns `object`, `x` and `y` are present.
 
-- `object` column contains unique values
+- there is at least one row
 
-- no value missing in `x` and `y`
+- `object` column contains unique values and no missing values
 
 - `x` and `y` are numeric
+
+- all values in `x` and `y` are finite (no `NA`, `NaN`, `Inf` or `-Inf`)
 
 No restriction about data type of `object` is placed.
 

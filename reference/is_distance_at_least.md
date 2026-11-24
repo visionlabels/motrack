@@ -21,7 +21,7 @@ is_distance_at_least(position, min_distance)
 
 ## Value
 
-TRUE if all distances are larger than `min_distance`
+TRUE if all distances are at least `min_distance`
 
 ## Examples
 

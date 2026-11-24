@@ -15,3 +15,8 @@ Useful links:
 
 **Maintainer**: Jiri Lukavsky <lukavsky@praha.psu.cas.cz>
 ([ORCID](https://orcid.org/0000-0002-1082-229X))
+
+Authors:
+
+- Jiri Lukavsky <lukavsky@praha.psu.cas.cz>
+  ([ORCID](https://orcid.org/0000-0002-1082-229X))
