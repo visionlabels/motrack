@@ -45,7 +45,7 @@
 #' }
 simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   # calculate directions
-  calculate_direction_for_single_object <- function(t1) {
+  direction_for_single_object <- function(t1) {
     t1 |>
       dplyr::arrange(.data$time) |>
       dplyr::mutate(
@@ -62,9 +62,6 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   large_or_na <- function(x) {
     is.na(x) | abs(x) > eps
   }
-  small_and_not_na <- function(x) {
-    !is.na(x) & abs(x) < eps
-  }
   find_critical_timepoints <- function(t1) {
     # assumptions: one object, time sorted, direction column
     # keep: 1st, last, direction changes
@@ -78,7 +75,7 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   events <- trajectory |>
     dplyr::group_split(.data$object) |>
     purrr::map(\(x) dplyr::arrange(x, .data$time)) |>
-    purrr::map(\(x) calculate_direction_for_single_object(x)) |>
+    purrr::map(\(x) direction_for_single_object(x)) |>
     purrr::map(\(x) find_critical_timepoints(x)) |>
     purrr::map(\(x) dplyr::filter(x, .data$keep)) |>
     dplyr::bind_rows()
