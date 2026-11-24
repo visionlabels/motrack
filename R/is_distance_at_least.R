@@ -6,7 +6,7 @@
 #' @param position tibble
 #' @param min_distance Minimum distance to be present between each pair
 #'
-#' @return TRUE if all distances are larger than `min_distance`
+#' @return TRUE if all distances are at least `min_distance`
 #' @export
 #'
 #' @examples
