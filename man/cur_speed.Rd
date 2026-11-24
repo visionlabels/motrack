@@ -51,6 +51,6 @@ sett_move <-
   )
 moment <- position8c |> add_random_direction()
 tt <- make_random_trajectory(
-   moment, seq(0, 8, by = 0.1), sett_move, step_direct
+  moment, seq(0, 8, by = 0.1), sett_move, step_direct
 )
 }

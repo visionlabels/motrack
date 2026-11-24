@@ -32,12 +32,12 @@ Directions follow the clock analogy used elsewhere in the package:
 0 = 3 o'clock, pi/2 = 12 o'clock, pi = 9 o'clock, 3*pi/2 = 6 o'clock.
 }
 \seealso{
-Other step_functions: 
-\code{\link{step_direct}()},
-\code{\link{step_grid}()},
-\code{\link{step_vonmises}()},
-\code{\link{step_waitandmove}()},
-\code{\link{step_zigzag}()}
+Other step_functions:
+\code{\link[=step_direct]{step_direct()}},
+\code{\link[=step_grid]{step_grid()}},
+\code{\link[=step_vonmises]{step_vonmises()}},
+\code{\link[=step_waitandmove]{step_waitandmove()}},
+\code{\link[=step_zigzag]{step_zigzag()}}
 }
 \concept{step_functions}
 \keyword{internal}

@@ -12,7 +12,6 @@ Description: For MOT experiments, you need to prepare trajectories, which object
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Imports: 
     circular,
@@ -28,7 +27,6 @@ Imports:
     png,
     grid,
     purrr,
-    tidyselect,
     stats
 Suggests: 
     testthat,
@@ -36,3 +34,4 @@ Suggests:
 URL: https://visionlabels.github.io/motrack/
 Depends: 
     R (>= 4.1.0)
+Config/roxygen2/version: 8.1.1

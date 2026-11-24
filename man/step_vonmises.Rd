@@ -23,11 +23,11 @@ extra columns \code{direction} and \code{speed} corresponding to time_next
 Von Mises trajectory step function
 }
 \seealso{
-Other step_functions: 
-\code{\link{step_direct}()},
-\code{\link{step_grid}()},
-\code{\link{step_vortex}()},
-\code{\link{step_waitandmove}()},
-\code{\link{step_zigzag}()}
+Other step_functions:
+\code{\link[=step_direct]{step_direct()}},
+\code{\link[=step_grid]{step_grid()}},
+\code{\link[=step_vortex]{step_vortex()}},
+\code{\link[=step_waitandmove]{step_waitandmove()}},
+\code{\link[=step_zigzag]{step_zigzag()}}
 }
 \concept{step_functions}

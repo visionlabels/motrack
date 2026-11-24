@@ -18,9 +18,10 @@ The function tests an object (tibble) for several requirements:
 \details{
 \itemize{
 \item columns \code{object}, \code{x} and \code{y} are present.
-\item \code{object} column contains unique values
-\item no value missing in \code{x} and \code{y}
+\item there is at least one row
+\item \code{object} column contains unique values and no missing values
 \item \code{x} and \code{y} are numeric
+\item all values in \code{x} and \code{y} are finite (no \code{NA}, \code{NaN}, \code{Inf} or \code{-Inf})
 }
 
 No restriction about data type of \code{object} is placed.

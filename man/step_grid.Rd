@@ -37,12 +37,12 @@ a long time (or forever) when no valid move exists, e.g., when the grid
 is densely occupied.
 }
 \seealso{
-Other step_functions: 
-\code{\link{step_direct}()},
-\code{\link{step_vonmises}()},
-\code{\link{step_vortex}()},
-\code{\link{step_waitandmove}()},
-\code{\link{step_zigzag}()}
+Other step_functions:
+\code{\link[=step_direct]{step_direct()}},
+\code{\link[=step_vonmises]{step_vonmises()}},
+\code{\link[=step_vortex]{step_vortex()}},
+\code{\link[=step_waitandmove]{step_waitandmove()}},
+\code{\link[=step_zigzag]{step_zigzag()}}
 }
 \concept{step_functions}
 \keyword{internal}

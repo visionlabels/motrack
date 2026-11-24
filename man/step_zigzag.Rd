@@ -26,11 +26,11 @@ extra columns \code{direction}, \code{speed} and \code{ttt} corresponding to tim
 Zigzag trajectory step function
 }
 \seealso{
-Other step_functions: 
-\code{\link{step_direct}()},
-\code{\link{step_grid}()},
-\code{\link{step_vonmises}()},
-\code{\link{step_vortex}()},
-\code{\link{step_waitandmove}()}
+Other step_functions:
+\code{\link[=step_direct]{step_direct()}},
+\code{\link[=step_grid]{step_grid()}},
+\code{\link[=step_vonmises]{step_vonmises()}},
+\code{\link[=step_vortex]{step_vortex()}},
+\code{\link[=step_waitandmove]{step_waitandmove()}}
 }
 \concept{step_functions}

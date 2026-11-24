@@ -6,6 +6,8 @@
 \alias{motrack-package}
 \title{motrack: Tools for Multiple Object Tracking experiments}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 For MOT experiments, you need to prepare trajectories, which objects later follow. This set of tools helps with random generation of trajectories, visualizing for inspection and adding simple physics like bouncing.
 }
 \seealso{
@@ -17,6 +19,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Jiri Lukavsky \email{lukavsky@praha.psu.cas.cz} (\href{https://orcid.org/0000-0002-1082-229X}{ORCID})
+
+Authors:
+\itemize{
+  \item Jiri Lukavsky \email{lukavsky@praha.psu.cas.cz} (\href{https://orcid.org/0000-0002-1082-229X}{ORCID})
+}
 
 }
 \keyword{internal}

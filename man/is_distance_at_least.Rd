@@ -12,7 +12,7 @@ is_distance_at_least(position, min_distance)
 \item{min_distance}{Minimum distance to be present between each pair}
 }
 \value{
-TRUE if all distances are larger than \code{min_distance}
+TRUE if all distances are at least \code{min_distance}
 }
 \description{
 The function calculated all pairwise distances and checks
