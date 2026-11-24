@@ -28,9 +28,11 @@ step_grid <- function(moment, time_next, settings) {
   # just going in the same direction, possibly bouncing
   time_now <- moment$time[1]
   timestep <- time_next - time_now
+  max_tries <- 100
+  n_tries <- 0
 
-  while (TRUE) {
-    moment_next <- moment |>
+  while (n_tries < max_tries) {
+    moment_dir <- moment |>
       dplyr::mutate(
         direction = (sample(
           c(-1, 0, 1, 2) * pi / 2,
@@ -38,17 +40,20 @@ step_grid <- function(moment, time_next, settings) {
           replace = TRUE
         ))
       )
-    moment_next2 <-
-      extrapolate_moment(moment_next, timestep, time_now, time_next)
-    d <- distances(moment_next2, moment_next2) |>
+    moment_next <-
+      extrapolate_moment(moment_dir, timestep, time_now, time_next)
+    d <- distances(moment_next, moment_next) |>
       dplyr::filter(.data$distance < .5)
     no_overlap <- (nrow(d) == 0)
     within_limits <-
-      all(moment_next2$x > settings$xlim[1]) &&
-      all(moment_next2$x < settings$xlim[2]) &&
-      all(moment_next2$y > settings$ylim[1]) &&
-      all(moment_next2$y < settings$ylim[2])
-    if (no_overlap && within_limits) break
+      all(moment_next$x > settings$xlim[1]) &&
+      all(moment_next$x < settings$xlim[2]) &&
+      all(moment_next$y > settings$ylim[1]) &&
+      all(moment_next$y < settings$ylim[2])
+    if (no_overlap && within_limits) {
+      return(moment_next)
+    }
+    n_tries <- n_tries + 1
   }
-  moment_next2
+  stop("Maximum number of retries reached in step_grid.")
 }

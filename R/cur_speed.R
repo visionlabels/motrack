@@ -42,24 +42,40 @@
 #'   )
 #' moment <- position8c |> add_random_direction()
 #' tt <- make_random_trajectory(
-#'    moment, seq(0, 8, by = 0.1), sett_move, step_direct
+#'   moment, seq(0, 8, by = 0.1), sett_move, step_direct
 #' )
 cur_speed <- function(moment, cur_time = NULL) {
+  finished <- FALSE
+  if (!"speed" %in% names(moment)) {
+    stop("The moment parameter must contain a column called speed")
+  }
   if (is.numeric(moment$speed)) {
     s <- moment$speed
+    finished <- TRUE
   }
   if (is.list(moment$speed)) {
+    # check if all are functions
+    stopifnot(
+      "All speed elements must be functions" = (moment$speed) |>
+        purrr::map_lgl(is.function) |>
+        all()
+    )
     # single speed function?
     if (length(unique(moment$speed)) == 1) {
       f <- moment$speed[[1]]
       s <- f(cur_time, moment)
+    } else {
+      # multiple speed functions?
+      s <- numeric(nrow(moment))
+      for (i in seq_along(s)) {
+        f <- moment$speed[[i]]
+        s[i] <- f(cur_time, moment[i, ])
+      }
     }
-    # multiple speed functions?
-    s <- numeric(nrow(moment))
-    for (i in seq_along(s)) {
-      f <- moment$speed[[i]]
-      s[i] <- f(cur_time, moment[i, ])
-    }
+    finished <- TRUE
+  }
+  if (!finished) {
+    stop("Speed must be either numeric or list of functions.")
   }
   s
 }

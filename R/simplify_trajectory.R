@@ -54,6 +54,11 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
         direction = atan2(.data$dy, .data$dx) %% (2 * pi)
       )
   }
+  # difference of angles wrapped to (-pi, pi], so that headings just
+  # below 2*pi and just above 0 are recognised as nearly identical
+  angle_difference <- function(a, b) {
+    atan2(sin(a - b), cos(a - b))
+  }
   large_or_na <- function(x) {
     is.na(x) | abs(x) > eps
   }
@@ -65,7 +70,9 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
     # keep: 1st, last, direction changes
     t1 |>
       dplyr::mutate(
-        keep = large_or_na(.data$direction - dplyr::lag(.data$direction))
+        keep = large_or_na(
+          angle_difference(.data$direction, dplyr::lag(.data$direction))
+        )
       )
   }
   events <- trajectory |>
@@ -78,7 +85,9 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   if (snapshot) {
     trajectory |> dplyr::filter(.data$time %in% unique(events$time))
   } else {
-    # we return only the original columns
-    events |> dplyr::select(tidyselect::all_of(names(trajectory)))
+    # we return the original rows (direction was recomputed in `events`)
+    trajectory |>
+      dplyr::arrange(.data$object, .data$time) |>
+      dplyr::semi_join(events, by = c("object", "time"))
   }
 }
