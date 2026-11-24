@@ -22,6 +22,10 @@
 #'   interpolated `x` and `y`.
 #' @noRd
 estimate_position_for_time <- function(trajectory, timepoint) {
+  stopifnot(
+    "`timepoint` must be a single number" =
+      is.numeric(timepoint) && length(timepoint) == 1 && !is.na(timepoint)
+  )
   stopifnot(timepoint <= max(trajectory$time))
   stopifnot(timepoint >= min(trajectory$time))
   # find one before and one after
@@ -34,7 +38,10 @@ estimate_position_for_time <- function(trajectory, timepoint) {
   points_after <- trajectory |>
     dplyr::filter(.data$time == time_after) |>
     dplyr::arrange(.data$object)
-  stopifnot(all(points_before$object == points_after$object))
+  stopifnot(
+    "all objects must be present at both neighbouring time points" =
+      identical(points_before$object, points_after$object)
+  )
   if (time_after > time_before) {
     # interpolate - contribution of "after"
     timestep <- (timepoint - time_before) / (time_after - time_before)
