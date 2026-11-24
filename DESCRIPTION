@@ -29,9 +29,11 @@ Imports:
     purrr,
     stats
 Suggests: 
-    testthat,
-    roxygen2
+    testthat (>= 3.0.0),
+    roxygen2,
+    pkgdown
 URL: https://visionlabels.github.io/motrack/
 Depends: 
     R (>= 4.1.0)
+Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.1
