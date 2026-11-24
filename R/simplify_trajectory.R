@@ -77,10 +77,10 @@ simplify_trajectory <- function(trajectory, snapshot = T, eps = 1e-4) {
   }
   events <- trajectory |>
     dplyr::group_split(.data$object) |>
-    purrr::map(~ dplyr::arrange(., .data$time)) |>
-    purrr::map(~ calculate_direction_for_single_object(.)) |>
-    purrr::map(~ find_critical_timepoints(.)) |>
-    purrr::map(~ dplyr::filter(., .data$keep)) |>
+    purrr::map(\(x) dplyr::arrange(x, .data$time)) |>
+    purrr::map(\(x) calculate_direction_for_single_object(x)) |>
+    purrr::map(\(x) find_critical_timepoints(x)) |>
+    purrr::map(\(x) dplyr::filter(x, .data$keep)) |>
     dplyr::bind_rows()
   if (snapshot) {
     trajectory |> dplyr::filter(.data$time %in% unique(events$time))
