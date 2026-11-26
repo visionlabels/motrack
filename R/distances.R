@@ -11,7 +11,7 @@
 #'
 #' @return Tibble with columns `o1`, `x1`, `y1` (object from `p1`), `o2`,
 #'   `x2`, `y2` (object from `p2`) and `distance`.
-#' @noRd
+#' @export
 distances <- function(p1, p2) {
   dd <- tidyr::expand_grid(
     p1 |> dplyr::select(o1 = .data$object, x1 = .data$x, y1 = .data$y),

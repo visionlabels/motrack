@@ -118,3 +118,54 @@ render_trajectory_video("trajectory_s.mp4", trajectory_s,
   new_settings(show_labels = T), targets = 1:4
 )
 ```
+
+Discrete trajectories
+
+```r
+set.seed(1)
+
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <- new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <- new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# All 16 grid nodes (n = NULL returns every position)
+nodes <- generate_positions_grid(
+    NULL,
+    step = 1,
+    settings = settings
+)
+plot_position(nodes, settings = settingsx)
+trajectory <- make_random_trajectory(
+    nodes,
+    timescale = 0:5,
+    settings = settings,
+    step_function = step_vortex
+)
+plot_trajectory(trajectory, settings = settingsx)
+render_trajectory_video("demo.mp4", trajectory, settings = settingsx)
+```
+
+or 
+
+```r
+set.seed(1)
+
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <- new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <- new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# Start with 4 randomly chosen nodes
+start <- generate_positions_grid(4, step = 1, offset = 0.5, settings = settings)
+plot_position(start)
+
+# 5 steps of length 1: each object moves one node east, north, west or south
+trajectory <- make_random_trajectory(
+    start,
+    timescale = 0:5,
+    settings = settings,
+    step_function = step_grid
+)
+plot_trajectory(trajectory, settings = settingsx)
+```

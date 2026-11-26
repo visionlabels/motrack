@@ -36,6 +36,31 @@ Because the whole configuration is resampled, the function can loop for
 a long time (or forever) when no valid move exists, e.g., when the grid
 is densely occupied.
 }
+\examples{
+\dontrun{
+set.seed(1)
+
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <-
+  new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <-
+  new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# Start with 4 randomly chosen nodes
+start <- generate_positions_grid(4, step = 1, offset = 0.5, settings = settings)
+plot_position(start)
+
+# 5 steps of length 1: each object moves one node east, north, west or south
+trajectory <- make_random_trajectory(
+   start,
+   timescale = 0:5,
+   settings = settings,
+   step_function = step_grid
+)
+plot_trajectory(trajectory, settings = settingsx)
+}
+}
 \seealso{
 Other step_functions:
 \code{\link[=step_direct]{step_direct()}},
@@ -45,4 +70,3 @@ Other step_functions:
 \code{\link[=step_zigzag]{step_zigzag()}}
 }
 \concept{step_functions}
-\keyword{internal}
