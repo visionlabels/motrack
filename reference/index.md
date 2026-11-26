@@ -25,6 +25,8 @@
   : Get current speed
 - [`default_settings()`](https://visionlabels.github.io/motrack/reference/default_settings.md)
   : Default settings for position/trajectory code
+- [`distances()`](https://visionlabels.github.io/motrack/reference/distances.md)
+  : Pairwise distances between objects
 - [`extrapolate_moment()`](https://visionlabels.github.io/motrack/reference/extrapolate_moment.md)
   : Extrapolates object positions based on current state and time
 - [`generate_positions_grid()`](https://visionlabels.github.io/motrack/reference/generate_positions_grid.md)
@@ -57,8 +59,12 @@
   : Simplify trajectory
 - [`step_direct()`](https://visionlabels.github.io/motrack/reference/step_direct.md)
   : Simple trajectory step function
+- [`step_grid()`](https://visionlabels.github.io/motrack/reference/step_grid.md)
+  : Grid trajectory step function
 - [`step_vonmises()`](https://visionlabels.github.io/motrack/reference/step_vonmises.md)
   : Von Mises trajectory step function
+- [`step_vortex()`](https://visionlabels.github.io/motrack/reference/step_vortex.md)
+  : Vortex trajectory step function
 - [`step_waitandmove()`](https://visionlabels.github.io/motrack/reference/step_waitandmove.md)
   : Wait and move step function
 - [`step_zigzag()`](https://visionlabels.github.io/motrack/reference/step_zigzag.md)

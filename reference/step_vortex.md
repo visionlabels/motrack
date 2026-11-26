@@ -47,3 +47,33 @@ Other step_functions:
 [`step_vonmises()`](https://visionlabels.github.io/motrack/reference/step_vonmises.md),
 [`step_waitandmove()`](https://visionlabels.github.io/motrack/reference/step_waitandmove.md),
 [`step_zigzag()`](https://visionlabels.github.io/motrack/reference/step_zigzag.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+set.seed(1)
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <-
+  new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <-
+  new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# All 16 grid nodes (n = NULL returns every position)
+nodes <- generate_positions_grid(
+    NULL,
+    step = 1,
+    settings = settings
+)
+plot_position(nodes, settings = settingsx)
+trajectory <- make_random_trajectory(
+    nodes,
+    timescale = 0:5,
+    settings = settings,
+    step_function = step_vortex
+)
+plot_trajectory(trajectory, settings = settingsx)
+render_trajectory_video("demo.mp4", trajectory, settings = settingsx)
+} # }
+```

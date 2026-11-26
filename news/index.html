@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">motrack</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,34 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="motrack-040">motrack 0.4.0<a class="anchor" aria-label="anchor" href="#motrack-040"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-4-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-4-0"></a></h3>
+<ul><li>New <code><a href="../reference/generate_positions_grid.html">generate_positions_grid()</a></code> places objects on a regular grid, with <code>step</code> and <code>offset</code> arguments.</li>
+<li>New <code><a href="../reference/step_vortex.html">step_vortex()</a></code> and <code><a href="../reference/step_grid.html">step_grid()</a></code> for discrete grid and vortex trajectories.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-4-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-4-0"></a></h3>
+<ul><li>Trajectory generation, plotting, rendering and validation code in <code>R/trajectory.R</code> and <code>R/position.R</code> was substantially reworked. This included <code><a href="../reference/make_random_trajectory.html">make_random_trajectory()</a></code>, <code><a href="../reference/step_zigzag.html">step_zigzag()</a></code>, <code><a href="../reference/plot_position.html">plot_position()</a></code>, <code><a href="../reference/plot_trajectory.html">plot_trajectory()</a></code>, <code><a href="../reference/annotate_aperture.html">annotate_aperture()</a></code>, <code><a href="../reference/render_trajectory_video.html">render_trajectory_video()</a></code>, <code><a href="../reference/validate_trajectory.html">validate_trajectory()</a></code> and <code><a href="../reference/validate_object_direction_change.html">validate_object_direction_change()</a></code>.</li>
+<li>Added an example for a variable-speed trial.</li>
+<li>Added tests for trajectory generation (<code>test-generate-trajectories.R</code>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="motrack-030">motrack 0.3.0<a class="anchor" aria-label="anchor" href="#motrack-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>New step function <code><a href="../reference/step_waitandmove.html">step_waitandmove()</a></code>: objects alternate between moving and waiting phases, with configurable <code>move_time</code>, <code>wait_time</code>, <code>wait_prob</code> and optional synchronized start (<code>syncstart</code>).</li>
+<li>Speed can now be a function of time (e.g., acceleration), not just a number. Speed functions have the signature <code>function(time, moment)</code>. They work with every step function that moves objects through <code><a href="../reference/extrapolate_moment.html">extrapolate_moment()</a></code>.</li>
+<li>New exported helpers <code><a href="../reference/cur_speed.html">cur_speed()</a></code> and <code><a href="../reference/extrapolate_moment.html">extrapolate_moment()</a></code> for writing custom step functions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="infrastructure-0-3-0">Infrastructure<a class="anchor" aria-label="anchor" href="#infrastructure-0-3-0"></a></h3>
+<ul><li>Added a pkgdown website (<a href="https://visionlabels.github.io/motrack/" class="uri">https://visionlabels.github.io/motrack/</a>), a logo and favicons. The site is built by GitHub Actions.</li>
+<li>Replaced Travis CI with GitHub Actions (<code>R-CMD-check</code>, <code>pkgdown</code>) and updated the README badges.</li>
+<li>The repository moved to the <code>visionlabels</code> organization.</li>
+<li>Regenerated documentation with roxygen2 7.1.1.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="motrack-020">motrack 0.2.0<a class="anchor" aria-label="anchor" href="#motrack-020"></a></h2>

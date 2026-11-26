@@ -151,7 +151,8 @@ respect arena limits fully, `step_grid` resamples directions with an
 unbounded `while (TRUE)` loop, and they round positions to the grid.
 Check them before relying on them.
 
-Internal helpers marked `@noRd` (no `.Rd` page): `distances()`,
+Internal helpers marked `@noRd` (no `.Rd` page):
+[`distances()`](https://visionlabels.github.io/motrack/reference/distances.md),
 `estimate_position_for_time()`, `calculate_incomplete_vortex()`.
 
 ## Tests

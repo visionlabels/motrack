@@ -120,6 +120,59 @@ render_trajectory_video("trajectory_s.mp4", trajectory_s,
 )
 ```
 
+Discrete trajectories
+
+``` r
+
+set.seed(1)
+
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <- new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <- new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# All 16 grid nodes (n = NULL returns every position)
+nodes <- generate_positions_grid(
+    NULL,
+    step = 1,
+    settings = settings
+)
+plot_position(nodes, settings = settingsx)
+trajectory <- make_random_trajectory(
+    nodes,
+    timescale = 0:5,
+    settings = settings,
+    step_function = step_vortex
+)
+plot_trajectory(trajectory, settings = settingsx)
+render_trajectory_video("demo.mp4", trajectory, settings = settingsx)
+```
+
+or
+
+``` r
+
+set.seed(1)
+
+# A 4 x 4 arena; grid nodes sit at 0.0, 1.0, 2.0, 3.0
+settings <- new_settings(xlim = c(0, 3), ylim = c(0, 3), speed = 1, r = 0.25)
+# extra space for viewing
+settingsx <- new_settings(xlim = c(-1, 4), ylim = c(-1, 4), speed = 1, r = 0.25)
+
+# Start with 4 randomly chosen nodes
+start <- generate_positions_grid(4, step = 1, offset = 0.5, settings = settings)
+plot_position(start)
+
+# 5 steps of length 1: each object moves one node east, north, west or south
+trajectory <- make_random_trajectory(
+    start,
+    timescale = 0:5,
+    settings = settings,
+    step_function = step_grid
+)
+plot_trajectory(trajectory, settings = settingsx)
+```
+
 # Package index
 
 ## All functions
@@ -147,6 +200,8 @@ render_trajectory_video("trajectory_s.mp4", trajectory_s,
   : Get current speed
 - [`default_settings()`](https://visionlabels.github.io/motrack/reference/default_settings.md)
   : Default settings for position/trajectory code
+- [`distances()`](https://visionlabels.github.io/motrack/reference/distances.md)
+  : Pairwise distances between objects
 - [`extrapolate_moment()`](https://visionlabels.github.io/motrack/reference/extrapolate_moment.md)
   : Extrapolates object positions based on current state and time
 - [`generate_positions_grid()`](https://visionlabels.github.io/motrack/reference/generate_positions_grid.md)
@@ -179,8 +234,12 @@ render_trajectory_video("trajectory_s.mp4", trajectory_s,
   : Simplify trajectory
 - [`step_direct()`](https://visionlabels.github.io/motrack/reference/step_direct.md)
   : Simple trajectory step function
+- [`step_grid()`](https://visionlabels.github.io/motrack/reference/step_grid.md)
+  : Grid trajectory step function
 - [`step_vonmises()`](https://visionlabels.github.io/motrack/reference/step_vonmises.md)
   : Von Mises trajectory step function
+- [`step_vortex()`](https://visionlabels.github.io/motrack/reference/step_vortex.md)
+  : Vortex trajectory step function
 - [`step_waitandmove()`](https://visionlabels.github.io/motrack/reference/step_waitandmove.md)
   : Wait and move step function
 - [`step_zigzag()`](https://visionlabels.github.io/motrack/reference/step_zigzag.md)
